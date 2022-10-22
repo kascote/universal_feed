@@ -1,0 +1,7 @@
+<rss xmlns:georss="http://www.georss.org/georss">
+<channel>
+<item>
+<georss:radius>500</georss:radius>
+</item>
+</channel>
+</rss>

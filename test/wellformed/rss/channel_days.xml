@@ -1,0 +1,8 @@
+<rss version="2.0">
+<channel>
+  <skipDays>
+    <day>Tuesday</day>
+    <day>Friday</day>
+  </skipDays>
+</channel>
+</rss>

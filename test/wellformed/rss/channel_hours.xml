@@ -1,0 +1,9 @@
+<rss version="2.0">
+<channel>
+  <skipHours>
+    <hour>01</hour>
+    <hour>05</hour>
+    <hour>23</hour>
+  </skipHours>
+</channel>
+</rss>

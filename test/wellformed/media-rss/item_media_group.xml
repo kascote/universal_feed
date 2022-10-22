@@ -1,0 +1,13 @@
+<rss version="2.0" xmlns:media="http://search.yahoo.com/mrss/">
+   <channel>
+        <item>
+            <media:group>
+              <media:content url="http://www.foo.com/movie.mov" />
+              <media:content url="http://www.foo.com/movie2.mov" />
+            </media:group>
+            <media:group>
+              <media:content url="http://www.foo.com/movie3.mov" />
+            </media:group>
+        </item>
+    </channel>
+</rss>

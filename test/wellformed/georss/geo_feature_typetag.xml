@@ -1,0 +1,7 @@
+<rss xmlns:georss="http://www.georss.org/georss">
+<channel>
+<item>
+<georss:featuretypetag>city</georss:featuretypetag>
+</item>
+</channel>
+</rss>

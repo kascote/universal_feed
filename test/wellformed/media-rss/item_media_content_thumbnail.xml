@@ -1,0 +1,9 @@
+<rss version="2.0" xmlns:media="http://search.yahoo.com/mrss/">
+   <channel>
+        <item>
+            <media:content url="http://www.foo.com/movie.mov">
+              <media:thumbnail url="http://www.foo.com/keyframe.jpg" width="75" height="50" />
+            </media:content>
+        </item>
+    </channel>
+</rss>

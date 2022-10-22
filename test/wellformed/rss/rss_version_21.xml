@@ -1,0 +1,7 @@
+<!--
+Description: RSS version 2.1
+Expect:      not bozo and version == 'rss20'
+-->
+<rss version="2.1">
+  <channel />
+</rss>

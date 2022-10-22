@@ -1,0 +1,10 @@
+<rss version="2.0" xmlns:media="http://search.yahoo.com/mrss/">
+   <channel>
+        <item>
+          <media:content url="http://www.foo.com/movie.mov">
+            <media:rating scheme="urn:icra">r (cz 1 lz 1 nz 1 oz 1 vz 1)</media:rating>
+            <media:rating scheme="urn:mpaa">pg</media:rating>
+          </media:content>
+        </item>
+    </channel>
+</rss>

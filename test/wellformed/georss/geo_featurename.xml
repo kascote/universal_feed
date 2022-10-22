@@ -1,0 +1,7 @@
+<rss xmlns:georss="http://www.georss.org/georss">
+<channel>
+<item>
+<georss:featurename>Podunk</georss:featurename>
+</item>
+</channel>
+</rss>

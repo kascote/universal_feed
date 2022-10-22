@@ -1,0 +1,22 @@
+name: universal_feed
+description: Universal parser for RSS and Atom feeds with support for some extensions (dc, dcterms, media, itunes, georss, syndication, content)
+version: 0.1.0
+homepage: https://github.com/kascote/universal_feed
+repository: https://github.com/kascote/universal_feed
+issue_tracker: https://github.com/kascote/universal_feed/issues
+platforms:
+  linux:
+  macos:
+  windows:
+
+environment:
+  sdk: '>=2.17.3 <3.0.0'
+
+dependencies: 
+  html_unescape: ^2.0.0
+  intl: ^0.17.0
+  xml: ^6.1.0
+
+dev_dependencies:
+  test: ^1.16.0
+  very_good_analysis: ^3.1.0

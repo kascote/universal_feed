@@ -1,0 +1,9 @@
+<!--
+Description: iTunes channel owner name
+Expect:      not bozo and feed['publisher_detail']['email'] == 'mark@example.com'
+-->
+<rss xmlns:itunes="http://www.itunes.com/DTDs/Podcast-1.0.dtd">
+<channel>
+<itunes:new-feed-url>http://a.b/i.png</itunes:new-feed-url>
+</channel>
+</rss>

@@ -1,0 +1,5 @@
+<feed xmlns="http://www.w3.org/2005/Atom" xmlns:georss="http://www.georss.org/georss" >
+<entry>
+<georss:radius>500</georss:radius>
+</entry>
+</feed>

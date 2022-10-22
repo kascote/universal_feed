@@ -1,0 +1,7 @@
+<rss xmlns:georss="http://www.georss.org/georss">
+<channel>
+<item>
+<georss:relationshiptag>is-centered-at</georss:relationshiptag>
+</item>
+</channel>
+</rss>
