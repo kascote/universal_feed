@@ -38,7 +38,6 @@ Map<String, TestFx> itunesTests() {
       final c = r.channel.itunes?.categories;
       return c?.first.label == 'Technology' && c?.first.scheme == 'keyword' && c?.length == 1;
     },
-
     'itunes_item_block.xml': (r) => r.entries?.first.itunes?.block == 'yes',
     'itunes_item_block_uppercase.xml': (r) => r.entries?.first.itunes?.block == 'YES',
     'itunes_item_block_whitespace.xml': (r) => r.entries?.first.itunes?.block == 'yes',

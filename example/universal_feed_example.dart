@@ -29,9 +29,9 @@ void debugRss(RSS uf) {
     return;
   }
 
-  for(var i = 0; i < min(5, uf.entries!.length); i++) {
+  for (var i = 0; i < min(5, uf.entries!.length); i++) {
     print('-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=');
-    final item = uf.entries![i];   
+    final item = uf.entries![i];
     print('title ${item.title}');
     print('link ${item.link?.href}');
   }

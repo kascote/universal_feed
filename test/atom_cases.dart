@@ -1,4 +1,5 @@
 import 'package:universal_feed/universal_feed.dart';
+
 typedef TestFx = bool Function(Atom r);
 
 Map<String, TestFx> atomTests() {
@@ -22,7 +23,8 @@ Map<String, TestFx> atomTests() {
     'feed_link_alternate_map_link_2.xml': (r) => r.head.links!.first.href == 'http://www.example.com/',
     'feed_link_href.xml': (r) => r.head.links!.first.href == 'http://www.example.com/',
     'feed_link_multiple.xml': (r) =>
-        r.head.links!.first.href == 'http://www.example.com/' && r.head.links!.last.href == 'http://www.example.com/post',
+        r.head.links!.first.href == 'http://www.example.com/' &&
+        r.head.links!.last.href == 'http://www.example.com/post',
     'feed_link_rel.xml': (r) => r.head.links!.first.rel == 'alternate',
     'feed_link_title.xml': (r) => r.head.links!.first.title == 'Example title',
     'feed_link_type.xml': (r) => r.head.links!.first.type == 'text/html',
@@ -129,7 +131,8 @@ Map<String, TestFx> atomTests() {
     'entry_link_title.xml': (r) => r.entries!.first.links!.first.title == 'Example title',
     'entry_link_type.xml': (r) => r.entries!.first.links!.first.type == 'text/html',
     'entry_modified.xml': (r) => r.entries!.first.updated?.value == 'Thu, 01 Jan 2004 19:48:21 GMT',
-    'entry_published_parsed_date_overwriting.xml': (r) => r.entries!.first.published?.value == 'Sat, 01 Jan 2010 19:48:21 GMT',
+    'entry_published_parsed_date_overwriting.xml': (r) =>
+        r.entries!.first.published?.value == 'Sat, 01 Jan 2010 19:48:21 GMT',
     'entry_summary.xml': (r) => r.entries!.first.summary == 'Example Atom',
     'entry_summary_base64.xml': (r) => r.entries!.first.summary == 'Example <b>Atom</b>',
     'entry_summary_base64_2.xml': (r) => r.entries!.first.summary == '<p>History of the &lt;blink&gt; tag</p>',

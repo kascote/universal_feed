@@ -1,4 +1,5 @@
 import 'package:universal_feed/universal_feed.dart';
+
 typedef TestFx = bool Function(Atom r);
 
 Map<String, TestFx> atom10Tests() {
@@ -14,9 +15,11 @@ Map<String, TestFx> atom10Tests() {
     'entry_authors_name.xml': (r) =>
         r.entries!.first.authors!.first.name == 'one' && r.entries!.first.authors!.last.name == 'two',
     'entry_authors_uri.xml': (r) =>
-        r.entries!.first.authors!.first.url == 'http://one.com/' && r.entries!.first.authors!.last.url == 'http://two.com/',
+        r.entries!.first.authors!.first.url == 'http://one.com/' &&
+        r.entries!.first.authors!.last.url == 'http://two.com/',
     'entry_authors_url.xml': (r) =>
-        r.entries!.first.authors!.first.url == 'http://one.com/' && r.entries!.first.authors!.last.url == 'http://two.com/',
+        r.entries!.first.authors!.first.url == 'http://one.com/' &&
+        r.entries!.first.authors!.last.url == 'http://two.com/',
     'entry_category_label.xml': (r) => r.entries!.first.categories!.first.label == 'Atom 1.0 tests',
     'entry_category_scheme.xml': (r) => r.entries!.first.categories!.first.scheme == 'http://feedparser.org/tests/',
     'entry_category_term.xml': (r) => r.entries!.first.categories!.first.term == 'atom10',
@@ -35,7 +38,8 @@ Map<String, TestFx> atom10Tests() {
         '<div xmlns="http://www.w3.org/1999/xhtml">History of the &lt;blink> tag</div>',
     'entry_content_src.xml': (r) => r.entries!.first.content!.first.src == 'http://example.com/movie.mp4',
     'entry_content_text_plain.xml': (r) => r.entries!.first.content!.first.value == 'Example Atom',
-    'entry_content_text_plain_brackets.xml': (r) => r.entries!.first.content!.first.value == 'History of the <blink> tag',
+    'entry_content_text_plain_brackets.xml': (r) =>
+        r.entries!.first.content!.first.value == 'History of the <blink> tag',
     'entry_content_type.xml': (r) => r.entries!.first.content!.first.value == 'Example Atom',
     'entry_content_type_text.xml': (r) => r.entries!.first.content!.first.value == 'Example Atom',
     'entry_content_value.xml': (r) => r.entries!.first.content!.first.value == 'Example Atom',
@@ -131,8 +135,10 @@ Map<String, TestFx> atom10Tests() {
           two.url == 'http://two.example.com/' &&
           two.email == 'you@example.com';
     },
-    'entry_source_contributor_name.xml': (r) => r.entries!.first.source!.contributors!.first.name == 'Example contributor',
-    'entry_source_contributor_uri.xml': (r) => r.entries!.first.source!.contributors!.first.url == 'http://example.com/',
+    'entry_source_contributor_name.xml': (r) =>
+        r.entries!.first.source!.contributors!.first.name == 'Example contributor',
+    'entry_source_contributor_uri.xml': (r) =>
+        r.entries!.first.source!.contributors!.first.url == 'http://example.com/',
     'entry_title.xml': (r) => r.entries!.first.title == 'Example Atom',
     'entry_title_base64.xml': (r) => r.entries!.first.title == 'Example <b>Atom</b>',
     'entry_title_base64_2.xml': (r) => r.entries!.first.title == '<p>History of the &lt;blink&gt; tag</p>',
@@ -198,7 +204,8 @@ Map<String, TestFx> atom10Tests() {
     'feed_link_hreflang.xml': (r) => r.head.links!.first.href == 'http://www.example.com/',
     'feed_link_length.xml': (r) => r.head.links!.first.length == '42301',
     'feed_link_multiple.xml': (r) =>
-        r.head.links!.first.href == 'http://www.example.com/' && r.head.links!.last.href == 'http://www.example.com/post',
+        r.head.links!.first.href == 'http://www.example.com/' &&
+        r.head.links!.last.href == 'http://www.example.com/post',
     'feed_link_no_rel.xml': (r) => r.head.links!.first.href == 'http://www.example.com/',
     'feed_link_rel.xml': (r) => r.head.links!.first.href == 'http://www.example.com/',
     'feed_link_rel_other.xml': (r) => r.head.links!.first.rel == 'http://feedparser.org/rel/test',
