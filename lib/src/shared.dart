@@ -15,10 +15,10 @@ typedef ElementCB = void Function(String);
 typedef ElementXmlCB = void Function(XmlElement);
 
 ///
-typedef ListXmlCB<T> = T Function(XmlElement);
+typedef ListXmlCB<T> = T? Function(XmlElement);
 
 ///
-typedef ListXmlCB2<T> = List<T> Function(XmlElement);
+typedef ListXmlCB2<T> = List<T>? Function(XmlElement);
 
 ///
 typedef ListVoid<T> = void Function(List<T>);
@@ -37,7 +37,10 @@ typedef ListVoid<T> = void Function(List<T>);
 /// the returned value will be
 ///    some text1 some text2
 String siblingText(XmlNode node) {
-  final value = node.descendants.first.siblings.whereType<XmlText>().join().trim();
+  final nodes = node.descendants;
+  if (nodes.isEmpty) return node.text;
+
+  final value = nodes.first.siblings.whereType<XmlText>().join().trim();
   if (value.isEmpty) return node.text;
   return value;
 }
@@ -92,7 +95,13 @@ List<T>? getListFromNodes<T>(XmlElement node, String fieldName, {required ListXm
   final elements = node.findElements(fieldName, namespace: ns);
   if (elements.isEmpty) return null;
 
-  return List<T>.generate(elements.length, (pos) => cb(elements.elementAt(pos)));
+  final rc = List<T>.of([]);
+  for (final element in elements) {
+    final ele = cb(element);
+    if (ele != null) rc.add(ele);
+  }
+
+  return rc.isEmpty ? null : rc;
 }
 
 /// Helper function to capture tags that will share a common storage.
@@ -101,7 +110,7 @@ List<T>? getListFromNodes<T>(XmlElement node, String fieldName, {required ListXm
 void getListFromXmlList<T>(
   XmlElement node,
   String fieldName, {
-  required List<T> start,
+  required List<T>? start,
   required ListXmlCB<T> generator,
   required ListVoid<T> storage,
   String? ns,
@@ -109,11 +118,13 @@ void getListFromXmlList<T>(
   final elements = node.findElements(fieldName, namespace: ns);
   if (elements.isEmpty) return;
 
+  final rc = List<T>.of(start ?? []);
   for (final element in elements) {
-    start.add(generator(element));
+    final ele = generator(element);
+    if (ele != null) rc.add(ele);
   }
 
-  storage(start);
+  if (rc.isNotEmpty) storage(rc);
 }
 
 /// Helper function to capture tags that could expand to multiple objects.
@@ -125,7 +136,7 @@ void getListFromXmlList<T>(
 void getListFromElementList<T>(
   XmlElement node,
   String fieldName, {
-  required List<T> start,
+  required List<T>? start,
   required ListXmlCB2<T> generator,
   required ListVoid<T> storage,
   String? ns,
@@ -133,11 +144,13 @@ void getListFromElementList<T>(
   final elements = node.findElements(fieldName, namespace: ns);
   if (elements.isEmpty) return;
 
+  final rc = List<T>.of(start ?? []);
   for (final element in elements) {
-    start.addAll(generator(element));
+    final ele = generator(element);
+    if (ele != null) rc.addAll(ele);
   }
 
-  storage(start);
+  if (rc.isNotEmpty) storage(rc);
 }
 
 /// Helper function to decode different options of text nodes

@@ -25,12 +25,19 @@ class Category {
   });
 
   /// Creates a new cateogry object from an [XmlElement]
-  factory Category.fromXML(XmlElement node) {
+  static Category? fromXML(XmlElement node) {
     final value = siblingText(node);
+    final scheme = node.getAttribute('domain') ?? node.getAttribute('scheme');
+    final label = node.getAttribute('label');
+
+    if (scheme == null && label == null && value.trim().isEmpty) {
+      return null;
+    }
+
     return Category(
-      scheme: node.getAttribute('domain') ?? node.getAttribute('scheme'),
+      scheme: scheme,
       value: value,
-      label: node.getAttribute('label') ?? value,
+      label: label ?? value,
     );
   }
 
@@ -41,8 +48,9 @@ class Category {
 
   /// Helper function to create a List of categories from
   /// an string separated by commas
-  static List<Category> loadTags(XmlElement node, {String? defaulScheme}) {
-    final tags = node.text.split(',');
+  static List<Category>? loadTags(XmlElement node, {String? defaulScheme}) {
+    final tags = node.text.split(',').where((e) => e.isNotEmpty);
+    if (tags.isEmpty) return null;
     return List.generate(tags.length, (pos) => Category(label: tags.elementAt(pos).trim(), scheme: defaulScheme));
   }
 }
