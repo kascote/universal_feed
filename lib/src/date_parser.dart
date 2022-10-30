@@ -23,7 +23,7 @@ final List<_ParseInfo> _parseInfo = [
   ),
   _ParseInfo(
     'valid RFC 822 (4-digit year)',
-    RegExp(r'\w{3},\s\d{2}\s\w{3}\s\d{4}\s([\d:])*\sGMT'),
+    RegExp(r'\w{3},\s\d{2}\s\w{3}\s\d{4}\s([\d:])*\s([GMTUTC+\-\d])*'),
     'EEE, d MMM yyyy H:mm:s Z',
   ),
 

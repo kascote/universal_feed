@@ -12,6 +12,11 @@ void main() {
     expect(d.parseValue()?.toIso8601String(), '2004-01-01T19:48:21.000Z');
   });
 
+  test('valid RFC 822 (4-digit year) numeric timezone', () {
+    const d = Timestamp('Fri, 23 Sep 2022 12:44:42 +0000');
+    expect(d.parseValue()?.toIso8601String(), '2022-09-23T12:44:42.000Z');
+  });
+
   test('invalid RFC 822 (no time)', () {
     const d = Timestamp('01 Jan 2004');
     expect(d.parseValue()?.toIso8601String(), '2004-01-01T00:00:00.000Z');
