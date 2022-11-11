@@ -12,9 +12,24 @@ void main() {
     expect(d.parseValue()?.toIso8601String(), '2004-01-01T19:48:21.000Z');
   });
 
-  test('valid RFC 822 (4-digit year) numeric timezone', () {
+  test('valid RFC 822 (4-digit year) numeric timezone UTC', () {
     const d = Timestamp('Fri, 23 Sep 2022 12:44:42 +0000');
     expect(d.parseValue()?.toIso8601String(), '2022-09-23T12:44:42.000Z');
+  });
+
+  test('valid RFC 822 (4-digit year) numeric timezone', () {
+    const d = Timestamp('Mon, 31 Oct 2022 16:13:29 -0400');
+    expect(d.parseValue()?.toIso8601String(), '2022-10-31T20:13:29.000Z');
+  });
+
+  test('valid RFC 822 (4-digit year) TZ with name', () {
+    const d = Timestamp('Mon, 19 Sep 2022 18:01:41 PDT'); // gmt -7
+    expect(d.parseValue()?.toIso8601String(), '2022-09-20T01:01:41.000Z');
+  });
+
+  test('valid RFC 822 (4-digit year) no seconds', () {
+    const d = Timestamp('Sat, 24 Sep 2022 16:36 GMT');
+    expect(d.parseValue()?.toIso8601String(), '2022-09-24T16:36:00.000Z');
   });
 
   test('invalid RFC 822 (no time)', () {
@@ -25,6 +40,11 @@ void main() {
   test('invalid RFC 822 (no seconds)', () {
     const d = Timestamp('01 Jan 2004 22:20 GMT');
     expect(d.parseValue()?.toIso8601String(), '2004-01-01T22:20:00.000Z');
+  });
+
+  test('invalid RFC 822', () {
+    const d = Timestamp('Mon, 31 Oct 2022 17:48:08 Z');
+    expect(d.parseValue()?.toIso8601String(), '2022-10-31T17:48:08.000Z');
   });
 
   test('valid W3CDTF (numeric timezone)', () {
