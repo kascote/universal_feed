@@ -37,9 +37,9 @@ typedef ListVoid<T> = void Function(List<T>);
 /// the returned value will be
 ///    some text1 some text2
 String siblingText(XmlNode node) {
-  final value = node.descendants.first.siblings.whereType<XmlText>().join().trim();
-  if (value.isEmpty) return node.text;
-  return value;
+  final nodes = node.descendants;
+  if (nodes.isEmpty) return node.text;
+  return nodes.first.siblings.where((n) => n is XmlText || n is XmlCDATA).map((n) => n.text).join().trim();
 }
 
 /// Helper function to retrieve a node's attribute and execute the callback only if the

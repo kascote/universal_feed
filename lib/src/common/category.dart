@@ -36,7 +36,12 @@ class Category {
 
   @override
   String toString() {
-    return '$label - $term - $scheme - $value';
+    final sb = StringBuffer()
+      ..write(label)
+      ..write(term == null ? '' : ' : $term')
+      ..write(scheme == null ? '' : ' : $scheme')
+      ..write(value == null ? '' : ' : $value');
+    return sb.toString();
   }
 
   /// Helper function to create a List of categories from
