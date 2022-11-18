@@ -110,7 +110,7 @@ class MediaContent {
       node,
       'keywords',
       ns: nsUrl,
-      start: mc.categories ?? [],
+      start: mc.categories,
       generator: (xml) => Category.loadTags(xml, defaulScheme: 'keyword'),
       storage: (list) => mc.categories = list,
     );
@@ -118,7 +118,7 @@ class MediaContent {
       node,
       'category',
       ns: nsUrl,
-      start: mc.categories ?? [],
+      start: mc.categories,
       generator: Category.fromXML,
       storage: (list) => mc.categories = list,
     );
@@ -127,7 +127,7 @@ class MediaContent {
       node,
       'thumbnail',
       ns: nsUrl,
-      start: mc.thumbnails ?? [],
+      start: mc.thumbnails,
       generator: Image.loadFromAttributes,
       storage: (list) => mc.thumbnails = list,
     );
@@ -137,7 +137,7 @@ class MediaContent {
       node,
       'credit',
       ns: nsUrl,
-      start: mc.credits ?? [],
+      start: mc.credits,
       generator: Credit.fromXml,
       storage: (list) => mc.credits = list,
     );

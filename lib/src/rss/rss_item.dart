@@ -108,7 +108,7 @@ class RSSItem {
     getListFromXmlList<Category>(
       xml,
       'category',
-      start: item.categories ?? [],
+      start: item.categories,
       generator: Category.fromXML,
       storage: (value) => item.categories = value,
     );
@@ -196,7 +196,9 @@ class RSSItem {
 
   RSSItem._();
 
-  void _loadCategories(List<Category> cats) {
+  void _loadCategories(List<Category>? cats) {
+    if (cats == null) return;
+
     if (categories == null) {
       categories = cats;
     } else {

@@ -105,7 +105,7 @@ class RSSChannel {
       ..skipDays = RSSDay.fromXML(node);
     getElement<XmlElement>(node, 'cloud', cb: (xml) => channel.cloud = RSSCloud.fromXML(xml));
     getElement<XmlElement>(node, 'image', cb: (xml) => channel.image = Image.fromXML(xml));
-    channel.authors = getListFromNodes(node, 'author', cb: (value) => Author.fromString(value.text));
+    channel.authors = getListFromNodes<Author>(node, 'author', cb: (value) => Author.fromString(value.text));
     getListFromXmlList<Author>(
       node,
       'managingEditor',

@@ -37,6 +37,7 @@ Map<String, TestFx> mediaRssTests() {
           kw[1].label == 'cat' &&
           kw.last.label == 'fluffy';
     },
+    'item_media_content_keyword_empty.xml': (r) => r.entries!.first.media!.content!.first.categories == null,
     'item_media_content_thumbnail.xml': (r) {
       final tn = r.entries!.first.media!.content!.first.thumbnails!.first;
       return tn.url == 'http://www.foo.com/keyframe.jpg' && tn.width == '75' && tn.height == '50';
@@ -48,6 +49,7 @@ Map<String, TestFx> mediaRssTests() {
           cats.last.label == 'Ace Ventura - Pet Detective' &&
           cats.last.value == 'Arts/Movies/Titles/A/Ace_Ventura_Series/Ace_Ventura_ -_Pet_Detective';
     },
+    'item_media_content_categories_empty.xml': (r) => r.entries!.first.media!.content!.first.categories == null,
     'item_media_content_player.xml': (r) {
       final p = r.entries!.first.media!.content!.first.player!;
       return p.url == 'http://www.foo.com/player?id=1111' && p.height == '200' && p.width == '400';

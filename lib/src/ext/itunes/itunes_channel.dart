@@ -62,11 +62,11 @@ class ItunesChannel {
       ns: nsUrl,
       cb: (value) {
         final cat = value.getAttribute('text')?.trim();
-        if (cat == null) return;
+        if (cat == null || cat.isEmpty) return;
 
         ic.categories = [Category(label: cat)];
         final subCat = value.getElement('category', namespace: nsUrl)?.getAttribute('text')?.trim();
-        if (subCat != null) ic.categories!.add(Category(label: subCat));
+        if (subCat != null && subCat.isNotEmpty) ic.categories!.add(Category(label: subCat));
       },
     );
 
@@ -97,7 +97,8 @@ class ItunesChannel {
       'keywords',
       ns: nsUrl,
       cb: (xml) {
-        final kws = Set.of(xml.text.split(',').map((e) => e.trim()));
+        final kws = Set.of(xml.text.split(',').map((e) => e.trim())).where((e) => e.isNotEmpty);
+        if (kws.isEmpty) return;
         final cats = List<Category>.generate(kws.length, (p) => Category(label: kws.elementAt(p), scheme: 'keyword'));
         if (ic.categories != null) {
           ic.categories!.addAll(cats);
