@@ -24,7 +24,7 @@ class Category {
     this.value,
   });
 
-  /// Creates a new cateogry object from an [XmlElement]
+  /// Creates a new category object from an [XmlElement]
   static Category? fromXML(XmlElement node) {
     final value = siblingText(node);
     final scheme = node.getAttribute('domain') ?? node.getAttribute('scheme');
@@ -53,9 +53,9 @@ class Category {
 
   /// Helper function to create a List of categories from
   /// an string separated by commas
-  static List<Category>? loadTags(XmlElement node, {String? defaulScheme}) {
+  static List<Category>? loadTags(XmlElement node, {String? defaultScheme}) {
     final tags = node.text.split(',').where((e) => e.isNotEmpty);
     if (tags.isEmpty) return null;
-    return List.generate(tags.length, (pos) => Category(label: tags.elementAt(pos).trim(), scheme: defaulScheme));
+    return List.generate(tags.length, (pos) => Category(label: tags.elementAt(pos).trim(), scheme: defaultScheme));
   }
 }

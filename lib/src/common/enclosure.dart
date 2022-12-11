@@ -9,14 +9,14 @@ class Enclosure {
   /// Length in bytes of the object
   final String length;
 
-  /// Objec's mime-type
+  /// Object's mime-type
   final String type;
 
   /// URI pointing to the object
   final String url;
 
   /// Creates a new [Enclosure] object
-  const Enclosure({required this.url, required this.length, this.type = 'application/octect-stream'});
+  const Enclosure({required this.url, required this.length, this.type = 'application/octet-stream'});
 
   /// Creates an [Enclosure] object from an [XmlElement]
   factory Enclosure.fromXML(XmlElement node) {

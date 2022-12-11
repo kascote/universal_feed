@@ -52,7 +52,7 @@ void getAttribute(XmlElement node, String attrName, {required ElementCB cb, Stri
   cb(attr);
 }
 
-/// Helper function to retrive the node or the node content as Text and execute the callback
+/// Helper function to retrieve the node or the node content as Text and execute the callback
 /// only if the required node exists
 void getElement<T>(XmlElement node, String fieldName, {required ElementT<T> cb, String? ns}) {
   final element = node.getElement(fieldName, namespace: ns);
@@ -63,7 +63,7 @@ void getElement<T>(XmlElement node, String fieldName, {required ElementT<T> cb, 
   }
 }
 
-/// Helper function to retrive the node or the node content as Text and execute the callback
+/// Helper function to retrieve the node or the node content as Text and execute the callback
 /// only if the required node exists
 /// Is similar to [getElement] except that this function will return the last element if there
 /// are multiple elements with the same tag

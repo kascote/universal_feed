@@ -37,13 +37,13 @@ class RSSItem {
   Timestamp? expired; // RSS expirationDate
 
   /// Geo localization of this Entry
-  GeoRss? georss;
+  GeoRss? geoRss;
 
   /// Unique identifier for this Entry
   String? guid;
 
-  /// Identify if [guid] is a permanet one and will be valid over time
-  bool guidIsPerma = false;
+  /// Identify if [guid] is a permanent one and will be valid over time
+  bool guidIsPermanent = false;
 
   /// In case of this entry makes reference to a podcast, this entry will hold information
   /// related to it
@@ -55,7 +55,7 @@ class RSSItem {
   ///
   MediaRss? media;
 
-  /// TimeStamp when this entry eas first publised
+  /// TimeStamp when this entry eas first published
   Timestamp? published; // RSS pubDate
 
   /// Who was the publisher of this entry
@@ -117,7 +117,7 @@ class RSSItem {
     getLastElement<String>(xml, 'expirationDate', cb: (value) => item.expired = Timestamp(value));
 
     if (rss.namespaces.hasDc) {
-      final dcUrl = rss.namespaces.nsUrl(nsDublicCoreNs);
+      final dcUrl = rss.namespaces.nsUrl(nsDublinCoreNs);
       getElement<String>(xml, 'title', ns: dcUrl, cb: (value) => item.title = value);
       getListFromXmlList<Author>(
         xml,
@@ -184,7 +184,7 @@ class RSSItem {
     }
 
     if (rss.namespaces.hasGeoRss) {
-      item.georss = GeoRss.fromXml(rss.namespaces, xml);
+      item.geoRss = GeoRss.fromXml(rss.namespaces, xml);
     }
 
     if (rss.namespaces.hasDcTerms) {
@@ -210,9 +210,9 @@ class RSSItem {
     if (node == null) return;
 
     final uri = node.text;
-    guidIsPerma = node.getAttribute('isPermaLink') == 'true';
+    guidIsPermanent = node.getAttribute('isPermaLink') == 'true';
 
-    if (guidIsPerma) {
+    if (guidIsPermanent) {
       Uri.parse(uri);
       // if link is empty, make it equal to guid
       link ??= Link(href: uri, type: 'link', rel: '');

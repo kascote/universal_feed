@@ -1,4 +1,4 @@
-/// Helper clases that is a basic DCMI Period parser
+/// Helper class that is a basic DCMI Period parser
 ///
 /// https://www.dublincore.org/specifications/dublin-core/dcmi-period/
 class DcPeriod {

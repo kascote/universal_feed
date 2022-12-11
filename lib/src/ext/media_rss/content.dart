@@ -111,7 +111,7 @@ class MediaContent {
       'keywords',
       ns: nsUrl,
       start: mc.categories,
-      generator: (xml) => Category.loadTags(xml, defaulScheme: 'keyword'),
+      generator: (xml) => Category.loadTags(xml, defaultScheme: 'keyword'),
       storage: (list) => mc.categories = list,
     );
     getListFromXmlList<Category>(

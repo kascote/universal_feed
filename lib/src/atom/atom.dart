@@ -32,7 +32,7 @@ class Atom {
   /// [Namespaces] defined on the feed
   late Namespaces namespaces;
 
-  /// Containes each one of the entries in the Atom feed
+  /// Contains each one of the entries in the Atom feed
   List<Entry>? entries;
 
   /// Parse an Atom feed from an string into an [Atom] object

@@ -15,8 +15,8 @@ const nsContentNs = 'xmlns:content';
 /// DCTerms namespace
 const nsDcTermsNs = 'xmlns:dcterms';
 
-/// Dublic Core namespace
-const nsDublicCoreNs = 'xmlns:dc';
+/// Dublin Core namespace
+const nsDublinCoreNs = 'xmlns:dc';
 
 /// GeoRSS namespace
 const nsGeoNs = 'xmlns:georss';
@@ -42,31 +42,31 @@ class Namespaces {
     }
   }
 
-  /// Returns true if the feed has the Atom naspace
+  /// Returns true if the feed has the Atom namespace
   bool get hasAtom => names.containsKey(nsAtomNs);
 
-  /// Returns true if the feed has the Content naspace
+  /// Returns true if the feed has the Content namespace
   bool get hasContent => names.containsKey(nsContentNs);
 
-  /// Returns true if the feed has the Dublic Core naspace
-  bool get hasDc => names.containsKey(nsDublicCoreNs);
+  /// Returns true if the feed has the Dublin Core namespace
+  bool get hasDc => names.containsKey(nsDublinCoreNs);
 
-  /// Returns true if the feed has the Dublic Core Terms naspace
+  /// Returns true if the feed has the Dublin Core Terms namespace
   bool get hasDcTerms => names.containsKey(nsDcTermsNs);
 
-  /// Returns true if the feed has the Media naspace
+  /// Returns true if the feed has the Media namespace
   bool get hasMedia => names.containsKey(nsMediaNs);
 
-  /// Returns true if the feed has the Itunes naspace
+  /// Returns true if the feed has the Itunes namespace
   bool get hasItunes => names.containsKey(nsItunesNs);
 
-  /// Returns true if the feed has the Syndication naspace
+  /// Returns true if the feed has the Syndication namespace
   bool get hasSyndication => names.containsKey(nsSyndicationNs);
 
-  /// Returns true if the feed has the GeoRss naspace
+  /// Returns true if the feed has the GeoRss namespace
   bool get hasGeoRss => names.containsKey(nsGeoNs);
 
-  /// Will return the url for a given namesapece as defined on the feed
+  /// Will return the url for a given namespace as defined on the feed
   String? nsUrl(String name) => names[name];
 
   @override

@@ -5,13 +5,13 @@ import './tz_data.dart';
 /// Callback used by [ParseInfo] to parse custom DateTime formats
 typedef ParserCallback = DateTime Function(String value, ParseInfo pi);
 
-/// Callback used to preformat the DateTime string before send to the formater
-typedef FormaterCallback = String Function(String value, ParseInfo pi);
+/// Callback used to preformat the DateTime string before send to the formatter
+typedef FormatterCallback = String Function(String value, ParseInfo pi);
 
 /// ParseInfo handles parse information for each type of date format
 /// supported
 class ParseInfo {
-  /// Friendly name of the parser. Only used for debug propouse
+  /// Friendly name of the parser. For debug purpose only
   final String label;
 
   /// Regular expression to find the date format
@@ -20,13 +20,13 @@ class ParseInfo {
   /// Final format used to try to parse the string
   final String format;
 
-  /// Callback used to parse the string if the regular expresion matches
+  /// Callback used to parse the string if the regular expression matches
   ParserCallback? cb;
 
   /// Callback used to preformat the date string value before send to the parser
-  FormaterCallback? fcb;
+  FormatterCallback? fcb;
 
-  /// ParseInfo contructor
+  /// ParseInfo constructor
   ParseInfo(this.label, this.rgx, this.format, {this.cb, this.fcb});
 }
 
@@ -46,7 +46,7 @@ DateTime? parseDate(String value) {
         return (p.cb != null) ? p.cb!(value.trim(), p) : defaultParser(value.trim(), p);
       } on FormatException {
         // ignore: avoid_print
-        print('(regular) error formating: [$value] with [${p.format}]');
+        print('(regular) format error: [$value] with [${p.format}]');
         rethrow;
       }
     }
@@ -61,7 +61,7 @@ DateTime defaultParser(String value, ParseInfo pi) {
     return DateFormat(pi.format).parseUtc(removeEndingZ(value));
   } on FormatException {
     // ignore: avoid_print
-    print('(regular) error formating: [$value] with [${pi.format}]');
+    print('(regular) format error: [$value] with [${pi.format}]');
     rethrow;
   }
 }
@@ -92,7 +92,7 @@ DateTime parseWithNumericTz(String value, ParseInfo pi) {
 
     return tmp;
   } on FormatException {
-    throw FormatException('(parseWithNumericTz) error formating: [$dateStr] with [${pi.format}]');
+    throw FormatException('(parseWithNumericTz) format error: [$dateStr] with [${pi.format}]');
   }
 }
 
@@ -121,7 +121,7 @@ DateTime parseWithNamedTz(String value, ParseInfo pi) {
 
     return tmp;
   } on FormatException {
-    throw FormatException('(parseWithNamedTz) error formating: [$dateStr] with [${pi.format}]');
+    throw FormatException('(parseWithNamedTz) format error: [$dateStr] with [${pi.format}]');
   }
 }
 
@@ -131,7 +131,7 @@ String removeEndingZ(String value) {
 }
 
 /// ParseInfo holds the data of all date formats supported and how to parse them
-/// the order of this list important because some regular expresion could match
+/// the order of this list important because some regular expression could match
 /// different values.
 ///
 /// dates reference: https://en.wikipedia.org/wiki/ISO_8601

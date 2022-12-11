@@ -1,9 +1,9 @@
 /// Container to hold an Link reference
 class Link {
-  /// REL attribute of the link
+  /// Link's REL attribute
   String rel;
 
-  /// Link's type's attibute.
+  /// Link's type attribute.
   String type;
 
   /// URI to image

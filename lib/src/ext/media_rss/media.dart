@@ -68,7 +68,7 @@ class MediaRss {
       'keywords',
       ns: nsUrl,
       start: m.categories ?? [],
-      generator: (xml) => Category.loadTags(xml, defaulScheme: 'keyword'),
+      generator: (xml) => Category.loadTags(xml, defaultScheme: 'keyword'),
       storage: (list) => m.categories = list,
     );
     getListFromXmlList<Category>(

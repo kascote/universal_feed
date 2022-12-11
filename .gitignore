@@ -11,3 +11,6 @@ build/
 pubspec.lock
 
 .DS_Store
+.vscode
+project-words.txt
+cspell.json

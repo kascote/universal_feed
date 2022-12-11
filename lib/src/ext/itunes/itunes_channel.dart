@@ -36,7 +36,7 @@ class ItunesChannel {
   String? summary;
 
   /// The show category information.
-  /// if exists, category and subcategory will be the first and scond elements on the list
+  /// if exists, category and subcategory will be the first and second elements on the list
   /// if the entry has 'keywords', they will be added here to with the scheme 'keyword'
   List<Category>? categories;
 

@@ -117,7 +117,7 @@ class RSSChannel {
     channel.categories = getListFromNodes<Category>(node, 'category', cb: Category.fromXML);
 
     if (rss.namespaces.hasDc) {
-      final dcUrl = rss.namespaces.nsUrl(nsDublicCoreNs);
+      final dcUrl = rss.namespaces.nsUrl(nsDublinCoreNs);
       /* Dublin Core */
       getListFromXmlList<Author>(
         node,

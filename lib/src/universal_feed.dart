@@ -2,7 +2,7 @@ import 'package:xml/xml.dart';
 
 import './universal_feed_base.dart';
 
-/// Enum to identify the direfent kind of feeds
+/// Enum that list the supported feeds
 enum FeedKind {
   /// RSS feed
   rss,
@@ -13,13 +13,13 @@ enum FeedKind {
 
 /// Universal feed helper
 class UniversalFeed {
-  /// Type of feed parsed
+  /// Kind of feed parsed
   late final FeedKind kind;
 
-  /// If the feed parsed is RSS, here will recide the information
+  /// When the feed parses as RSS, this variable holds the information
   late final RSS rss;
 
-  /// If the feed parsed is Atom, here will recide the information
+  /// When the feed parses as Atom, this variable holds the information
   late final Atom atom;
 
   /// Universal feed constructor

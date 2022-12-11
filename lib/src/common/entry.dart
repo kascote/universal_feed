@@ -34,7 +34,7 @@ class Entry {
   List<Enclosure>? enclosures;
 
   /// GeoRSS extension container
-  GeoRss? georss;
+  GeoRss? geoRss;
 
   /// The "atom:id" element conveys a permanent, universally unique
   /// identifier for an entry or feed.
@@ -186,7 +186,7 @@ class Entry {
     );
 
     if (atom.namespaces.hasGeoRss) {
-      entry.georss = GeoRss.fromXml(atom.namespaces, node);
+      entry.geoRss = GeoRss.fromXml(atom.namespaces, node);
     }
 
     return entry;

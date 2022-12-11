@@ -10,10 +10,10 @@ class RSSHour {
 
   ///
   static List<RSSHour>? fromXML(XmlElement xml) {
-    final shours = xml.getElement('skipHours');
-    if (shours == null) return null;
+    final skipHours = xml.getElement('skipHours');
+    if (skipHours == null) return null;
 
-    final hours = shours.findElements('hour');
+    final hours = skipHours.findElements('hour');
     return List<RSSHour>.generate(hours.length, (pos) => RSSHour(hours.elementAt(pos).text));
   }
 }
