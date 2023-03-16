@@ -1,9 +1,9 @@
 import 'package:xml/xml.dart';
 
-import '../../src/shared.dart';
+import './shared.dart';
 
 /// Object that hold or links to the content of a feed entry
-class Content {
+class UniversalContent {
   /// Parsed content of the tag
   String value;
 
@@ -13,24 +13,25 @@ class Content {
   /// IRI pointing to the content
   String? src;
 
-  /// Created a new [Content] object
-  Content({required this.value, required this.type, this.src});
+  /// Created a new [UniversalContent] object
+  UniversalContent({required this.value, required this.type, this.src});
 
   ///
-  factory Content.fromV1Xml(XmlElement node) {
+  // TODO: normalize this
+  factory UniversalContent.fromV1Xml(XmlElement node) {
     final type = node.getAttribute('type') ?? 'text';
 
-    return Content(
-      value: getContentText(type, node),
+    return UniversalContent(
+      value: textDecoder(type, node),
       type: type,
       src: node.getAttribute('src'),
     );
   }
 
   ///
-  factory Content.fromXml(XmlElement node) {
-    return Content(
-      value: getContentText(node.getAttribute('mode') ?? 'xml', node),
+  factory UniversalContent.fromXml(XmlElement node) {
+    return UniversalContent(
+      value: textDecoder(node.getAttribute('mode') ?? 'xml', node),
       type: 'text',
       src: node.getAttribute('src'),
     );

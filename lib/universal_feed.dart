@@ -15,5 +15,15 @@
 ///
 library universal_feed;
 
-export 'src/universal_feed.dart';
-export 'src/universal_feed_base.dart';
+export 'src/errors.dart';
+export 'src/universal/author.dart';
+export 'src/universal/category.dart';
+export 'src/universal/content.dart';
+export 'src/universal/enclosure.dart';
+export 'src/universal/image.dart';
+export 'src/universal/item.dart';
+export 'src/universal/link.dart';
+export 'src/universal/meta.dart';
+export 'src/universal/namespaces.dart';
+export 'src/universal/time_stamp.dart';
+export 'src/universal/universal_feed.dart';

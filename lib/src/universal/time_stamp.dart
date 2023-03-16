@@ -1,12 +1,12 @@
-import '../date_parser.dart';
+import '../shared/date_parser.dart';
 
 /// Represent all the date instances on the feed
-class Timestamp {
+class UniversalTimestamp {
   /// Original value of the field
   final String value;
 
-  /// Creates a new Timestamp instance
-  const Timestamp(this.value);
+  /// Creates a new UniversalTimestamp instance
+  const UniversalTimestamp(this.value);
 
   /// Try to parse the string value to a DateTime object
   DateTime? parseValue() {
