@@ -1,6 +1,6 @@
 import 'package:xml/xml.dart';
 
-import './shared.dart';
+import '../shared/shared.dart';
 
 /// Object that hold or links to the content of a feed entry
 class UniversalContent {

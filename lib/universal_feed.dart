@@ -15,11 +15,12 @@
 ///
 library universal_feed;
 
-export 'src/errors.dart';
+export 'src/shared/errors.dart';
 export 'src/universal/author.dart';
 export 'src/universal/category.dart';
 export 'src/universal/content.dart';
 export 'src/universal/enclosure.dart';
+export 'src/universal/extensions/extensions.dart';
 export 'src/universal/image.dart';
 export 'src/universal/item.dart';
 export 'src/universal/link.dart';

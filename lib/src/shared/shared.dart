@@ -3,7 +3,7 @@ import 'dart:convert';
 import 'package:html_unescape/html_unescape.dart';
 import 'package:xml/xml.dart';
 
-import '../errors.dart';
+import 'errors.dart';
 
 /// Callback function for the [getElement] function
 typedef ElementCallback<T> = void Function(T);

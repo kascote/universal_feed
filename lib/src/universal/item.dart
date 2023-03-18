@@ -100,6 +100,9 @@ class UniversalItem {
   /// rss ref: https://cyber.harvard.edu/rss/rss.html#ltcommentsgtSubelementOfLtitemgt
   UniversalLink? comments;
 
+  ///
+  Media? media;
+
   UniversalItem._();
 
   /// Creates a new [UniversalItem]

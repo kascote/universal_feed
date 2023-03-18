@@ -1,6 +1,6 @@
 import 'package:xml/xml.dart';
 
-import './shared.dart';
+import '../shared/shared.dart';
 
 /// Holds information about a category assigned to an entry or feed
 class UniversalCategory {
@@ -25,7 +25,7 @@ class UniversalCategory {
   });
 
   /// Creates a new category object from an [XmlElement]
-  static UniversalCategory? fromXML(XmlElement node) {
+  static UniversalCategory? fromXml(XmlElement node) {
     final value = siblingText(node);
     final scheme = node.getAttribute('domain') ?? node.getAttribute('scheme');
     final label = node.getAttribute('label');
@@ -39,5 +39,14 @@ class UniversalCategory {
       value: value,
       label: label ?? value,
     );
+  }
+
+  /// Helper function to create a List of categories from
+  /// an string separated by commas
+  static List<UniversalCategory>? loadTags(XmlElement node, {String? defaultScheme}) {
+    final tags = node.text.split(',').where((e) => e.isNotEmpty);
+    if (tags.isEmpty) return null;
+    return List.generate(
+        tags.length, (pos) => UniversalCategory(label: tags.elementAt(pos).trim(), scheme: defaultScheme));
   }
 }

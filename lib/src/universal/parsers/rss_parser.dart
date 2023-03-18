@@ -1,7 +1,7 @@
 import 'package:xml/xml.dart';
 
 import '../../../universal_feed.dart';
-import '../shared.dart';
+import '../../shared/shared.dart';
 
 /// Parse an RSS feed
 void rssXmlParser(UniversalFeed uf, XmlDocument doc) {
@@ -51,14 +51,14 @@ void rssChannelParser(UniversalFeed uf, XmlElement channel) {
     cb: (value) => uf.authors.add(UniversalAuthor.fromString(value)..type = AuthorType.webMaster),
   );
   getElement<String>(channel, 'language', cb: (value) => uf.language = value);
-  getElement<XmlElement>(channel, 'image', cb: (value) => uf.image = UniversalImage.fromXML(value));
+  getElement<XmlElement>(channel, 'image', cb: (value) => uf.image = UniversalImage.fromXml(value));
   getElement<String>(channel, 'copyright', cb: (value) => uf.copyright = value);
   getElement<String>(channel, 'generator', cb: (value) => uf.generator = value);
   getElements<XmlElement>(
     channel,
     'category',
     cb: (value) {
-      final category = UniversalCategory.fromXML(value);
+      final category = UniversalCategory.fromXml(value);
       if (category != null) {
         uf.categories.add(category);
       }
@@ -164,12 +164,12 @@ UniversalItem rssItemParser(UniversalFeed uf, UniversalItem item, XmlElement ele
     'author',
     cb: (value) => item.authors.add(UniversalAuthor.fromString(value)..type = AuthorType.author),
   );
-  getElement<XmlElement>(element, 'image', cb: (value) => item.image = UniversalImage.fromXML(value));
+  getElement<XmlElement>(element, 'image', cb: (value) => item.image = UniversalImage.fromXml(value));
   getElements<XmlElement>(
     element,
     'category',
     cb: (value) {
-      final category = UniversalCategory.fromXML(value);
+      final category = UniversalCategory.fromXml(value);
       if (category != null) {
         item.categories.add(category);
       }
@@ -256,6 +256,10 @@ UniversalItem rssItemParser(UniversalFeed uf, UniversalItem item, XmlElement ele
       cb: (value) => item.title = value,
       ns: dcUrl,
     );
+  }
+
+  if (uf.namespaces.hasMedia) {
+    item.media = Media.contentFromXml(uf, element);
   }
 
   return item;

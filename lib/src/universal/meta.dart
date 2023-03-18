@@ -1,7 +1,7 @@
 import 'package:xml/xml.dart';
 
 import './namespaces.dart';
-import '../errors.dart';
+import '../shared/errors.dart';
 
 /// Enum that list the supported feeds
 enum FeedKind {
