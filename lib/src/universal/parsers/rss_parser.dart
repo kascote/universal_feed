@@ -270,5 +270,9 @@ UniversalItem rssItemParser(UniversalFeed uf, UniversalItem item, XmlElement ele
     item.geo = Geo.fromXml(uf, element);
   }
 
+  if (uf.namespaces.hasDcTerms) {
+    item.dcterms = DcTerms.parseFomXml(uf, element);
+  }
+
   return item;
 }

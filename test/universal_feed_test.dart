@@ -5,7 +5,7 @@ import 'package:universal_feed/universal_feed.dart';
 
 // import 'atom10_cases.dart';
 // import 'atom_cases.dart';
-// import 'dcterm_cases.dart';
+import 'dcterm_cases.dart';
 import 'georss_cases.dart';
 // import 'itunes_cases.dart';
 import 'media_rss_cases.dart';
@@ -49,6 +49,15 @@ void main() {
       ),
     ),
   );
+  test(
+    'DcTerms',
+    () => dctermsTests().forEach(
+      runner<UniversalFeed>(
+        './test/wellformed/dcTerms',
+        UniversalFeed.parseFromString,
+      ),
+    ),
+  );
   // test(
   //   'Atom v0.3',
   //   () => atomTests().forEach(
@@ -82,15 +91,6 @@ void main() {
   //     runner<Atom>(
   //       './test/wellformed/georss',
   //       Atom.parseFromString,
-  //     ),
-  //   ),
-  // );
-  // test(
-  //   'DcTerms',
-  //   () => dctermsTests().forEach(
-  //     runner<RSS>(
-  //       './test/wellformed/dcTerms',
-  //       RSS.parseFromString,
   //     ),
   //   ),
   // );

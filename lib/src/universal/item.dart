@@ -106,6 +106,9 @@ class UniversalItem {
   /// The item's geo location if the extension was registered
   Geo? geo;
 
+  ///
+  DcTerms? dcterms;
+
   UniversalItem._();
 
   /// Creates a new [UniversalItem] from a [XmlElement]

@@ -1,3 +1,4 @@
+export './dcterms/dcterms.dart';
 export './geo/geo.dart';
 export './media/content.dart';
 export './media/credit.dart';
