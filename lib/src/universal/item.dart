@@ -100,12 +100,15 @@ class UniversalItem {
   /// rss ref: https://cyber.harvard.edu/rss/rss.html#ltcommentsgtSubelementOfLtitemgt
   UniversalLink? comments;
 
-  ///
+  /// The item's Media extension if the extension was registered
   Media? media;
+
+  /// The item's geo location if the extension was registered
+  Geo? geo;
 
   UniversalItem._();
 
-  /// Creates a new [UniversalItem]
+  /// Creates a new [UniversalItem] from a [XmlElement]
   factory UniversalItem.rssFromXml(UniversalFeed uf, XmlElement rssItem) {
     final item = UniversalItem._();
     rssItemParser(uf, item, rssItem);

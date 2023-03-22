@@ -3,13 +3,13 @@ import 'dart:io';
 import 'package:test/test.dart';
 import 'package:universal_feed/universal_feed.dart';
 
-import 'rss_cases.dart';
 // import 'atom10_cases.dart';
 // import 'atom_cases.dart';
 // import 'dcterm_cases.dart';
-// import 'georss_cases.dart';
+import 'georss_cases.dart';
 // import 'itunes_cases.dart';
 import 'media_rss_cases.dart';
+import 'rss_cases.dart';
 // import 'syndication_cases.dart';
 
 void main() {
@@ -27,6 +27,15 @@ void main() {
     () => mediaRssTests().forEach(
       runner<UniversalFeed>(
         './test/wellformed/media-rss',
+        UniversalFeed.parseFromString,
+      ),
+    ),
+  );
+  test(
+    'Geo RSS',
+    () => geoRssTests().forEach(
+      runner<UniversalFeed>(
+        './test/wellformed/georss',
         UniversalFeed.parseFromString,
       ),
     ),
@@ -63,15 +72,6 @@ void main() {
   //   () => syndycationTests().forEach(
   //     runner<RSS>(
   //       './test/wellformed/syndication',
-  //       RSS.parseFromString,
-  //     ),
-  //   ),
-  // );
-  // test(
-  //   'Geo RSS',
-  //   () => geoRssTests().forEach(
-  //     runner<RSS>(
-  //       './test/wellformed/georss',
   //       RSS.parseFromString,
   //     ),
   //   ),

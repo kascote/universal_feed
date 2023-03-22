@@ -262,5 +262,9 @@ UniversalItem rssItemParser(UniversalFeed uf, UniversalItem item, XmlElement ele
     item.media = Media.contentFromXml(uf, element);
   }
 
+  if (uf.namespaces.hasGeoRss) {
+    item.geo = Geo.fromXml(uf, element);
+  }
+
   return item;
 }
