@@ -10,6 +10,10 @@ void rssXmlParser(UniversalFeed uf, XmlDocument doc) {
   if (channel == null) return;
   rssChannelParser(uf, channel);
 
+  if (uf.namespaces.hasSyndication) {
+    uf.syndication = Syndication.fromXml(uf, channel);
+  }
+
   final rssItems = channel.findElements('item');
   for (final rssItem in rssItems) {
     uf.items.add(UniversalItem.rssFromXml(uf, rssItem));

@@ -77,6 +77,9 @@ class UniversalFeed {
   /// rss ref: https://cyber.harvard.edu/rss/rss.html#optionalChannelElements
   String? docs;
 
+  ///
+  Syndication? syndication;
+
   UniversalFeed._();
 
   /// Generate a new UniversalFeed object from an feed string.

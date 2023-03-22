@@ -10,7 +10,7 @@ import 'georss_cases.dart';
 // import 'itunes_cases.dart';
 import 'media_rss_cases.dart';
 import 'rss_cases.dart';
-// import 'syndication_cases.dart';
+import 'syndication_cases.dart';
 
 void main() {
   test(
@@ -40,6 +40,15 @@ void main() {
       ),
     ),
   );
+  test(
+    'Syndication',
+    () => syndicationTests().forEach(
+      runner<UniversalFeed>(
+        './test/wellformed/syndication',
+        UniversalFeed.parseFromString,
+      ),
+    ),
+  );
   // test(
   //   'Atom v0.3',
   //   () => atomTests().forEach(
@@ -63,15 +72,6 @@ void main() {
   //   () => itunesTests().forEach(
   //     runner<RSS>(
   //       './test/wellformed/itunes',
-  //       RSS.parseFromString,
-  //     ),
-  //   ),
-  // );
-  // test(
-  //   'Syndication',
-  //   () => syndycationTests().forEach(
-  //     runner<RSS>(
-  //       './test/wellformed/syndication',
   //       RSS.parseFromString,
   //     ),
   //   ),
