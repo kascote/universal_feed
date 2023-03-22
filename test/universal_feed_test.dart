@@ -7,7 +7,7 @@ import 'package:universal_feed/universal_feed.dart';
 // import 'atom_cases.dart';
 import 'dcterm_cases.dart';
 import 'georss_cases.dart';
-// import 'itunes_cases.dart';
+import 'itunes_cases.dart';
 import 'media_rss_cases.dart';
 import 'rss_cases.dart';
 import 'syndication_cases.dart';
@@ -58,6 +58,15 @@ void main() {
       ),
     ),
   );
+  test(
+    'Itunes Podcast',
+    () => itunesTests().forEach(
+      runner<UniversalFeed>(
+        './test/wellformed/itunes',
+        UniversalFeed.parseFromString,
+      ),
+    ),
+  );
   // test(
   //   'Atom v0.3',
   //   () => atomTests().forEach(
@@ -73,15 +82,6 @@ void main() {
   //     runner<Atom>(
   //       './test/wellformed/atom10',
   //       Atom.parseFromString,
-  //     ),
-  //   ),
-  // );
-  // test(
-  //   'Itunes Podcast',
-  //   () => itunesTests().forEach(
-  //     runner<RSS>(
-  //       './test/wellformed/itunes',
-  //       RSS.parseFromString,
   //     ),
   //   ),
   // );

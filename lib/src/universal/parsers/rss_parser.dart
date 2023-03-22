@@ -14,6 +14,10 @@ void rssXmlParser(UniversalFeed uf, XmlDocument doc) {
     uf.syndication = Syndication.fromXml(uf, channel);
   }
 
+  if (uf.namespaces.hasItunes) {
+    uf.podcast = ItunesChannel.fromXml(uf, channel);
+  }
+
   final rssItems = channel.findElements('item');
   for (final rssItem in rssItems) {
     uf.items.add(UniversalItem.rssFromXml(uf, rssItem));
@@ -272,6 +276,10 @@ UniversalItem rssItemParser(UniversalFeed uf, UniversalItem item, XmlElement ele
 
   if (uf.namespaces.hasDcTerms) {
     item.dcterms = DcTerms.parseFomXml(uf, element);
+  }
+
+  if (uf.namespaces.hasItunes) {
+    item.podcast = ItunesItem.fromXml(uf, element);
   }
 
   return item;

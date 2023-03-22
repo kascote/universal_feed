@@ -80,6 +80,9 @@ class UniversalFeed {
   ///
   Syndication? syndication;
 
+  ///
+  ItunesChannel? podcast;
+
   UniversalFeed._();
 
   /// Generate a new UniversalFeed object from an feed string.

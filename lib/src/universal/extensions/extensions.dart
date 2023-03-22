@@ -5,4 +5,6 @@ export './media/credit.dart';
 export './media/media.dart';
 export './media/player.dart';
 export './media/rating.dart';
+export './podcast/itunes_channel.dart';
+export './podcast/itunes_item.dart';
 export './syndication/syndication.dart';

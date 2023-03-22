@@ -109,6 +109,9 @@ class UniversalItem {
   ///
   DcTerms? dcterms;
 
+  ///
+  ItunesItem? podcast;
+
   UniversalItem._();
 
   /// Creates a new [UniversalItem] from a [XmlElement]
