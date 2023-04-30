@@ -1,15 +1,20 @@
 import 'package:xml/xml.dart';
 
+import './parsers/atom_parser.dart';
 import './parsers/rss_parser.dart';
 import '../../universal_feed.dart';
 
 ///
+/// Atom v0.3 spec - https://validator.w3.org/feed/docs/atom.html
 class UniversalFeed {
   /// Contains metadata information for the Feed.
   late final UniversalMeta meta;
 
   /// Contains the Feed's namespaces declared.
   late final Namespaces namespaces;
+
+  /// Unique identifier for the feed.
+  String? guid;
 
   /// The name of the channel.
   String? title;
@@ -62,7 +67,7 @@ class UniversalFeed {
   /// A string indicating the program used to generate the channel.
   ///
   /// rss ref: https://cyber.harvard.edu/rss/rss.html#optionalChannelElements
-  String? generator;
+  UniversalGenerator? generator;
 
   /// Specify one or more categories that the channel belongs to.
   ///
@@ -89,6 +94,7 @@ class UniversalFeed {
   /// The string must be an XML string with RSS or Atom encoding.
   factory UniversalFeed.parseFromString(String content) {
     final doc = XmlDocument.parse(content);
+    final root = doc.rootElement;
 
     final feed = UniversalFeed._()
       ..meta = UniversalMeta.rssFromXml(doc)
@@ -97,11 +103,18 @@ class UniversalFeed {
     if (feed.meta.kind == FeedKind.rss) {
       rssXmlParser(feed, doc);
     } else if (feed.meta.kind == FeedKind.atom) {
-      // atomXmlParser(feed, doc);
+      atomXmlParser(feed, root);
     } else {
-      // throw FeedError('Unknown feed type');
+      throw FeedError('Unknown feed type');
     }
 
+    return feed;
+  }
+
+  /// Generate a new UniversalFeed object from an XML element.
+  factory UniversalFeed.parseFromXml(XmlElement content) {
+    final feed = UniversalFeed._();
+    atomXmlParser(feed, content);
     return feed;
   }
 }

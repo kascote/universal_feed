@@ -1,22 +1,38 @@
-///
-// <link rel="alternate" type="text/html" href="https://ipaintfish.com" />
-// <link rel="self" type="application/atom+xml" href="https://ipaintfish.com/feed/atom/" />
-// <link rel="replies" type="application/atom+xml" href="https://ipaintfish.com/eye-sea-you-fish-2022-art/feed/atom/" thr:count="0"/>
-// <link rel="replies" type="text/html" href="https://ipaintfish.com/whimsical-stargayzer-2022-art/#comments" thr:count="0"/>
+import 'package:xml/xml.dart';
 
 /// Link Relation Types
 enum LinkRelationType {
-  /// The "alternate" Link Relation Type indicates that the referenced resource is a substitute for the current document.
+  /// The value "alternate" signifies that the IRI in the value of the href
+  /// attribute identifies an alternate version of the resource described by
+  /// the containing element.
   alternate,
 
-  /// The "self" Link Relation Type indicates that the referenced resource is a representation of the current document.
+  /// The value "related" signifies that the IRI in the value of the href
+  /// attribute identifies a resource related to the resource described by the
+  /// containing element.  For example, the feed for a site that discusses the
+  /// performance of the search engine at "http://search.example.com" might
+  /// contain, as a child of atom:feed:
+  ///
+  ///     <link rel="related" href="http://search.example.com/"/>
+  ///
+  /// An identical link might appear as a child of any atom:entry whose content
+  /// contains a discussion of that same search engine.
+  related,
+
+  /// The value "self" signifies that the IRI in the value of the href attribute
+  /// identifies a resource equivalent to the containing element.
   self,
 
-  /// The "replies" Link Relation Type indicates that the referenced resource is a resource providing information about the link's context.
-  replies,
-
-  /// The "enclosure" Link Relation Type indicates that the referenced resource is a related resource that is potentially large in size and might require special handling.
+  /// The value "enclosure" signifies that the IRI in the value of the href
+  /// attribute identifies a related resource that is potentially large in size
+  /// and might require special handling.  For atom:link elements with
+  /// rel="enclosure", the length attribute SHOULD be provided.
   enclosure,
+
+  /// The value "via" signifies that the IRI in the value of the href attribute
+  /// identifies a resource that is the source of the information provided in
+  /// the containing element.
+  via,
 
   /// placeholder for unknown link types
   other,
@@ -26,6 +42,10 @@ enum LinkRelationType {
 class UniversalLink {
   /// Link's REL attribute
   LinkRelationType rel;
+
+  /// Original REL attribute. If the REL attribute is not a valid LinkRelationType
+  /// his attribute will be set with the original REL value
+  String? originalRel;
 
   /// Link's type attribute.
   String type;
@@ -39,7 +59,7 @@ class UniversalLink {
   /// Length of the linked content in octets
   String? length;
 
-  // TODO: Handle more complex links like Atom and links in RSS
+  // TODO(nelson): Handle more complex links like Atom and links in RSS
   /// Creates a new Link
   UniversalLink({
     required this.rel,
@@ -58,6 +78,20 @@ class UniversalLink {
       type: type,
       href: href,
     );
+  }
+
+  /// Creates a Link from an XML element
+  factory UniversalLink.fromXml(XmlElement element) {
+    final rel = element.getAttribute('rel') ?? '';
+
+    return UniversalLink(
+      rel: LinkRelationType.values.firstWhere((e) => e.name == rel, orElse: () => LinkRelationType.other),
+      type: element.getAttribute('type') ?? '',
+      href: element.getAttribute('href') ?? '',
+    )
+      ..title = element.getAttribute('title') ?? ''
+      ..length = element.getAttribute('length') ?? ''
+      ..originalRel = rel;
   }
 
   @override

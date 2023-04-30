@@ -3,8 +3,8 @@ import 'dart:io';
 import 'package:test/test.dart';
 import 'package:universal_feed/universal_feed.dart';
 
-// import 'atom10_cases.dart';
-// import 'atom_cases.dart';
+import 'atom10_cases.dart';
+import 'atom_cases.dart';
 import 'dcterm_cases.dart';
 import 'georss_cases.dart';
 import 'itunes_cases.dart';
@@ -67,33 +67,24 @@ void main() {
       ),
     ),
   );
-  // test(
-  //   'Atom v0.3',
-  //   () => atomTests().forEach(
-  //     runner<Atom>(
-  //       './test/wellformed/atom',
-  //       Atom.parseFromString,
-  //     ),
-  //   ),
-  // );
-  // test(
-  //   'Atom v1.0',
-  //   () => atom10Tests().forEach(
-  //     runner<Atom>(
-  //       './test/wellformed/atom10',
-  //       Atom.parseFromString,
-  //     ),
-  //   ),
-  // );
-  // test(
-  //   'Geo Atom',
-  //   () => geoAtomTests().forEach(
-  //     runner<Atom>(
-  //       './test/wellformed/georss',
-  //       Atom.parseFromString,
-  //     ),
-  //   ),
-  // );
+  test(
+    'Atom v1.0',
+    () => atom10Tests().forEach(
+      runner<UniversalFeed>(
+        './test/wellformed/atom10',
+        UniversalFeed.parseFromString,
+      ),
+    ),
+  );
+  test(
+    'Atom v0.3',
+    () => atomTests().forEach(
+      runner<UniversalFeed>(
+        './test/wellformed/atom',
+        UniversalFeed.parseFromString,
+      ),
+    ),
+  );
 }
 
 typedef TGenerator<T> = T Function(String);

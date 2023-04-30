@@ -1,8 +1,5 @@
 import 'package:xml/xml.dart';
 
-import './credit.dart';
-import './player.dart';
-import './rating.dart';
 import '../../../../universal_feed.dart';
 import '../../../shared/shared.dart';
 

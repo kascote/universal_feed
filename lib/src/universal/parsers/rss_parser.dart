@@ -61,7 +61,7 @@ void rssChannelParser(UniversalFeed uf, XmlElement channel) {
   getElement<String>(channel, 'language', cb: (value) => uf.language = value);
   getElement<XmlElement>(channel, 'image', cb: (value) => uf.image = UniversalImage.fromXml(value));
   getElement<String>(channel, 'copyright', cb: (value) => uf.copyright = value);
-  getElement<String>(channel, 'generator', cb: (value) => uf.generator = value);
+  getElement<String>(channel, 'generator', cb: (value) => uf.generator = UniversalGenerator.create(value));
   getElements<XmlElement>(
     channel,
     'category',
@@ -142,10 +142,10 @@ UniversalItem rssItemParser(UniversalFeed uf, UniversalItem item, XmlElement ele
 
   getElement<String>(element, 'title', cb: (value) => item.title = value);
   getElement<String>(element, 'description', cb: (value) => item.description = value);
-  getElement<XmlElement>(
+  getElements<XmlElement>(
     element,
     'encoded',
-    cb: (value) => item.content = UniversalContent.fromV1Xml(value),
+    cb: (value) => item.content.add(UniversalContent.fromV1Xml(value)),
     ns: nsContentUrl,
   );
   getElement<String>(

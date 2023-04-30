@@ -89,8 +89,12 @@ class Media {
     );
 
     getElement<XmlElement>(node, 'title', ns: nsUrl, cb: (value) => media.title = textDecoder('plain', value));
-    getElement<XmlElement>(node, 'description',
-        ns: nsUrl, cb: (value) => media.description = textDecoder('plain', value));
+    getElement<XmlElement>(
+      node,
+      'description',
+      ns: nsUrl,
+      cb: (value) => media.description = textDecoder('plain', value),
+    );
 
     getElements<XmlElement>(
       node,

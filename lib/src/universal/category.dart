@@ -29,16 +29,13 @@ class UniversalCategory {
     final value = siblingText(node);
     final scheme = node.getAttribute('domain') ?? node.getAttribute('scheme');
     final label = node.getAttribute('label');
+    final term = node.getAttribute('term');
 
     if (scheme == null && label == null && value.trim().isEmpty) {
       return null;
     }
 
-    return UniversalCategory(
-      scheme: scheme,
-      value: value,
-      label: label ?? value,
-    );
+    return UniversalCategory(scheme: scheme, value: value, label: label ?? value, term: term);
   }
 
   /// Helper function to create a List of categories from
@@ -47,6 +44,8 @@ class UniversalCategory {
     final tags = node.text.split(',').where((e) => e.isNotEmpty);
     if (tags.isEmpty) return null;
     return List.generate(
-        tags.length, (pos) => UniversalCategory(label: tags.elementAt(pos).trim(), scheme: defaultScheme));
+      tags.length,
+      (pos) => UniversalCategory(label: tags.elementAt(pos).trim(), scheme: defaultScheme),
+    );
   }
 }

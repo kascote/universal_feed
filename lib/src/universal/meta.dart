@@ -38,6 +38,9 @@ class UniversalMeta {
 
     switch (root.localName) {
       case 'feed':
+        if (version.isEmpty && extensions['xmlns'] == 'http://www.w3.org/2005/Atom') {
+          version = '1.0';
+        }
         return UniversalMeta(FeedKind.atom, version, encoding: encoding, extensions: extensions);
       case 'rss':
         if (version == '0.91') {
@@ -56,7 +59,7 @@ class UniversalMeta {
     }
   }
 
-  // TODO: Unify with Namespaces
+  // TODO(nelson): Unify with Namespaces
   static Map<String, String> _getExtensions(XmlElement ele) {
     final extensions = <String, String>{};
     for (final attr in ele.attributes) {

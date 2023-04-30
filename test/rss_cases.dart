@@ -63,7 +63,7 @@ Map<String, TestFx> rssTests() {
     'channel_description_naked_markup.xml': (r) => r.description == '<p>Example description</p>',
     'channel_description_shorttag.xml': (r) => r.description == '',
     'channel_docs.xml': (r) => r.docs == 'http://www.example.com/',
-    'channel_generator.xml': (r) => r.generator == 'Example generator',
+    'channel_generator.xml': (r) => r.generator?.name == 'Example generator',
     'channel_image_description.xml': (r) => r.image?.description == 'Available in Netscape RSS 0.91',
     'channel_image_height.xml': (r) => r.image?.height == '15',
     'channel_image_link.xml': (r) => r.image?.link == 'http://example.org/link',
@@ -212,9 +212,9 @@ Map<String, TestFx> rssTests() {
     'item_category_multiple_2.xml': (r) => r.items.last.categories.last.value == 'Example category 2',
     'item_category_cdata.xml': (r) => r.items.first.categories.first.value == 'Blog',
     'item_comments.xml': (r) => r.items.first.comments?.href == 'http://example.com/',
-    'item_content_encoded.xml': (r) => r.items.first.content?.value == '<p>Example content</p>',
-    'item_content_encoded_type.xml': (r) => r.items.first.content?.type == 'text',
-    'item_content_encoded_mode.xml': (r) => r.items.first.content?.value == '<p>Example content</p>',
+    'item_content_encoded.xml': (r) => r.items.first.content.first.value == '<p>Example content</p>',
+    'item_content_encoded_type.xml': (r) => r.items.first.content.first.type == 'text',
+    'item_content_encoded_mode.xml': (r) => r.items.first.content.first.value == '<p>Example content</p>',
 
     'item_enclosure_length.xml': (r) => r.items.first.enclosures.first.length == '100000',
     'item_enclosure_multiple.xml': (r) {

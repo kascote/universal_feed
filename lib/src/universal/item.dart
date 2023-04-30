@@ -1,5 +1,6 @@
 import 'package:xml/xml.dart';
 
+import './parsers/atom_parser.dart';
 import './parsers/rss_parser.dart';
 import '../../universal_feed.dart';
 
@@ -21,6 +22,7 @@ class UniversalItem {
   /// If "isPermaLink" is present and has a value of true, the value will be used as the [link] attribute
   ///
   /// rss ref: https://cyber.harvard.edu/rss/rss.html#ltguidgtSubelementOfLtitemgt
+  /// atom v03: https://web.archive.org/web/20080319095653/http://www.mnot.net/drafts/draft-nottingham-atom-format-02.html
   String? guid;
 
   /// The title of the item.
@@ -34,7 +36,7 @@ class UniversalItem {
   String? description;
 
   /// The item content
-  UniversalContent? content;
+  final List<UniversalContent> content = [];
 
   /// The url of the item.
   ///
@@ -93,6 +95,13 @@ class UniversalItem {
   /// rss ref: https://cyber.harvard.edu/rss/rss.html#ltsourcegtSubelementOfLtitemgt
   UniversalLink? source;
 
+  /// If an atom:entry is copied from one feed into another feed, then the
+  /// source atom:feed's metadata (all child elements of atom:feed other
+  /// than the atom:entry elements) MAY be preserved
+  ///
+  /// atom ref: https://www.rfc-editor.org/rfc/rfc4287.html#section-4.2.11
+  UniversalFeed? sourceEntry;
+
   /// URL of a page for comments relating to the item.
   ///
   /// If present, it is the url of the comments page for the item.
@@ -102,6 +111,11 @@ class UniversalItem {
 
   /// The item's Media extension if the extension was registered
   Media? media;
+
+  /// Is a Text construct that conveys information about rights held in and over an entry or feed
+  ///
+  /// atom ref: https://www.rfc-editor.org/rfc/rfc4287.html#section-4.2.10
+  String? copyright;
 
   /// The item's geo location if the extension was registered
   Geo? geo;
@@ -118,6 +132,13 @@ class UniversalItem {
   factory UniversalItem.rssFromXml(UniversalFeed uf, XmlElement rssItem) {
     final item = UniversalItem._();
     rssItemParser(uf, item, rssItem);
+    return item;
+  }
+
+  /// Creates a new [UniversalItem] from a [XmlElement]
+  factory UniversalItem.atomFromXml(UniversalFeed uf, XmlElement atomItem) {
+    final item = UniversalItem._();
+    atomItemParser(uf, item, atomItem);
     return item;
   }
 }

@@ -17,7 +17,7 @@ class UniversalContent {
   UniversalContent({required this.value, required this.type, this.src});
 
   ///
-  // TODO: normalize this
+  // TODO(nelson): normalize this
   factory UniversalContent.fromV1Xml(XmlElement node) {
     final type = node.getAttribute('type') ?? 'text';
 
@@ -30,9 +30,10 @@ class UniversalContent {
 
   ///
   factory UniversalContent.fromXml(XmlElement node) {
+    final type = node.getAttribute('mode') ?? node.getAttribute('type') ?? 'xml';
     return UniversalContent(
-      value: textDecoder(node.getAttribute('mode') ?? 'xml', node),
-      type: 'text',
+      value: textDecoder(type, node),
+      type: type,
       src: node.getAttribute('src'),
     );
   }

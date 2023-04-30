@@ -1,3 +1,5 @@
+import 'package:xml/xml.dart';
+
 // like an email
 final _isEmailRx = RegExp(r'^(.+)@(.+)$');
 // Help to extract name and email
@@ -6,6 +8,9 @@ final _nameEmailRx = RegExp(r'(.+?(?=[\(<]))[\(<](.*)[\)>]');
 
 /// The type of the author
 enum AuthorType {
+  /// unknown type
+  other,
+
   /// The author of the entry.
   ///
   /// This is the person or organization who wrote the entry. The author of an entry may have a different name than the author of the feed.
@@ -83,6 +88,16 @@ class UniversalAuthor {
     }
 
     return UniversalAuthor(name: name, email: email);
+  }
+
+  ///
+  factory UniversalAuthor.fromXml(XmlElement element) {
+    return UniversalAuthor(
+      name: element.getElement('name')?.text ?? '',
+      email: element.getElement('email')?.text ?? '',
+      url: element.getElement('uri')?.text ?? element.getElement('url')?.text ?? '',
+      type: AuthorType.author,
+    );
   }
 
   /// Depending if the [name] and [email] are empty or not will return:
