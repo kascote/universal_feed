@@ -12,12 +12,12 @@ Map<String, TestFx> rssTests() {
     'rss_version_094.xml': (r) => r.meta.version == '0.94',
     'rss_version_20.xml': (r) => r.meta.version == '2.0',
     'rss_version_201.xml': (r) => r.meta.version == '2.01',
-    'rss_version_21.xml': (r) => r.meta.version == '2.1',
+    'rss_version_21.xml': (r) => r.meta.version == '2.1' && r.namespaces.toString().isNotEmpty,
     'rss_version_missing.xml': (r) => r.meta.version == '',
 
     'channel_author.xml': (r) {
       if (r.authors.isEmpty) return false;
-      return r.authors.first.value == 'Example editor (me@example.com)';
+      return r.authors.first.value == 'Example editor (me@example.com)' && r.authors.first.toString().isNotEmpty;
     },
     'channel_author_map_author_detail_email.xml': (r) {
       if (r.authors.isEmpty) return false;
@@ -63,8 +63,9 @@ Map<String, TestFx> rssTests() {
     'channel_description_naked_markup.xml': (r) => r.description == '<p>Example description</p>',
     'channel_description_shorttag.xml': (r) => r.description == '',
     'channel_docs.xml': (r) => r.docs == 'http://www.example.com/',
-    'channel_generator.xml': (r) => r.generator?.name == 'Example generator',
-    'channel_image_description.xml': (r) => r.image?.description == 'Available in Netscape RSS 0.91',
+    'channel_generator.xml': (r) => r.generator?.name == 'Example generator' && r.generator!.toString().isNotEmpty,
+    'channel_image_description.xml': (r) =>
+        r.image?.description == 'Available in Netscape RSS 0.91' && r.image!.toString().isNotEmpty,
     'channel_image_height.xml': (r) => r.image?.height == '15',
     'channel_image_link.xml': (r) => r.image?.link == 'http://example.org/link',
     'channel_image_link_bleed.xml': (r) => r.xmlLink?.href == 'http://channel.example.com/',
@@ -73,12 +74,14 @@ Map<String, TestFx> rssTests() {
     'channel_image_title_conflict.xml': (r) => r.title == 'Real title',
     'channel_image_url.xml': (r) => r.image?.url == 'http://example.org/url',
     'channel_image_width.xml': (r) => r.image?.width == '80',
-    'channel_lastbuilddate.xml': (r) => r.updated?.value == 'Sat, 07 Sep 2002 00:00:01 GMT',
+    'channel_lastbuilddate.xml': (r) =>
+        r.updated?.value == 'Sat, 07 Sep 2002 00:00:01 GMT' && r.updated.toString().isNotEmpty,
     'channel_link.xml': (r) {
       return r.links.first.href == 'http://example.com/' &&
           r.links.first.type == 'text/html' &&
           r.links.first.rel == LinkRelationType.alternate &&
-          r.htmlLink!.href == 'http://example.com/';
+          r.htmlLink!.href == 'http://example.com/' &&
+          r.links.first.toString().isNotEmpty;
     },
     'channel_link_atom.xml': (r) {
       return r.links.first.href == 'http://example.com/' &&
@@ -214,7 +217,9 @@ Map<String, TestFx> rssTests() {
     'item_comments.xml': (r) => r.items.first.comments?.href == 'http://example.com/',
     'item_content_encoded.xml': (r) => r.items.first.content.first.value == '<p>Example content</p>',
     'item_content_encoded_type.xml': (r) => r.items.first.content.first.type == 'text',
-    'item_content_encoded_mode.xml': (r) => r.items.first.content.first.value == '<p>Example content</p>',
+    'item_content_encoded_mode.xml': (r) =>
+        r.items.first.content.first.value == '<p>Example content</p>' &&
+        r.items.first.content.first.toString().isNotEmpty,
 
     'item_enclosure_length.xml': (r) => r.items.first.enclosures.first.length == '100000',
     'item_enclosure_multiple.xml': (r) {

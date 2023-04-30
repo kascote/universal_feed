@@ -51,7 +51,10 @@ Map<String, TestFx> mediaRssTests() {
     'item_media_content_categories_empty.xml': (r) => r.items.first.media!.content.first.categories.isEmpty,
     'item_media_content_player.xml': (r) {
       final p = r.items.first.media!.content.first.player!;
-      return p.url == 'http://www.foo.com/player?id=1111' && p.height == '200' && p.width == '400';
+      return p.url == 'http://www.foo.com/player?id=1111' &&
+          p.height == '200' &&
+          p.width == '400' &&
+          p.toString().isNotEmpty;
     },
     'item_media_group.xml': (r) {
       final g1 = r.items.first.media!.group;
