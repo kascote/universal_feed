@@ -9,8 +9,8 @@ Map<String, TestFx> itunesTests() {
     'itunes_channel_block_no.xml': (r) => r.podcast?.block == 'no',
     'itunes_channel_block_uppercase.xml': (r) => r.podcast?.block == 'YES',
     'itunes_channel_block_whitespace.xml': (r) => r.podcast?.block == 'yes',
-    'itunes_channel_category.xml': (r) => r.podcast?.categories?.first.label == 'Technology',
-    'itunes_channel_category_nested.xml': (r) => r.podcast?.categories?.last.label == 'Gadgets',
+    'itunes_channel_category.xml': (r) => r.podcast?.categories.first.label == 'Technology',
+    'itunes_channel_category_nested.xml': (r) => r.podcast?.categories.last.label == 'Gadgets',
     'itunes_channel_explicit.xml': (r) => r.podcast?.explicit == 'yes',
     'itunes_channel_explicit_clean.xml': (r) => r.podcast?.explicit == 'clean',
     'itunes_channel_explicit_whitespace.xml': (r) => r.podcast?.explicit == 'yes',
@@ -26,12 +26,12 @@ Map<String, TestFx> itunesTests() {
     'itunes_channel_complete.xml': (r) => r.podcast?.complete == 'yes',
     'itunes_channel_summary.xml': (r) => r.podcast?.summary == 'Example summary',
     'itunes_channel_keywords.xml': (r) {
-      final c = r.podcast?.categories?.first;
+      final c = r.podcast?.categories.first;
       return c?.label == 'Technology' && c?.scheme == 'keyword';
     },
     'itunes_channel_keywords_multiple.xml': (r) {
-      final f = r.podcast?.categories?.first;
-      final l = r.podcast?.categories?.last;
+      final f = r.podcast?.categories.first;
+      final l = r.podcast?.categories.last;
       return f?.label == 'Technology' && f?.scheme == 'keyword' && l?.label == 'Gadgets' && l?.scheme == 'keyword';
     },
     'itunes_channel_keywords_duplicate.xml': (r) {
