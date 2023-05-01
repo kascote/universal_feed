@@ -1,4 +1,3 @@
-
 import 'package:xml/xml.dart';
 
 import '../../../../universal_feed.dart';
@@ -39,7 +38,7 @@ class ItunesChannel {
   /// The show category information.
   /// if exists, category and subcategory will be the first and second elements on the list
   /// if the entry has 'keywords', they will be added here to with the scheme 'keyword'
-  List<UniversalCategory>? categories;
+  List<UniversalCategory> categories = [];
 
   ItunesChannel._();
 
@@ -65,9 +64,9 @@ class ItunesChannel {
         final cat = value.getAttribute('text')?.trim();
         if (cat == null || cat.isEmpty) return;
 
-        ic.categories = [UniversalCategory(label: cat)];
+        ic.categories.add(UniversalCategory(label: cat));
         final subCat = value.getElement('category', namespace: nsUrl)?.getAttribute('text')?.trim();
-        if (subCat != null && subCat.isNotEmpty) ic.categories!.add(UniversalCategory(label: subCat));
+        if (subCat != null && subCat.isNotEmpty) ic.categories.add(UniversalCategory(label: subCat));
       },
     );
 
@@ -104,11 +103,7 @@ class ItunesChannel {
           kws.length,
           (p) => UniversalCategory(label: kws.elementAt(p), scheme: 'keyword'),
         );
-        if (ic.categories != null) {
-          ic.categories!.addAll(cats);
-        } else {
-          ic.categories = cats;
-        }
+        ic.categories.addAll(cats);
       },
     );
 

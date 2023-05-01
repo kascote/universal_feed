@@ -1,0 +1,9 @@
+<rss version="2.0"
+  xmlns:media="http://search.yahoo.com/mrss/">
+  <channel>
+    <item>
+      <media:category scheme="http://search.yahoo.com/mrss/category_ schema">music/artist/album/song</media:category>
+      <media:category scheme="http://dmoz.org" label="Ace Ventura - Pet Detective">Arts/Movies/Titles/A/Ace_Ventura_Series/Ace_Ventura_ -_Pet_Detective</media:category>
+    </item>
+  </channel>
+</rss>

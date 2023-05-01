@@ -129,7 +129,7 @@ class Media {
       node,
       'thumbnail',
       ns: nsUrl,
-      cb: (xml) => media.thumbnails.add(UniversalImage.fromXml(xml)),
+      cb: (xml) => media.thumbnails.add(UniversalImage.fromXmlAttributes(xml)),
     );
 
     getElement<XmlElement>(node, 'player', ns: nsUrl, cb: (value) => media.player = Player.fromXml(value));

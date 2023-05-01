@@ -104,8 +104,6 @@ class UniversalFeed {
       rssXmlParser(feed, doc);
     } else if (feed.meta.kind == FeedKind.atom) {
       atomXmlParser(feed, root);
-    } else {
-      throw FeedError('Unknown feed type');
     }
 
     return feed;

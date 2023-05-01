@@ -1,0 +1,10 @@
+<rss version="2.0"
+  xmlns:media="http://search.yahoo.com/mrss/">
+  <channel>
+    <item>
+      <media:content url="http://www.foo.com/movie.mov">
+        <media:credit role="producer" scheme="urn:ebu">entity name</media:credit>
+      </media:content>
+    </item>
+  </channel>
+</rss>

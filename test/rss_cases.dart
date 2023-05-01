@@ -31,6 +31,12 @@ Map<String, TestFx> rssTests() {
       if (r.authors.isEmpty) return false;
       return r.authors.first.email == 'me@example.com';
     },
+    'channel_author_map_author_detail_email_4.xml': (r) {
+      if (r.authors.isEmpty) return false;
+      return r.authors.first.email == 'me@example.com' &&
+          r.authors.first.name.isEmpty &&
+          r.authors.first.value == 'me@example.com';
+    },
     'channel_author_map_author_detail_name.xml': (r) {
       if (r.authors.isEmpty) return false;
       return r.authors.first.name == 'Example editor';
@@ -61,6 +67,7 @@ Map<String, TestFx> rssTests() {
     'channel_description.xml': (r) => r.description == 'Example description',
     'channel_description_escaped_markup.xml': (r) => r.description == '<p>Example description</p>',
     'channel_description_naked_markup.xml': (r) => r.description == '<p>Example description</p>',
+    'channel_description_cdata.xml': (r) => r.description == '<p>Example description</p>',
     'channel_description_shorttag.xml': (r) => r.description == '',
     'channel_docs.xml': (r) => r.docs == 'http://www.example.com/',
     'channel_generator.xml': (r) => r.generator?.name == 'Example generator' && r.generator!.toString().isNotEmpty,

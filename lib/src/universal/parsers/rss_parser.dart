@@ -138,16 +138,18 @@ void rssChannelParser(UniversalFeed uf, XmlElement channel) {
 
 /// Parse an rss item
 UniversalItem rssItemParser(UniversalFeed uf, UniversalItem item, XmlElement element) {
-  final nsContentUrl = uf.namespaces.nsUrl(nsContentNs);
-
   getElement<String>(element, 'title', cb: (value) => item.title = value);
   getElement<String>(element, 'description', cb: (value) => item.description = value);
-  getElements<XmlElement>(
-    element,
-    'encoded',
-    cb: (value) => item.content.add(UniversalContent.fromV1Xml(value)),
-    ns: nsContentUrl,
-  );
+
+  if (uf.namespaces.hasContent) {
+    getElements<XmlElement>(
+      element,
+      'encoded',
+      cb: (value) => item.content.add(UniversalContent.fromV1Xml(value)),
+      ns: uf.namespaces.nsUrl(nsContentNs),
+    );
+  }
+
   getElement<String>(
     element,
     'link',
