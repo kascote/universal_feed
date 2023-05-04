@@ -8,7 +8,7 @@ import '../../universal_feed.dart';
 /// Atom v0.3 spec - https://validator.w3.org/feed/docs/atom.html
 class UniversalFeed {
   /// Contains metadata information for the Feed.
-  late final UniversalMeta meta;
+  late final MetaData meta;
 
   /// Contains the Feed's namespaces declared.
   late final Namespaces namespaces;
@@ -23,28 +23,28 @@ class UniversalFeed {
   String? description;
 
   /// The URL to the XML feed corresponding to the feed.
-  UniversalLink? xmlLink;
+  Link? xmlLink;
 
   /// The URL to the HTML website corresponding to the feed.
-  UniversalLink? htmlLink;
+  Link? htmlLink;
 
   /// Collection of links related to the feed.
-  final List<UniversalLink> links = [];
+  final List<Link> links = [];
 
   /// The last time the content of the channel changed.
   ///
   /// rss ref: https://cyber.harvard.edu/rss/rss.html#optionalChannelElements
-  UniversalTimestamp? updated;
+  Timestamp? updated;
 
   /// The publication date for the content in the channel.
   ///
   /// rss ref: https://cyber.harvard.edu/rss/rss.html#optionalChannelElements
-  UniversalTimestamp? published;
+  Timestamp? published;
 
   /// Collect all email address from all authors. (managingEditor, webMaster, etc)
   ///
   /// rss ref: https://cyber.harvard.edu/rss/rss.html#optionalChannelElements
-  final List<UniversalAuthor> authors = [];
+  final List<Author> authors = [];
 
   /// The language of the feed.
   ///
@@ -57,7 +57,7 @@ class UniversalFeed {
   /// Specifies a GIF, JPEG or PNG image that can be displayed with the channel.
   ///
   /// rss ref:
-  UniversalImage? image;
+  Image? image;
 
   /// Copyright notice for content in the channel.
   ///
@@ -67,15 +67,15 @@ class UniversalFeed {
   /// A string indicating the program used to generate the channel.
   ///
   /// rss ref: https://cyber.harvard.edu/rss/rss.html#optionalChannelElements
-  UniversalGenerator? generator;
+  Generator? generator;
 
   /// Specify one or more categories that the channel belongs to.
   ///
   /// rss ref: https://cyber.harvard.edu/rss/rss.html#optionalChannelElements
-  final List<UniversalCategory> categories = [];
+  final List<Category> categories = [];
 
   ///
-  final List<UniversalItem> items = [];
+  final List<Item> items = [];
 
   /// A URL that points to the documentation for the format used in the RSS file.
   ///
@@ -97,7 +97,7 @@ class UniversalFeed {
     final root = doc.rootElement;
 
     final feed = UniversalFeed._()
-      ..meta = UniversalMeta.rssFromXml(doc)
+      ..meta = MetaData.rssFromXml(doc)
       ..namespaces = Namespaces(doc.rootElement.attributes);
 
     if (feed.meta.kind == FeedKind.rss) {

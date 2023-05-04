@@ -13,7 +13,7 @@ enum FeedKind {
 }
 
 ///
-class UniversalMeta {
+class MetaData {
   ///
   late final FeedKind kind;
 
@@ -27,10 +27,10 @@ class UniversalMeta {
   Map<String, String>? extensions;
 
   ///
-  UniversalMeta(this.kind, this.version, {this.encoding, this.extensions});
+  MetaData(this.kind, this.version, {this.encoding, this.extensions});
 
   ///
-  factory UniversalMeta.rssFromXml(XmlDocument xmlDoc) {
+  factory MetaData.rssFromXml(XmlDocument xmlDoc) {
     final root = xmlDoc.rootElement;
     var version = root.getAttribute('version') ?? '';
     final encoding = root.getAttribute('encoding') ?? '';
@@ -41,7 +41,7 @@ class UniversalMeta {
         if (version.isEmpty && extensions['xmlns'] == 'http://www.w3.org/2005/Atom') {
           version = '1.0';
         }
-        return UniversalMeta(FeedKind.atom, version, encoding: encoding, extensions: extensions);
+        return MetaData(FeedKind.atom, version, encoding: encoding, extensions: extensions);
       case 'rss':
         if (version == '0.91') {
           final docType = root.document?.doctypeElement;
@@ -51,9 +51,9 @@ class UniversalMeta {
             version = '0.91u';
           }
         }
-        return UniversalMeta(FeedKind.rss, version, encoding: encoding, extensions: extensions);
+        return MetaData(FeedKind.rss, version, encoding: encoding, extensions: extensions);
       case 'RDF':
-        return UniversalMeta(FeedKind.rss, '0.90', encoding: encoding, extensions: extensions);
+        return MetaData(FeedKind.rss, '0.90', encoding: encoding, extensions: extensions);
       default:
         throw FeedError('Unknown feed type: ${root.localName}');
     }

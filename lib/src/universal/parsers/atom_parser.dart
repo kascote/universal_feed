@@ -9,7 +9,7 @@ void atomXmlParser(UniversalFeed uf, XmlElement root) {
 
   final items = root.findElements('entry');
   for (final item in items) {
-    uf.items.add(UniversalItem.atomFromXml(uf, item));
+    uf.items.add(Item.atomFromXml(uf, item));
   }
 }
 
@@ -18,16 +18,16 @@ void atomFeedParser(UniversalFeed uf, XmlElement root) {
   getElements<XmlElement>(
     root,
     'author',
-    cb: (xml) => uf.authors.add(UniversalAuthor.fromXml(xml)),
+    cb: (xml) => uf.authors.add(Author.fromXml(xml)),
   );
 
   getElements<XmlElement>(
     root,
     'contributor',
-    cb: (xml) => uf.authors.add(UniversalAuthor.fromXml(xml)),
+    cb: (xml) => uf.authors.add(Author.fromXml(xml)),
   );
 
-  getElements<XmlElement>(root, 'link', cb: (value) => uf.links.add(UniversalLink.fromXml(value)));
+  getElements<XmlElement>(root, 'link', cb: (value) => uf.links.add(Link.fromXml(value)));
 
   getElement<XmlElement>(
     root,
@@ -37,12 +37,12 @@ void atomFeedParser(UniversalFeed uf, XmlElement root) {
         : textDecoder(item.getAttribute('type') ?? 'text', item),
   );
 
-  getElement<String>(root, 'updated', cb: (value) => uf.updated = UniversalTimestamp(value));
-  getElement<String>(root, 'modified', cb: (value) => uf.updated = UniversalTimestamp(value));
+  getElement<String>(root, 'updated', cb: (value) => uf.updated = Timestamp(value));
+  getElement<String>(root, 'modified', cb: (value) => uf.updated = Timestamp(value));
   getElement<XmlElement>(
     root,
     'generator',
-    cb: (xml) => uf.generator = UniversalGenerator(
+    cb: (xml) => uf.generator = Generator(
       xml.text,
       xml.getAttribute('version') ?? '',
       xml.getAttribute('url') ?? xml.getAttribute('uri') ?? '',
@@ -50,7 +50,7 @@ void atomFeedParser(UniversalFeed uf, XmlElement root) {
   );
   getElement<String>(root, 'id', cb: (value) => uf.guid = value);
   // getElement<String>(root, 'icon', cb: (value) => uf.icon = value);
-  getElement<XmlElement>(root, 'logo', cb: (element) => uf.image = UniversalImage.fromXml(element));
+  getElement<XmlElement>(root, 'logo', cb: (element) => uf.image = Image.fromXml(element));
   getElement<XmlElement>(root, 'rights', cb: (item) => uf.copyright = decodeTextField(item));
   getElement<XmlElement>(root, 'subtitle', cb: (item) => uf.description = decodeTextField(item));
 
@@ -58,7 +58,7 @@ void atomFeedParser(UniversalFeed uf, XmlElement root) {
     root,
     'category',
     cb: (value) {
-      final category = UniversalCategory.fromXml(value);
+      final category = Category.fromXml(value);
       if (category != null) {
         uf.categories.add(category);
       }
@@ -67,21 +67,21 @@ void atomFeedParser(UniversalFeed uf, XmlElement root) {
 }
 
 /// Parses an Atom item
-UniversalItem atomItemParser(UniversalFeed uf, UniversalItem item, XmlElement element) {
-  getElements<XmlElement>(element, 'author', cb: (xml) => item.authors.add(UniversalAuthor.fromXml(xml)));
-  getElements<XmlElement>(element, 'content', cb: (xml) => item.content.add(UniversalContent.fromXml(xml)));
+Item atomItemParser(UniversalFeed uf, Item item, XmlElement element) {
+  getElements<XmlElement>(element, 'author', cb: (xml) => item.authors.add(Author.fromXml(xml)));
+  getElements<XmlElement>(element, 'content', cb: (xml) => item.content.add(Content.fromXml(xml)));
 
   getElements<XmlElement>(
     element,
     'contributor',
-    cb: (xml) => item.authors.add(UniversalAuthor.fromXml(xml)..type = AuthorType.contributor),
+    cb: (xml) => item.authors.add(Author.fromXml(xml)..type = AuthorType.contributor),
   );
 
   getElement<String>(
     element,
     'created',
     cb: (value) {
-      final date = UniversalTimestamp(value);
+      final date = Timestamp(value);
       item
         ..published = date
         ..updated = date;
@@ -92,16 +92,16 @@ UniversalItem atomItemParser(UniversalFeed uf, UniversalItem item, XmlElement el
     element,
     'issued',
     cb: (value) {
-      final date = UniversalTimestamp(value);
+      final date = Timestamp(value);
       item
         ..published = date
         ..updated = date;
     },
   );
 
-  getElement<String>(element, 'modified', cb: (value) => item.updated = UniversalTimestamp(value));
+  getElement<String>(element, 'modified', cb: (value) => item.updated = Timestamp(value));
   getElement<String>(element, 'id', cb: (value) => item.guid = value);
-  getElements<XmlElement>(element, 'link', cb: (value) => item.links.add(UniversalLink.fromXml(value)));
+  getElements<XmlElement>(element, 'link', cb: (value) => item.links.add(Link.fromXml(value)));
   getElement<XmlElement>(element, 'summary', cb: (value) => item.description = decodeTextField(value));
   getElement<XmlElement>(element, 'title', cb: (value) => item.title = decodeTextField(value));
 
@@ -109,7 +109,7 @@ UniversalItem atomItemParser(UniversalFeed uf, UniversalItem item, XmlElement el
     element,
     'category',
     cb: (value) {
-      final category = UniversalCategory.fromXml(value);
+      final category = Category.fromXml(value);
       if (category != null) {
         item.categories.add(category);
       }

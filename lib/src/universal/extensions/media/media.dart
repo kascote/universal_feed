@@ -44,12 +44,12 @@ class Media {
   /// List of assigned categories
   ///
   /// ref: https://www.rssboard.org/media-rss#media-category
-  List<UniversalCategory> categories = [];
+  List<Category> categories = [];
 
   /// List of assigned images
   ///
   /// ref: https://www.rssboard.org/media-rss#media-thumbnails
-  List<UniversalImage> thumbnails = [];
+  List<Image> thumbnails = [];
 
   /// Credits related to the object
   ///
@@ -110,7 +110,7 @@ class Media {
       'keywords',
       ns: nsUrl,
       cb: (xml) {
-        final keywords = UniversalCategory.loadTags(xml, defaultScheme: 'keyword');
+        final keywords = Category.loadTags(xml, defaultScheme: 'keyword');
         if (keywords != null) media.categories.addAll(keywords);
       },
     );
@@ -120,7 +120,7 @@ class Media {
       'category',
       ns: nsUrl,
       cb: (xml) {
-        final category = UniversalCategory.fromXml(xml);
+        final category = Category.fromXml(xml);
         if (category != null) media.categories.add(category);
       },
     );
@@ -129,7 +129,7 @@ class Media {
       node,
       'thumbnail',
       ns: nsUrl,
-      cb: (xml) => media.thumbnails.add(UniversalImage.fromXmlAttributes(xml)),
+      cb: (xml) => media.thumbnails.add(Image.fromXmlAttributes(xml)),
     );
 
     getElement<XmlElement>(node, 'player', ns: nsUrl, cb: (value) => media.player = Player.fromXml(value));

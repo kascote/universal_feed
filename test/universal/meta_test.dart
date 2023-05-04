@@ -5,7 +5,7 @@ import 'package:xml/xml.dart';
 void main() {
   test('must parse rss version', () {
     final xml = XmlDocument.parse('<rss version="0.90"></rss>');
-    final meta = UniversalMeta.rssFromXml(xml);
+    final meta = MetaData.rssFromXml(xml);
 
     expect(meta.kind, FeedKind.rss);
     expect(meta.version, '0.90');
@@ -15,7 +15,7 @@ void main() {
 
   test('must parse version 0.91u if has no publicId', () {
     final xml = XmlDocument.parse('<rss version="0.91"></rss>');
-    final meta = UniversalMeta.rssFromXml(xml);
+    final meta = MetaData.rssFromXml(xml);
 
     expect(meta.version, '0.91u');
   });
@@ -27,7 +27,7 @@ void main() {
   <channel />
 </rss>
 ''');
-    final meta = UniversalMeta.rssFromXml(xml);
+    final meta = MetaData.rssFromXml(xml);
 
     expect(meta.version, '0.91n');
   });
@@ -36,7 +36,7 @@ void main() {
     final xml = XmlDocument.parse(
       '<rss version="2.0" xml:base="http://example.com" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"></rss>',
     );
-    final meta = UniversalMeta.rssFromXml(xml);
+    final meta = MetaData.rssFromXml(xml);
 
     expect(meta.kind, FeedKind.rss);
     expect(meta.version, '2.0');
@@ -49,7 +49,7 @@ void main() {
       '<rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns="http://my.netscape.com/rdf/simple/0.9/"></rdf:RDF>',
     );
 
-    final meta = UniversalMeta.rssFromXml(xml);
+    final meta = MetaData.rssFromXml(xml);
 
     expect(meta.kind, FeedKind.rss);
     expect(meta.version, '0.90');
@@ -57,6 +57,6 @@ void main() {
 
   test('must throw exception if format unknown', () {
     final xml = XmlDocument.parse('<some-element></some-element>');
-    expect(() => UniversalMeta.rssFromXml(xml), throwsException);
+    expect(() => MetaData.rssFromXml(xml), throwsException);
   });
 }

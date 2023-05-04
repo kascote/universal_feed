@@ -6,7 +6,7 @@ import '../../../shared/shared.dart';
 /// Itunes Channel information
 class ItunesChannel {
   /// The artwork for the show. **Only**  the url field will be valid.
-  UniversalImage? image;
+  Image? image;
 
   /// The podcast parental advisory information.
   String? explicit;
@@ -15,7 +15,7 @@ class ItunesChannel {
   String? author;
 
   /// The podcast owner contact information.
-  UniversalAuthor? owner;
+  Author? owner;
 
   /// The show title specific for Apple Podcasts.
   String? title;
@@ -38,7 +38,7 @@ class ItunesChannel {
   /// The show category information.
   /// if exists, category and subcategory will be the first and second elements on the list
   /// if the entry has 'keywords', they will be added here to with the scheme 'keyword'
-  List<UniversalCategory> categories = [];
+  List<Category> categories = [];
 
   ItunesChannel._();
 
@@ -53,7 +53,7 @@ class ItunesChannel {
       ns: nsUrl,
       cb: (value) {
         final url = value.getAttribute('href') ?? value.getAttribute('url');
-        if (url != null) ic.image = UniversalImage(url.trim());
+        if (url != null) ic.image = Image(url.trim());
       },
     );
     getElement<XmlElement>(
@@ -64,9 +64,9 @@ class ItunesChannel {
         final cat = value.getAttribute('text')?.trim();
         if (cat == null || cat.isEmpty) return;
 
-        ic.categories.add(UniversalCategory(label: cat));
+        ic.categories.add(Category(label: cat));
         final subCat = value.getElement('category', namespace: nsUrl)?.getAttribute('text')?.trim();
-        if (subCat != null && subCat.isNotEmpty) ic.categories.add(UniversalCategory(label: subCat));
+        if (subCat != null && subCat.isNotEmpty) ic.categories.add(Category(label: subCat));
       },
     );
 
@@ -75,7 +75,7 @@ class ItunesChannel {
       'owner',
       ns: nsUrl,
       cb: (value) {
-        ic.owner = UniversalAuthor(
+        ic.owner = Author(
           name: value.getElement('name', namespace: nsUrl)?.text ?? '',
           email: value.getElement('email', namespace: nsUrl)?.text ?? '',
         );
@@ -99,9 +99,9 @@ class ItunesChannel {
       cb: (xml) {
         final kws = Set.of(xml.text.split(',').map((e) => e.trim())).where((e) => e.isNotEmpty);
         if (kws.isEmpty) return;
-        final cats = List<UniversalCategory>.generate(
+        final cats = List<Category>.generate(
           kws.length,
-          (p) => UniversalCategory(label: kws.elementAt(p), scheme: 'keyword'),
+          (p) => Category(label: kws.elementAt(p), scheme: 'keyword'),
         );
         ic.categories.addAll(cats);
       },

@@ -20,7 +20,7 @@ void rssXmlParser(UniversalFeed uf, XmlDocument doc) {
 
   final rssItems = channel.findElements('item');
   for (final rssItem in rssItems) {
-    uf.items.add(UniversalItem.rssFromXml(uf, rssItem));
+    uf.items.add(Item.rssFromXml(uf, rssItem));
   }
 }
 
@@ -32,36 +32,36 @@ void rssChannelParser(UniversalFeed uf, XmlElement channel) {
     channel,
     'link',
     cb: (value) {
-      uf.htmlLink = UniversalLink.create(href: value, rel: 'alternate', type: 'text/html');
+      uf.htmlLink = Link.create(href: value, rel: 'alternate', type: 'text/html');
       uf.links.add(uf.htmlLink!);
     },
   );
-  getElement<String>(channel, 'lastBuildDate', cb: (value) => uf.updated = UniversalTimestamp(value));
-  getElement<String>(channel, 'pubDate', cb: (value) => uf.published = UniversalTimestamp(value));
+  getElement<String>(channel, 'lastBuildDate', cb: (value) => uf.updated = Timestamp(value));
+  getElement<String>(channel, 'pubDate', cb: (value) => uf.published = Timestamp(value));
   getElement<String>(
     channel,
     'author',
-    cb: (value) => uf.authors.add(UniversalAuthor.fromString(value)..type = AuthorType.author),
+    cb: (value) => uf.authors.add(Author.fromString(value)..type = AuthorType.author),
   );
   getElement<String>(
     channel,
     'managingEditor',
-    cb: (value) => uf.authors.add(UniversalAuthor.fromString(value)..type = AuthorType.editor),
+    cb: (value) => uf.authors.add(Author.fromString(value)..type = AuthorType.editor),
   );
   getElement<String>(
     channel,
     'webMaster',
-    cb: (value) => uf.authors.add(UniversalAuthor.fromString(value)..type = AuthorType.webMaster),
+    cb: (value) => uf.authors.add(Author.fromString(value)..type = AuthorType.webMaster),
   );
   getElement<String>(channel, 'language', cb: (value) => uf.language = value);
-  getElement<XmlElement>(channel, 'image', cb: (value) => uf.image = UniversalImage.fromXml(value));
+  getElement<XmlElement>(channel, 'image', cb: (value) => uf.image = Image.fromXml(value));
   getElement<String>(channel, 'copyright', cb: (value) => uf.copyright = value);
-  getElement<String>(channel, 'generator', cb: (value) => uf.generator = UniversalGenerator.create(value));
+  getElement<String>(channel, 'generator', cb: (value) => uf.generator = Generator.create(value));
   getElements<XmlElement>(
     channel,
     'category',
     cb: (value) {
-      final category = UniversalCategory.fromXml(value);
+      final category = Category.fromXml(value);
       if (category != null) {
         uf.categories.add(category);
       }
@@ -78,7 +78,7 @@ void rssChannelParser(UniversalFeed uf, XmlElement channel) {
       'link',
       cb: (value) {
         final rel = value.getAttribute('rel') ?? 'other';
-        final link = UniversalLink.create(
+        final link = Link.create(
           rel: rel,
           type: value.getAttribute('type') ?? 'text/html',
           href: value.getAttribute('href') ?? '',
@@ -99,40 +99,40 @@ void rssChannelParser(UniversalFeed uf, XmlElement channel) {
     getElement<String>(
       channel,
       'author',
-      cb: (value) => uf.authors.add(UniversalAuthor.fromString(value)..type = AuthorType.author),
+      cb: (value) => uf.authors.add(Author.fromString(value)..type = AuthorType.author),
       ns: dcUrl,
     );
     getElement<String>(
       channel,
       'creator',
-      cb: (value) => uf.authors.add(UniversalAuthor.fromString(value)..type = AuthorType.creator),
+      cb: (value) => uf.authors.add(Author.fromString(value)..type = AuthorType.creator),
       ns: dcUrl,
     );
     getElement<String>(
       channel,
       'contributor',
-      cb: (value) => uf.authors.add(UniversalAuthor.fromString(value)..type = AuthorType.contributor),
+      cb: (value) => uf.authors.add(Author.fromString(value)..type = AuthorType.contributor),
       ns: dcUrl,
     );
     getElement<String>(
       channel,
       'publisher',
-      cb: (value) => uf.authors.add(UniversalAuthor.fromString(value)..type = AuthorType.publisher),
+      cb: (value) => uf.authors.add(Author.fromString(value)..type = AuthorType.publisher),
       ns: dcUrl,
     );
-    getElement<String>(channel, 'date', cb: (value) => uf.updated = UniversalTimestamp(value), ns: dcUrl);
+    getElement<String>(channel, 'date', cb: (value) => uf.updated = Timestamp(value), ns: dcUrl);
     getElement<String>(channel, 'rights', cb: (value) => uf.copyright = value, ns: dcUrl);
     getElements<String>(
       channel,
       'subject',
-      cb: (value) => uf.categories.add(UniversalCategory(label: value)),
+      cb: (value) => uf.categories.add(Category(label: value)),
       ns: dcUrl,
     );
   }
 }
 
 /// Parse an rss item
-UniversalItem rssItemParser(UniversalFeed uf, UniversalItem item, XmlElement element) {
+Item rssItemParser(UniversalFeed uf, Item item, XmlElement element) {
   getElement<String>(element, 'title', cb: (value) => item.title = value);
   getElement<String>(element, 'description', cb: (value) => item.description = value);
 
@@ -140,7 +140,7 @@ UniversalItem rssItemParser(UniversalFeed uf, UniversalItem item, XmlElement ele
     getElements<XmlElement>(
       element,
       'encoded',
-      cb: (value) => item.content.add(UniversalContent.fromV1Xml(value)),
+      cb: (value) => item.content.add(Content.fromV1Xml(value)),
       ns: uf.namespaces.nsUrl(nsContentNs),
     );
   }
@@ -149,7 +149,7 @@ UniversalItem rssItemParser(UniversalFeed uf, UniversalItem item, XmlElement ele
     element,
     'link',
     cb: (value) {
-      final lnk = UniversalLink.create(href: value, type: 'link', rel: 'alternate');
+      final lnk = Link.create(href: value, type: 'link', rel: 'alternate');
       item.link = lnk;
       item.links.add(lnk);
     },
@@ -158,7 +158,7 @@ UniversalItem rssItemParser(UniversalFeed uf, UniversalItem item, XmlElement ele
     element,
     'pubDate',
     cb: (value) {
-      final date = UniversalTimestamp(value);
+      final date = Timestamp(value);
       item
         ..published = date
         ..updated = date;
@@ -167,14 +167,14 @@ UniversalItem rssItemParser(UniversalFeed uf, UniversalItem item, XmlElement ele
   getElements<String>(
     element,
     'author',
-    cb: (value) => item.authors.add(UniversalAuthor.fromString(value)..type = AuthorType.author),
+    cb: (value) => item.authors.add(Author.fromString(value)..type = AuthorType.author),
   );
-  getElement<XmlElement>(element, 'image', cb: (value) => item.image = UniversalImage.fromXml(value));
+  getElement<XmlElement>(element, 'image', cb: (value) => item.image = Image.fromXml(value));
   getElements<XmlElement>(
     element,
     'category',
     cb: (value) {
-      final category = UniversalCategory.fromXml(value);
+      final category = Category.fromXml(value);
       if (category != null) {
         item.categories.add(category);
       }
@@ -183,20 +183,20 @@ UniversalItem rssItemParser(UniversalFeed uf, UniversalItem item, XmlElement ele
   getElements<XmlElement>(
     element,
     'enclosure',
-    cb: (value) => item.enclosures.add(UniversalEnclosure.rssFromXml(value)),
+    cb: (value) => item.enclosures.add(Enclosure.rssFromXml(value)),
   );
   getElement<XmlElement>(
     element,
     'source',
     cb: (value) {
-      item.source = UniversalLink.create(href: value.getAttribute('url') ?? '', type: 'application/xml', rel: 'self');
+      item.source = Link.create(href: value.getAttribute('url') ?? '', type: 'application/xml', rel: 'self');
       item.source!.title = value.text;
     },
   );
   getElement<String>(
     element,
     'comments',
-    cb: (value) => item.comments = UniversalLink.create(rel: 'alternate', type: 'text/html', href: value),
+    cb: (value) => item.comments = Link.create(rel: 'alternate', type: 'text/html', href: value),
   );
 
   // is the last attribute read, so we can set the Link if isPermaLink is true
@@ -206,7 +206,7 @@ UniversalItem rssItemParser(UniversalFeed uf, UniversalItem item, XmlElement ele
     cb: (eleGuid) {
       final isPermaLink = eleGuid.getAttribute('isPermaLink') ?? 'false';
       if (isPermaLink == 'true') {
-        item.link = UniversalLink.create(href: eleGuid.text, type: 'text/html', rel: 'alternate');
+        item.link = Link.create(href: eleGuid.text, type: 'text/html', rel: 'alternate');
       }
       item.guid = eleGuid.text;
     },
@@ -217,26 +217,26 @@ UniversalItem rssItemParser(UniversalFeed uf, UniversalItem item, XmlElement ele
     getElement<String>(
       element,
       'author',
-      cb: (value) => item.authors.add(UniversalAuthor.fromString(value)..type = AuthorType.author),
+      cb: (value) => item.authors.add(Author.fromString(value)..type = AuthorType.author),
       ns: dcUrl,
     );
     getElement<String>(
       element,
       'contributor',
-      cb: (value) => item.authors.add(UniversalAuthor.fromString(value)..type = AuthorType.contributor),
+      cb: (value) => item.authors.add(Author.fromString(value)..type = AuthorType.contributor),
       ns: dcUrl,
     );
     getElements<String>(
       element,
       'creator',
-      cb: (value) => item.authors.add(UniversalAuthor.fromString(value)..type = AuthorType.creator),
+      cb: (value) => item.authors.add(Author.fromString(value)..type = AuthorType.creator),
       ns: dcUrl,
     );
     getElement<String>(
       element,
       'date',
       cb: (value) {
-        final date = UniversalTimestamp(value);
+        final date = Timestamp(value);
         item
           ..published = date
           ..updated = date;
@@ -252,7 +252,7 @@ UniversalItem rssItemParser(UniversalFeed uf, UniversalItem item, XmlElement ele
     getElement<String>(
       element,
       'publisher',
-      cb: (value) => item.authors.add(UniversalAuthor.fromString(value)..type = AuthorType.publisher),
+      cb: (value) => item.authors.add(Author.fromString(value)..type = AuthorType.publisher),
       ns: dcUrl,
     );
     getElement<String>(

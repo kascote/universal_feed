@@ -5,7 +5,7 @@ import './parsers/rss_parser.dart';
 import '../../universal_feed.dart';
 
 /// An item in a feed
-class UniversalItem {
+class Item {
   /// A string that uniquely identifies the item
   ///
   /// Guid stands for globally unique identifier. It's a string that uniquely identifies the item.
@@ -36,27 +36,27 @@ class UniversalItem {
   String? description;
 
   /// The item content
-  final List<UniversalContent> content = [];
+  final List<Content> content = [];
 
   /// The url of the item.
   ///
   /// rss ref: https://cyber.harvard.edu/rss/rss.html#hrelementsOfLtitemgt
-  UniversalLink? link;
+  Link? link;
 
   /// Collection of links that are related to the item
-  final List<UniversalLink> links = [];
+  final List<Link> links = [];
 
   /// Its value is a date, indicating when the item was published. If it's a date in the future,
   /// aggregators may choose to not display the item until that date.
   ///
   /// rss ref: https://cyber.harvard.edu/rss/rss.html#ltpubdategtSubelementOfLtitemgt
-  UniversalTimestamp? updated;
+  Timestamp? updated;
 
   /// Its value is a date, indicating when the item was published. If it's a date in the future,
   /// aggregators may choose to not display the item until that date.
   ///
   /// rss ref: https://cyber.harvard.edu/rss/rss.html#ltpubdategtSubelementOfLtitemgt
-  UniversalTimestamp? published;
+  Timestamp? published;
 
   /// Name and Email address of the author of the item.
   ///
@@ -66,17 +66,17 @@ class UniversalItem {
   /// individual it would make sense to omit the <author> element.
   ///
   /// rss ref: https://cyber.harvard.edu/rss/rss.html#ltauthorgtSubelementOfLtitemgt
-  final List<UniversalAuthor> authors = [];
+  final List<Author> authors = [];
 
   ///
-  UniversalImage? image;
+  Image? image;
 
   /// It has one optional attribute, domain, a string that identifies a categorization taxonomy.
   /// The value of the element is a forward-slash-separated string that identifies a hierarchic location in the indicated taxonomy.
   /// Processors may establish conventions for the interpretation of categories.
   ///
   /// rss ref: https://cyber.harvard.edu/rss/rss.html#ltcategorygtSubelementOfLtitemgt
-  final List<UniversalCategory> categories = [];
+  final List<Category> categories = [];
 
   /// Describes a media object that is attached to the item.
   ///
@@ -85,7 +85,7 @@ class UniversalItem {
   /// The url must be an http url.
   ///
   /// rss ref: https://cyber.harvard.edu/rss/rss.html#ltenclosuregtSubelementOfLtitemgt
-  final List<UniversalEnclosure> enclosures = [];
+  final List<Enclosure> enclosures = [];
 
   /// The RSS channel that the item came from.
   ///
@@ -93,7 +93,7 @@ class UniversalItem {
   /// It has one required attribute, url, which links to the feed
   ///
   /// rss ref: https://cyber.harvard.edu/rss/rss.html#ltsourcegtSubelementOfLtitemgt
-  UniversalLink? source;
+  Link? source;
 
   /// If an atom:entry is copied from one feed into another feed, then the
   /// source atom:feed's metadata (all child elements of atom:feed other
@@ -107,7 +107,7 @@ class UniversalItem {
   /// If present, it is the url of the comments page for the item.
   ///
   /// rss ref: https://cyber.harvard.edu/rss/rss.html#ltcommentsgtSubelementOfLtitemgt
-  UniversalLink? comments;
+  Link? comments;
 
   /// The item's Media extension if the extension was registered
   Media? media;
@@ -126,18 +126,18 @@ class UniversalItem {
   /// The item's podcast extension if the extension was registered
   ItunesItem? podcast;
 
-  UniversalItem._();
+  Item._();
 
-  /// Creates a new [UniversalItem] from a [XmlElement]
-  factory UniversalItem.rssFromXml(UniversalFeed uf, XmlElement rssItem) {
-    final item = UniversalItem._();
+  /// Creates a new [Item] from a [XmlElement]
+  factory Item.rssFromXml(UniversalFeed uf, XmlElement rssItem) {
+    final item = Item._();
     rssItemParser(uf, item, rssItem);
     return item;
   }
 
-  /// Creates a new [UniversalItem] from a [XmlElement]
-  factory UniversalItem.atomFromXml(UniversalFeed uf, XmlElement atomItem) {
-    final item = UniversalItem._();
+  /// Creates a new [Item] from a [XmlElement]
+  factory Item.atomFromXml(UniversalFeed uf, XmlElement atomItem) {
+    final item = Item._();
     atomItemParser(uf, item, atomItem);
     return item;
   }

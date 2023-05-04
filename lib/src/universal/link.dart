@@ -39,7 +39,7 @@ enum LinkRelationType {
 }
 
 /// A Link is a reference from one Web resource to another.
-class UniversalLink {
+class Link {
   /// Link's REL attribute
   LinkRelationType rel;
 
@@ -60,30 +60,30 @@ class UniversalLink {
   String? length;
 
   /// Creates a new Link
-  UniversalLink({
+  Link({
     required this.rel,
     required this.type,
     required this.href,
   });
 
   /// Helper factory to handle the [rel] attribute
-  factory UniversalLink.create({
+  factory Link.create({
     required String type,
     required String href,
     required String rel,
   }) {
-    return UniversalLink(
+    return Link(
       rel: LinkRelationType.values.firstWhere((e) => e.name == rel, orElse: () => LinkRelationType.other),
       type: type,
       href: href,
     );
   }
 
-  /// Creates a [UniversalLink] from an [XmlElement]
-  factory UniversalLink.fromXml(XmlElement element) {
+  /// Creates a [Link] from an [XmlElement]
+  factory Link.fromXml(XmlElement element) {
     final rel = element.getAttribute('rel') ?? '';
 
-    return UniversalLink(
+    return Link(
       rel: LinkRelationType.values.firstWhere((e) => e.name == rel, orElse: () => LinkRelationType.other),
       type: element.getAttribute('type') ?? '',
       href: element.getAttribute('href') ?? '',

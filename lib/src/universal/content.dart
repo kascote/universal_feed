@@ -3,7 +3,7 @@ import 'package:xml/xml.dart';
 import '../shared/shared.dart';
 
 /// Element either contains or links to the content of the entry.
-class UniversalContent {
+class Content {
   /// Parsed content
   String value;
 
@@ -15,25 +15,25 @@ class UniversalContent {
   /// ref IRI: https://www.rfc-editor.org/rfc/rfc3987
   String? src;
 
-  /// Created a new [UniversalContent] object
-  UniversalContent({required this.value, required this.type, this.src});
+  /// Created a new [Content] object
+  Content({required this.value, required this.type, this.src});
 
-  /// Creates a new [UniversalContent] object from an [XmlElement]
+  /// Creates a new [Content] object from an [XmlElement]
   // TODO(nelson): normalize this
-  factory UniversalContent.fromV1Xml(XmlElement node) {
+  factory Content.fromV1Xml(XmlElement node) {
     final type = node.getAttribute('type') ?? 'text';
 
-    return UniversalContent(
+    return Content(
       value: textDecoder(type, node),
       type: type,
       src: node.getAttribute('src'),
     );
   }
 
-  /// Creates a new [UniversalContent] object from an [XmlElement]
-  factory UniversalContent.fromXml(XmlElement node) {
+  /// Creates a new [Content] object from an [XmlElement]
+  factory Content.fromXml(XmlElement node) {
     final type = node.getAttribute('mode') ?? node.getAttribute('type') ?? 'xml';
-    return UniversalContent(
+    return Content(
       value: textDecoder(type, node),
       type: type,
       src: node.getAttribute('src'),

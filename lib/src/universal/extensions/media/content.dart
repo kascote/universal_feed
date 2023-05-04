@@ -67,10 +67,10 @@ class MediaContent {
   String? description;
 
   /// Allows a taxonomy to be set that gives an indication of the type of media content, and its particular contents.
-  List<UniversalCategory> categories = [];
+  List<Category> categories = [];
 
   /// Allows particular images to be used as representative images for the media object.
-  List<UniversalImage> thumbnails = [];
+  List<Image> thumbnails = [];
 
   /// Allows the media object to be accessed through a web browser media player console.
   Player? player;
@@ -118,7 +118,7 @@ class MediaContent {
       'keywords',
       ns: nsUrl,
       cb: (xml) {
-        final categories = UniversalCategory.loadTags(xml, defaultScheme: 'keyword');
+        final categories = Category.loadTags(xml, defaultScheme: 'keyword');
         if (categories != null) mc.categories.addAll(categories);
       },
     );
@@ -128,7 +128,7 @@ class MediaContent {
       'category',
       ns: nsUrl,
       cb: (xml) {
-        final category = UniversalCategory.fromXml(xml);
+        final category = Category.fromXml(xml);
         if (category != null) mc.categories.add(category);
       },
     );
@@ -137,7 +137,7 @@ class MediaContent {
       node,
       'thumbnail',
       ns: nsUrl,
-      cb: (xml) => mc.thumbnails.add(UniversalImage.fromXmlAttributes(xml)),
+      cb: (xml) => mc.thumbnails.add(Image.fromXmlAttributes(xml)),
     );
 
     getElement<XmlElement>(node, 'player', ns: nsUrl, cb: (value) => mc.player = Player.fromXml(value));

@@ -3,7 +3,7 @@ import 'package:xml/xml.dart';
 import '../shared/shared.dart';
 
 /// Holds information about a category associated to an entry or feed
-class UniversalCategory {
+class Category {
   /// Provides a human-readable label for display in end-user applications
   String label;
 
@@ -18,8 +18,8 @@ class UniversalCategory {
   /// The text inside the tag
   String? value;
 
-  /// Creates a new [UniversalCategory] object
-  UniversalCategory({
+  /// Creates a new [Category] object
+  Category({
     required this.label,
     this.term,
     this.scheme,
@@ -27,7 +27,7 @@ class UniversalCategory {
   });
 
   /// Creates a new category object from an [XmlElement]
-  static UniversalCategory? fromXml(XmlElement node) {
+  static Category? fromXml(XmlElement node) {
     final value = siblingText(node);
     final scheme = node.getAttribute('domain') ?? node.getAttribute('scheme');
     final label = node.getAttribute('label');
@@ -37,17 +37,17 @@ class UniversalCategory {
       return null;
     }
 
-    return UniversalCategory(scheme: scheme, value: value, label: label ?? value, term: term);
+    return Category(scheme: scheme, value: value, label: label ?? value, term: term);
   }
 
   /// Helper function to create a List of categories from
   /// an string separated by commas
-  static List<UniversalCategory>? loadTags(XmlElement node, {String? defaultScheme}) {
+  static List<Category>? loadTags(XmlElement node, {String? defaultScheme}) {
     final tags = node.text.split(',').where((e) => e.isNotEmpty);
     if (tags.isEmpty) return null;
     return List.generate(
       tags.length,
-      (pos) => UniversalCategory(label: tags.elementAt(pos).trim(), scheme: defaultScheme),
+      (pos) => Category(label: tags.elementAt(pos).trim(), scheme: defaultScheme),
     );
   }
 }

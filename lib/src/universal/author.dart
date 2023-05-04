@@ -6,7 +6,7 @@ final _isEmailRx = RegExp(r'^(.+)@(.+)$');
 // ex: Example editor (me+span@example.com)
 final _nameEmailRx = RegExp(r'(.+?(?=[\(<]))[\(<](.*)[\)>]');
 
-/// Parametrized values of the `type` attribute of the [UniversalAuthor] class
+/// Parametrized values of the `type` attribute of the [Author] class
 enum AuthorType {
   /// unknown type
   other,
@@ -44,7 +44,7 @@ enum AuthorType {
 }
 
 /// Person/Entity that indicates the author of the entry or feed.
-class UniversalAuthor {
+class Author {
   /// Author's name
   late String name;
 
@@ -57,15 +57,15 @@ class UniversalAuthor {
   /// Author relation with the feed/entry
   AuthorType? type;
 
-  /// Creates a new [UniversalAuthor] object
-  UniversalAuthor({required this.name, required this.email, this.url, this.type});
+  /// Creates a new [Author] object
+  Author({required this.name, required this.email, this.url, this.type});
 
-  /// Creates a new [UniversalAuthor] object from an string
+  /// Creates a new [Author] object from an string
   ///
   /// Is able to parse values like
   /// `author name (author@email.com)` or
   /// `author@email.com (author name)`
-  factory UniversalAuthor.fromString(String value) {
+  factory Author.fromString(String value) {
     final match = _nameEmailRx.firstMatch(value);
     var name = '';
     var email = '';
@@ -87,12 +87,12 @@ class UniversalAuthor {
       }
     }
 
-    return UniversalAuthor(name: name, email: email);
+    return Author(name: name, email: email);
   }
 
-  /// Creates a new [UniversalAuthor] object from an [XmlElement]
-  factory UniversalAuthor.fromXml(XmlElement element) {
-    return UniversalAuthor(
+  /// Creates a new [Author] object from an [XmlElement]
+  factory Author.fromXml(XmlElement element) {
+    return Author(
       name: element.getElement('name')?.text ?? '',
       email: element.getElement('email')?.text ?? '',
       url: element.getElement('uri')?.text ?? element.getElement('url')?.text ?? '',

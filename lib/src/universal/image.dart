@@ -3,7 +3,7 @@ import 'package:xml/xml.dart';
 import '../shared/shared.dart';
 
 /// Information related to an image attached to an entry or feed.
-class UniversalImage {
+class Image {
   /// URL to the image
   final String url;
 
@@ -25,12 +25,12 @@ class UniversalImage {
   /// Specifies the time offset in relation to the media object.
   String? time;
 
-  /// Creates a new [UniversalImage] object from an url
-  UniversalImage(this.url);
+  /// Creates a new [Image] object from an url
+  Image(this.url);
 
-  /// Creates a new [UniversalImage] object from an [XmlElement]
-  factory UniversalImage.fromXml(XmlElement node) {
-    final img = UniversalImage(node.getElement('url')?.text ?? '');
+  /// Creates a new [Image] object from an [XmlElement]
+  factory Image.fromXml(XmlElement node) {
+    final img = Image(node.getElement('url')?.text ?? '');
     getElement<String>(node, 'title', cb: (value) => img.title = value);
     getElement<String>(node, 'link', cb: (value) => img.link = value);
     getElement<String>(node, 'width', cb: (value) => img.width = value);
@@ -40,10 +40,10 @@ class UniversalImage {
     return img;
   }
 
-  /// Creates a new [UniversalImage] object from an [XmlElement] but using the
+  /// Creates a new [Image] object from an [XmlElement] but using the
   /// attributes instead of the child elements (RSS Media)
-  factory UniversalImage.fromXmlAttributes(XmlElement node) {
-    final img = UniversalImage(node.getAttribute('url') ?? '')
+  factory Image.fromXmlAttributes(XmlElement node) {
+    final img = Image(node.getAttribute('url') ?? '')
       ..width = node.getAttribute('width')
       ..height = node.getAttribute('height')
       ..time = node.getAttribute('time');

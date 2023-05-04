@@ -9,7 +9,7 @@ class ItunesItem {
   String? duration;
 
   /// The episode artwork.
-  UniversalImage? image;
+  Image? image;
 
   /// The episode parental advisory information.
   String? explicit;
@@ -50,7 +50,7 @@ class ItunesItem {
       ns: nsUrl,
       cb: (value) {
         final url = value.getAttribute('href') ?? value.getAttribute('url');
-        if (url != null) ii.image = UniversalImage(url.trim());
+        if (url != null) ii.image = Image(url.trim());
       },
     );
 
