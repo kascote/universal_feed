@@ -1,58 +1,49 @@
 // ignore_for_file: avoid_print
-// import 'dart:io';
-// import 'dart:math';
 
-// import 'package:universal_feed/universal_feed.dart';
+import 'dart:convert';
+import 'dart:io';
+import 'dart:math';
 
-void main(List<String> args) {
-  // final file = File(args[0]);
-  // final content = file.readAsStringSync();
+import 'package:universal_feed/universal_feed.dart';
 
-  // final uf = UniversalFeed(content);
-  // if (uf.kind == FeedKind.rss) {
-  //   debugRss(uf.rss);
-  // } else {
-  //   debugAtom(uf.atom);
-  // }
+void main(List<String> args) async {
+  const feeds = [
+    'https://www.nasa.gov/rss/dyn/breaking_news.rss',
+    'https://pub.dev/feed.atom',
+  ];
+
+  for (final feed in feeds) {
+    final feedContent = await readUrl(feed);
+    final uf = UniversalFeed.parseFromString(feedContent);
+    showContent(uf);
+    print('-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=');
+  }
 }
 
-// void debugRss(RSS uf) {
-//   print(uf.version);
-//   print('isDc ${uf.namespaces.hasDc}');
-//   print('ns ${uf.namespaces}');
-//   print('-------');
-//   print('title ${uf.channel.title}');
-//   print('link ${uf.channel.link?.href}');
+void showContent(UniversalFeed feed) {
+  print('feed kind: ${feed.meta.kind}');
+  print('feed extensions: ${feed.meta.extensions}');
+  print('feed version: ${feed.meta.version}');
+  print('...<');
+  print('feed title: ${feed.title}');
+  print('feed description: ${feed.description}');
+  print('site link: ${feed.htmlLink}');
+  print('feed link: ${feed.htmlLink}');
+  print('...<');
+  final itemsLength = min(feed.items.length, 5);
+  for (var i = 0; i < itemsLength; i++) {
+    final item = feed.items[i];
+    print('item title: ${item.title}');
+    print('item description: ${item.description}');
+    print('item link: ${item.links.first}');
+  }
+}
 
-//   if (uf.entries == null) {
-//     print('NO ENTRIES');
-//     return;
-//   }
-
-//   for (var i = 0; i < min(5, uf.entries!.length); i++) {
-//     print('-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=');
-//     final item = uf.entries![i];
-//     print('title ${item.title}');
-//     print('link ${item.link?.href}');
-//   }
-// }
-
-// void debugAtom(Atom uf) {
-//   print(uf.version);
-//   print('isDc ${uf.namespaces.hasDc}');
-//   print('ns ${uf.namespaces}');
-//   print('-------');
-//   print('title ${uf.head.title}');
-//   print('links ${uf.head.links?.join(' - ')}');
-
-//   if (uf.entries == null) {
-//     print('NO ENTRIES');
-//     return;
-//   }
-
-//   for (final entry in uf.entries!) {
-//     print('-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=');
-//     print('title ${entry.title}');
-//     print('links ${entry.links?.map((a) => a.toString()).join(' - ')}');
-//   }
-// }
+// function to read a file from internet
+Future<String> readUrl(String url) async {
+  final httpClient = HttpClient();
+  final request = await httpClient.getUrl(Uri.parse(url));
+  final response = await request.close();
+  final contents = await response.transform<String>(utf8.decoder).join();
+  return contents;
+}
