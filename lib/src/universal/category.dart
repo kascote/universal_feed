@@ -2,7 +2,7 @@ import 'package:xml/xml.dart';
 
 import '../shared/shared.dart';
 
-/// Holds information about a category assigned to an entry or feed
+/// Holds information about a category associated to an entry or feed
 class UniversalCategory {
   /// Provides a human-readable label for display in end-user applications
   String label;
@@ -11,6 +11,8 @@ class UniversalCategory {
   String? term;
 
   /// Is an IRI that identifies a categorization scheme
+  ///
+  /// ref IRI: https://www.rfc-editor.org/rfc/rfc3987
   String? scheme;
 
   /// The text inside the tag

@@ -4,7 +4,7 @@ import './parsers/atom_parser.dart';
 import './parsers/rss_parser.dart';
 import '../../universal_feed.dart';
 
-///
+/// An item in a feed
 class UniversalItem {
   /// A string that uniquely identifies the item
   ///
@@ -120,10 +120,10 @@ class UniversalItem {
   /// The item's geo location if the extension was registered
   Geo? geo;
 
-  ///
+  /// The item's Dublin Core extension if the extension was registered
   DcTerms? dcterms;
 
-  ///
+  /// The item's podcast extension if the extension was registered
   ItunesItem? podcast;
 
   UniversalItem._();

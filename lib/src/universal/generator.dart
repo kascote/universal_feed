@@ -1,7 +1,6 @@
-/// The "atom:generator" element's content identifies the agent used to
-/// generate a feed, for debugging and other purposes.
+/// Identifies the agent used to generate a feed, for debugging and other purposes.
 ///
-/// spec: https://www.rfc-editor.org/rfc/rfc4287.html#section-4.2.4
+/// ref atom: https://www.rfc-editor.org/rfc/rfc4287.html#section-4.2.4
 class UniversalGenerator {
   /// Url advertising the generator
   final String url;

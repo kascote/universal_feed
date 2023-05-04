@@ -2,7 +2,7 @@ import 'package:xml/xml.dart';
 
 import '../shared/shared.dart';
 
-/// Container to hold an Image reference
+/// Information related to an image attached to an entry or feed.
 class UniversalImage {
   /// URL to the image
   final String url;

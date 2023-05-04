@@ -1,5 +1,6 @@
 import 'package:xml/xml.dart';
 
+/// Media object attached to an entry, usually a binary object (image, sound, video)
 /// It has three required attributes. url says where the enclosure is located, length
 /// says how big it is in bytes, and type says what its type is, a standard MIME type.
 ///

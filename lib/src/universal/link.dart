@@ -59,7 +59,6 @@ class UniversalLink {
   /// Length of the linked content in octets
   String? length;
 
-  // TODO(nelson): Handle more complex links like Atom and links in RSS
   /// Creates a new Link
   UniversalLink({
     required this.rel,
@@ -67,7 +66,7 @@ class UniversalLink {
     required this.href,
   });
 
-  /// Helper create method to handle more easily the [rel] attribute
+  /// Helper factory to handle the [rel] attribute
   factory UniversalLink.create({
     required String type,
     required String href,
@@ -80,7 +79,7 @@ class UniversalLink {
     );
   }
 
-  /// Creates a Link from an XML element
+  /// Creates a [UniversalLink] from an [XmlElement]
   factory UniversalLink.fromXml(XmlElement element) {
     final rel = element.getAttribute('rel') ?? '';
 

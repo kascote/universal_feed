@@ -6,7 +6,7 @@ final _isEmailRx = RegExp(r'^(.+)@(.+)$');
 // ex: Example editor (me+span@example.com)
 final _nameEmailRx = RegExp(r'(.+?(?=[\(<]))[\(<](.*)[\)>]');
 
-/// The type of the author
+/// Parametrized values of the `type` attribute of the [UniversalAuthor] class
 enum AuthorType {
   /// unknown type
   other,
@@ -43,7 +43,7 @@ enum AuthorType {
   creator,
 }
 
-/// Hold information about the Author of an entry or feed
+/// Person/Entity that indicates the author of the entry or feed.
 class UniversalAuthor {
   /// Author's name
   late String name;
@@ -54,7 +54,7 @@ class UniversalAuthor {
   /// Author's url
   String? url;
 
-  /// Author's type
+  /// Author relation with the feed/entry
   AuthorType? type;
 
   /// Creates a new [UniversalAuthor] object
@@ -90,7 +90,7 @@ class UniversalAuthor {
     return UniversalAuthor(name: name, email: email);
   }
 
-  ///
+  /// Creates a new [UniversalAuthor] object from an [XmlElement]
   factory UniversalAuthor.fromXml(XmlElement element) {
     return UniversalAuthor(
       name: element.getElement('name')?.text ?? '',
@@ -100,8 +100,10 @@ class UniversalAuthor {
     );
   }
 
-  /// Depending if the [name] and [email] are empty or not will return:
-  /// - ``
+  /// Returns the parser author's value
+  ///
+  /// Depending on [name] and [email] content could returns:
+  /// - (empty)
   /// - `name`
   /// - `email`
   /// - `name (email)`
