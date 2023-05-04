@@ -3,7 +3,7 @@ import 'package:xml/xml.dart';
 import './namespaces.dart';
 import '../shared/errors.dart';
 
-/// Enum that list the supported feeds
+/// Supported feed types
 enum FeedKind {
   /// RSS feed
   rss,
@@ -12,24 +12,24 @@ enum FeedKind {
   atom,
 }
 
-///
+/// Metadata information related to the feed
 class MetaData {
-  ///
+  /// Type of feed
   late final FeedKind kind;
 
-  ///
+  /// Feed version
   late final String version;
 
-  ///
+  /// Encoding of the feed
   String? encoding;
 
-  ///
+  /// Extensions
   Map<String, String>? extensions;
 
   ///
   MetaData(this.kind, this.version, {this.encoding, this.extensions});
 
-  ///
+  /// Creates a new MetaData object from the [XmlDocument]
   factory MetaData.rssFromXml(XmlDocument xmlDoc) {
     final root = xmlDoc.rootElement;
     var version = root.getAttribute('version') ?? '';

@@ -1,6 +1,7 @@
-/// Library to parse RSS and Atom feeds. It includes support for RSS from version 0.90 to 2.0 and Atom 0.3 and 1.0.
+/// Library to parse RSS and Atom feeds. It includes support for RSS from
+/// version 0.90 to 2.0 and Atom 0.3 and 1.0.
 ///
-/// It has out-of-the-box support for some common extensions like:
+/// Out-of-the-box has support for some common extensions like:
 ///
 ///   * Dublin Core
 ///   * Dublin Core Terms
@@ -9,10 +10,11 @@
 ///   * Syndication
 ///   * Itunes
 ///
-/// This library makes no assumptions about the data parsed and tries to be quite liberal about the feed's content.
-/// For example, `timestamps`, the field's value is read, but there is no attempt to parse them. The
-/// TimeStamp object used to collect the data will have methods to help with the parsing later.
-///
+/// This library makes no assumptions about the data parsed and tries to be
+/// quite liberal in reading the feed's content. For example, with time stamps,
+/// there is no attempt to parse it when the feed is parsed. The Timestamp
+/// object has methods to help with the parsing.
+
 library universal_feed;
 
 export 'src/shared/date_parser.dart';

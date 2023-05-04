@@ -4,13 +4,16 @@ import './parsers/atom_parser.dart';
 import './parsers/rss_parser.dart';
 import '../../universal_feed.dart';
 
+/// Feed is the root element of the UniversalFeed.
 ///
+/// RSS v2.0 spec - https://cyber.harvard.edu/rss/rss.html
 /// Atom v0.3 spec - https://validator.w3.org/feed/docs/atom.html
+/// Atom v1.0 spec - https://www.rfc-editor.org/rfc/rfc4287.html
 class UniversalFeed {
   /// Contains metadata information for the Feed.
   late final MetaData meta;
 
-  /// Contains the Feed's namespaces declared.
+  /// Contains the declared Feed's namespaces.
   late final Namespaces namespaces;
 
   /// Unique identifier for the feed.
@@ -74,7 +77,9 @@ class UniversalFeed {
   /// rss ref: https://cyber.harvard.edu/rss/rss.html#optionalChannelElements
   final List<Category> categories = [];
 
+  /// Feed entries
   ///
+  /// rss ref: /// https://cyber.harvard.edu/rss/rss.html#hrelementsOfLtitemgt
   final List<Item> items = [];
 
   /// A URL that points to the documentation for the format used in the RSS file.
@@ -82,10 +87,10 @@ class UniversalFeed {
   /// rss ref: https://cyber.harvard.edu/rss/rss.html#optionalChannelElements
   String? docs;
 
-  ///
+  /// If the feed defines a Syndication namespace, this object will be populated.
   Syndication? syndication;
 
-  ///
+  /// If the feed defines an Itunes namespace, this object will be populated.
   ItunesChannel? podcast;
 
   UniversalFeed._();

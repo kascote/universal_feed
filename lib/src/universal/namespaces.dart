@@ -30,45 +30,44 @@ const nsSyndicationNs = 'xmlns:sy';
 /// ITunes Namespace
 const nsItunesNs = 'xmlns:itunes';
 
-/// Helper class to hold the namespaces used by the parsed feed
+/// Namespaces keeps track of the namespaces defined on the feed
 class Namespaces {
-  /// Map where each key will be the qualified namespace name and the value the url
-  Map<String, String> names = {};
+  final Map<String, String> _names = {};
 
   /// Creates a new Namespace object utilizing the root node
   Namespaces(List<XmlAttribute> attributes) {
     for (final attribute in attributes) {
-      names[attribute.name.qualified] = attribute.value;
+      _names[attribute.name.qualified] = attribute.value;
     }
   }
 
   /// Returns true if the feed has the Atom namespace
-  bool get hasAtom => names.containsKey(nsAtomNs);
+  bool get hasAtom => _names.containsKey(nsAtomNs);
 
   /// Returns true if the feed has the Content namespace
-  bool get hasContent => names.containsKey(nsContentNs);
+  bool get hasContent => _names.containsKey(nsContentNs);
 
   /// Returns true if the feed has the Dublin Core namespace
-  bool get hasDc => names.containsKey(nsDublinCoreNs);
+  bool get hasDc => _names.containsKey(nsDublinCoreNs);
 
   /// Returns true if the feed has the Dublin Core Terms namespace
-  bool get hasDcTerms => names.containsKey(nsDcTermsNs);
+  bool get hasDcTerms => _names.containsKey(nsDcTermsNs);
 
   /// Returns true if the feed has the Media namespace
-  bool get hasMedia => names.containsKey(nsMediaNs);
+  bool get hasMedia => _names.containsKey(nsMediaNs);
 
   /// Returns true if the feed has the Itunes namespace
-  bool get hasItunes => names.containsKey(nsItunesNs);
+  bool get hasItunes => _names.containsKey(nsItunesNs);
 
   /// Returns true if the feed has the Syndication namespace
-  bool get hasSyndication => names.containsKey(nsSyndicationNs);
+  bool get hasSyndication => _names.containsKey(nsSyndicationNs);
 
   /// Returns true if the feed has the GeoRss namespace
-  bool get hasGeoRss => names.containsKey(nsGeoNs);
+  bool get hasGeoRss => _names.containsKey(nsGeoNs);
 
   /// Will return the url for a given namespace as defined on the feed
-  String? nsUrl(String name) => names[name];
+  String? nsUrl(String name) => _names[name];
 
   @override
-  String toString() => names.keys.join(' ~ ');
+  String toString() => _names.keys.join(' ~ ');
 }
