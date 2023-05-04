@@ -36,11 +36,6 @@ void rssChannelParser(UniversalFeed uf, XmlElement channel) {
       uf.links.add(uf.htmlLink!);
     },
   );
-  getElement<String>(
-    channel,
-    'link',
-    cb: (value) => uf.xmlLink = UniversalLink.create(rel: 'alternate', type: 'text/html', href: value),
-  );
   getElement<String>(channel, 'lastBuildDate', cb: (value) => uf.updated = UniversalTimestamp(value));
   getElement<String>(channel, 'pubDate', cb: (value) => uf.published = UniversalTimestamp(value));
   getElement<String>(
