@@ -1,5 +1,4 @@
 // ignore_for_file: avoid_print
-
 import 'dart:convert';
 import 'dart:io';
 import 'dart:math';
@@ -21,22 +20,36 @@ void main(List<String> args) async {
 }
 
 void showContent(UniversalFeed feed) {
-  print('feed kind: ${feed.meta.kind}');
-  print('feed extensions: ${feed.meta.extensions}');
-  print('feed version: ${feed.meta.version}');
-  print('...<');
-  print('feed title: ${feed.title}');
-  print('feed description: ${feed.description}');
-  print('site link: ${feed.htmlLink}');
-  print('feed link: ${feed.htmlLink}');
-  print('...<');
+  logData('feed kind: ', feed.meta.kind.toString());
+  logData('feed extensions: ', feed.meta.extensions.toString());
+  logData('feed version: ', feed.meta.version);
+  logData('...<', ' ');
+  logData('feed title: ', feed.title ?? '');
+  logData('feed description: ', feed.description ?? '');
+  logData('site link: ', feed.htmlLink?.href ?? '');
+  logData('feed link: ', feed.htmlLink?.href ?? '');
+  logData('feed published: ', join([feed.published?.value, feed.published?.parseValue()?.toIso8601String()]));
+  logData('feed updated: ', join([feed.updated?.value, feed.updated?.parseValue()?.toIso8601String()]));
+  logData('...<', ' ');
   final itemsLength = min(feed.items.length, 5);
   for (var i = 0; i < itemsLength; i++) {
     final item = feed.items[i];
-    print('item title: ${item.title}');
-    print('item description: ${item.description}');
-    print('item link: ${item.links.first}');
+    logData('item title: ', item.title ?? '');
+    logData('item description: ', item.description ?? '');
+    logData('item link: ', item.links.first.href);
+    logData('item published: ', join([item.published?.value, item.published?.parseValue()?.toIso8601String()]));
+    logData('item updated: ', join([item.updated?.value, item.updated?.parseValue()?.toIso8601String()]));
+    print('>-----');
   }
+}
+
+String join(List<String?> values) {
+  values.removeWhere((element) => element == null || element.isEmpty);
+  return values.join(' / ');
+}
+
+void logData(String label, String data) {
+  if (data.isNotEmpty) print('$label $data');
 }
 
 // function to read a file from internet
