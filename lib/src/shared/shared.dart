@@ -80,7 +80,8 @@ String textDecoder(String type, XmlElement item) {
     case 'text/plain':
     case 'html':
     case 'escaped':
-      // TODO(nelson): check that item.text already escape html
+      // TODO(nelson): item.text already escape html, we need to review
+      // how capable is and maybe deprecate HtmlUnescape
       value = HtmlUnescape().convert(item.text.trim());
       break;
     // decode base64 text

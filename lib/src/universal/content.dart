@@ -19,20 +19,8 @@ class Content {
   Content({required this.value, required this.type, this.src});
 
   /// Creates a new [Content] object from an [XmlElement]
-  // TODO(nelson): normalize this
-  factory Content.fromV1Xml(XmlElement node) {
-    final type = node.getAttribute('type') ?? 'text';
-
-    return Content(
-      value: textDecoder(type, node),
-      type: type,
-      src: node.getAttribute('src'),
-    );
-  }
-
-  /// Creates a new [Content] object from an [XmlElement]
-  factory Content.fromXml(XmlElement node) {
-    final type = node.getAttribute('mode') ?? node.getAttribute('type') ?? 'xml';
+  factory Content.fromXml(XmlElement node, {String defaultType = 'xml'}) {
+    final type = node.getAttribute('mode') ?? node.getAttribute('type') ?? defaultType;
     return Content(
       value: textDecoder(type, node),
       type: type,

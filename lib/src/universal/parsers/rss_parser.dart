@@ -134,7 +134,7 @@ Item rssItemParser(UniversalFeed uf, Item item, XmlElement element) {
     getElements<XmlElement>(
       element,
       'encoded',
-      cb: (value) => item.content.add(Content.fromV1Xml(value)),
+      cb: (value) => item.content.add(Content.fromXml(value, defaultType: 'text')),
       ns: uf.namespaces.nsUrl(nsContentNs),
     );
   }
