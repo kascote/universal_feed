@@ -77,14 +77,8 @@ void rssChannelParser(UniversalFeed uf, XmlElement channel) {
       channel,
       'link',
       cb: (value) {
-        final rel = value.getAttribute('rel') ?? 'other';
-        final link = Link.create(
-          rel: rel,
-          type: value.getAttribute('type') ?? 'text/html',
-          href: value.getAttribute('href') ?? '',
-        );
-
-        if (rel == 'self') {
+        final link = Link.fromXml(value);
+        if (link.rel == LinkRelationType.self) {
           uf.xmlLink = link;
           uf.links.add(link);
         }
