@@ -27,7 +27,7 @@ void showContent(UniversalFeed feed) {
   logData('feed title: ', feed.title ?? '');
   logData('feed description: ', feed.description ?? '');
   logData('site link: ', feed.htmlLink?.href ?? '');
-  logData('feed link: ', feed.htmlLink?.href ?? '');
+  logData('feed link: ', feed.xmlLink?.href ?? '');
   logData('feed published: ', join([feed.published?.value, feed.published?.parseValue()?.toIso8601String()]));
   logData('feed updated: ', join([feed.updated?.value, feed.updated?.parseValue()?.toIso8601String()]));
   logData('...<', ' ');
