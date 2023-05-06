@@ -45,7 +45,7 @@ class Geo {
 
   ///
   factory Geo.fromXml(UniversalFeed uf, XmlElement node) {
-    final nsUrl = uf.namespaces.nsUrl(nsGeoNs);
+    final nsUrl = uf.meta.extensions.nsUrl(nsGeoNs);
     final geo = Geo._()
       ..line = node.getElement('line', namespace: nsUrl)?.text
       ..polygon = node.getElement('polygon', namespace: nsUrl)?.text

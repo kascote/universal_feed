@@ -12,7 +12,7 @@ Map<String, TestFx> rssTests() {
     'rss_version_094.xml': (r) => r.meta.version == '0.94',
     'rss_version_20.xml': (r) => r.meta.version == '2.0',
     'rss_version_201.xml': (r) => r.meta.version == '2.01',
-    'rss_version_21.xml': (r) => r.meta.version == '2.1' && r.namespaces.toString().isNotEmpty,
+    'rss_version_21.xml': (r) => r.meta.version == '2.1' && r.meta.extensions.toString().isEmpty,
     'rss_version_missing.xml': (r) => r.meta.version == '',
 
     'channel_author.xml': (r) {

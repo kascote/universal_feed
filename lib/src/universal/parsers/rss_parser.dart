@@ -10,11 +10,11 @@ void rssXmlParser(UniversalFeed uf, XmlDocument doc) {
   if (channel == null) return;
   rssChannelParser(uf, channel);
 
-  if (uf.namespaces.hasSyndication) {
+  if (uf.meta.extensions.hasSyndication) {
     uf.syndication = Syndication.fromXml(uf, channel);
   }
 
-  if (uf.namespaces.hasItunes) {
+  if (uf.meta.extensions.hasItunes) {
     uf.podcast = ItunesChannel.fromXml(uf, channel);
   }
 
@@ -69,8 +69,8 @@ void rssChannelParser(UniversalFeed uf, XmlElement channel) {
   );
   getElement<String>(channel, 'docs', cb: (value) => uf.docs = value);
 
-  if (uf.namespaces.hasAtom) {
-    final atomUrl = uf.namespaces.nsUrl(nsAtomNs);
+  if (uf.meta.extensions.hasAtom) {
+    final atomUrl = uf.meta.extensions.nsUrl(nsAtomNs);
     // Channel's link points to the Web site hosting the feed (not the feed itself)
     // Atom's link usually points to the feed itself
     getElement<XmlElement>(
@@ -87,8 +87,8 @@ void rssChannelParser(UniversalFeed uf, XmlElement channel) {
     );
   }
 
-  if (uf.namespaces.hasDc) {
-    final dcUrl = uf.namespaces.nsUrl(nsDublinCoreNs);
+  if (uf.meta.extensions.hasDc) {
+    final dcUrl = uf.meta.extensions.nsUrl(nsDublinCoreNs);
     getElement<String>(channel, 'title', cb: (value) => uf.title = value, ns: dcUrl);
     getElement<String>(
       channel,
@@ -130,12 +130,12 @@ Item rssItemParser(UniversalFeed uf, Item item, XmlElement element) {
   getElement<String>(element, 'title', cb: (value) => item.title = value);
   getElement<String>(element, 'description', cb: (value) => item.description = value);
 
-  if (uf.namespaces.hasContent) {
+  if (uf.meta.extensions.hasContent) {
     getElements<XmlElement>(
       element,
       'encoded',
       cb: (value) => item.content.add(Content.fromXml(value, defaultType: 'text')),
-      ns: uf.namespaces.nsUrl(nsContentNs),
+      ns: uf.meta.extensions.nsUrl(nsContentNs),
     );
   }
 
@@ -206,8 +206,8 @@ Item rssItemParser(UniversalFeed uf, Item item, XmlElement element) {
     },
   );
 
-  if (uf.namespaces.hasDc) {
-    final dcUrl = uf.namespaces.nsUrl(nsDublinCoreNs);
+  if (uf.meta.extensions.hasDc) {
+    final dcUrl = uf.meta.extensions.nsUrl(nsDublinCoreNs);
     getElement<String>(
       element,
       'author',
@@ -257,19 +257,19 @@ Item rssItemParser(UniversalFeed uf, Item item, XmlElement element) {
     );
   }
 
-  if (uf.namespaces.hasMedia) {
+  if (uf.meta.extensions.hasMedia) {
     item.media = Media.contentFromXml(uf, element);
   }
 
-  if (uf.namespaces.hasGeoRss) {
+  if (uf.meta.extensions.hasGeoRss) {
     item.geo = Geo.fromXml(uf, element);
   }
 
-  if (uf.namespaces.hasDcTerms) {
+  if (uf.meta.extensions.hasDcTerms) {
     item.dcterms = DcTerms.parseFomXml(uf, element);
   }
 
-  if (uf.namespaces.hasItunes) {
+  if (uf.meta.extensions.hasItunes) {
     item.podcast = ItunesItem.fromXml(uf, element);
   }
 

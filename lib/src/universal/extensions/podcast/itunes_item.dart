@@ -34,7 +34,7 @@ class ItunesItem {
 
   /// Creates an [ItunesItem] from an [XmlElement]
   factory ItunesItem.fromXml(UniversalFeed uf, XmlElement node) {
-    final nsUrl = uf.namespaces.nsUrl(nsItunesNs);
+    final nsUrl = uf.meta.extensions.nsUrl(nsItunesNs);
     final ii = ItunesItem._()
       ..duration = node.getElement('duration', namespace: nsUrl)?.text.trim()
       ..explicit = node.getElement('explicit', namespace: nsUrl)?.text.trim()

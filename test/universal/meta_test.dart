@@ -10,7 +10,7 @@ void main() {
     expect(meta.kind, FeedKind.rss);
     expect(meta.version, '0.90');
     expect(meta.encoding, '');
-    expect(meta.extensions!.isEmpty, true);
+    expect(meta.extensions.extensionsIsEmpty, true);
   });
 
   test('must parse version 0.91u if has no publicId', () {
@@ -40,8 +40,8 @@ void main() {
 
     expect(meta.kind, FeedKind.rss);
     expect(meta.version, '2.0');
-    expect(meta.extensions!['xml:base'], 'http://example.com');
-    expect(meta.extensions!['xmlns:rdf'], 'http://www.w3.org/1999/02/22-rdf-syntax-ns#');
+    expect(meta.extensions.nsUrl('xml:base'), 'http://example.com');
+    expect(meta.extensions.nsUrl('xmlns:rdf'), 'http://www.w3.org/1999/02/22-rdf-syntax-ns#');
   });
 
   test('must parse rdf format', () {

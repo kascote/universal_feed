@@ -32,7 +32,7 @@ class Syndication {
 
   /// Parse a Syndication tag from an [XmlElement]
   factory Syndication.fromXml(UniversalFeed uf, XmlElement node) {
-    final nsUrl = uf.namespaces.nsUrl(nsSyndicationNs);
+    final nsUrl = uf.meta.extensions.nsUrl(nsSyndicationNs);
     return Syndication(
       updatePeriod: node.getElement('updatePeriod', namespace: nsUrl)?.text.trim() ?? 'daily',
       updateFrequency: node.getElement('updateFrequency', namespace: nsUrl)?.text.trim() ?? '1',

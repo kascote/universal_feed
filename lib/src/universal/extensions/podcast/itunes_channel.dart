@@ -44,7 +44,7 @@ class ItunesChannel {
 
   /// Creates a new [ItunesChannel] from an [XmlElement]
   factory ItunesChannel.fromXml(UniversalFeed rf, XmlElement node) {
-    final nsUrl = rf.namespaces.nsUrl(nsItunesNs);
+    final nsUrl = rf.meta.extensions.nsUrl(nsItunesNs);
     final ic = ItunesChannel._();
 
     getElement<XmlElement>(

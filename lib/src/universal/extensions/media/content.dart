@@ -88,7 +88,7 @@ class MediaContent {
 
   /// Creates a new [MediaContent] object from an [XmlElement]
   factory MediaContent.fromXml(UniversalFeed uf, XmlElement node) {
-    final nsUrl = uf.namespaces.nsUrl(nsMediaNs);
+    final nsUrl = uf.meta.extensions.nsUrl(nsMediaNs);
     final mc = MediaContent(node.getAttribute('url') ?? '')
       ..fileSize = node.getAttribute('fileSize')
       ..type = node.getAttribute('type')

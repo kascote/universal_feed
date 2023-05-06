@@ -63,7 +63,7 @@ class Media {
 
   /// Creates a new [Media] object from an [XmlElement]
   factory Media.contentFromXml(UniversalFeed uf, XmlElement node) {
-    final nsUrl = uf.namespaces.nsUrl(nsMediaNs);
+    final nsUrl = uf.meta.extensions.nsUrl(nsMediaNs);
 
     final media = Media._();
 

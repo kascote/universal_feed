@@ -13,9 +13,6 @@ class UniversalFeed {
   /// Contains metadata information for the Feed.
   late final MetaData meta;
 
-  /// Contains the declared Feed's namespaces.
-  late final Namespaces namespaces;
-
   /// Unique identifier for the feed.
   String? guid;
 
@@ -101,9 +98,7 @@ class UniversalFeed {
     final doc = XmlDocument.parse(content);
     final root = doc.rootElement;
 
-    final feed = UniversalFeed._()
-      ..meta = MetaData.rssFromXml(doc)
-      ..namespaces = Namespaces(doc.rootElement.attributes);
+    final feed = UniversalFeed._()..meta = MetaData.rssFromXml(doc);
 
     if (feed.meta.kind == FeedKind.rss) {
       rssXmlParser(feed, doc);

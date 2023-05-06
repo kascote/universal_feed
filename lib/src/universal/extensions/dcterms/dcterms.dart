@@ -27,7 +27,7 @@ class DcTerms {
 
   ///
   factory DcTerms.parseFomXml(UniversalFeed uf, XmlElement node) {
-    final nsUrl = uf.namespaces.nsUrl(nsDcTermsNs);
+    final nsUrl = uf.meta.extensions.nsUrl(nsDcTermsNs);
     final terms = DcTerms._()
       ..created = node.getElement('created', namespace: nsUrl)?.text
       ..issued = node.getElement('issued', namespace: nsUrl)?.text
