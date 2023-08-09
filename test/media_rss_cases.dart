@@ -97,11 +97,11 @@ Map<String, TestFx> mediaRssTests() {
           c.first.toString().isNotEmpty;
     },
     'item_media_group.xml': (r) {
-      final g1 = r.items.first.media!.group;
-      final g2 = r.items.last.media!.group;
-      return g1.first.url == 'http://www.foo.com/movie.mov' &&
-          g1[1].url == 'http://www.foo.com/movie2.mov' &&
-          g2.last.url == 'http://www.foo.com/movie3.mov';
+      final g1 = r.items.first.media!.group.first;
+      final g2 = r.items.last.media!.group.last;
+      return g1.content.first.url == 'http://www.foo.com/movie.mov' &&
+          g1.content.last.url == 'http://www.foo.com/movie2.mov' &&
+          g2.content.last.url == 'http://www.foo.com/movie3.mov';
     },
   };
 }

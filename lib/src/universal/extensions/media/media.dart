@@ -14,11 +14,13 @@ import '../../../shared/shared.dart';
 ///
 /// ref: https://www.rssboard.org/media-rss
 class Media {
+  Media._();
+
   /// <media:group> is a sub-element of <item>. It allows grouping of <media:content>
   /// elements that are effectively the same content, yet different representations.
   ///
   /// ref: https://www.rssboard.org/media-rss#media-group
-  List<MediaContent> group = [];
+  List<Media> group = [];
 
   /// <media:content> is a sub-element of either <item> or <media:group>.
   /// Media objects that are not the same content should not be included in the same <media:group> element.
@@ -79,12 +81,7 @@ class Media {
       'group',
       ns: nsUrl,
       cb: (group) {
-        getElements<XmlElement>(
-          group,
-          'content',
-          ns: nsUrl,
-          cb: (xmlContent) => media.group.add(MediaContent.fromXml(uf, xmlContent)),
-        );
+        media.group.add(Media.contentFromXml(uf, group));
       },
     );
 
@@ -143,6 +140,4 @@ class Media {
 
     return media;
   }
-
-  Media._();
 }

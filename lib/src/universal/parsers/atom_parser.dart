@@ -124,6 +124,10 @@ Item atomItemParser(UniversalFeed uf, Item item, XmlElement element) {
     cb: (value) => item.sourceEntry = UniversalFeed.parseFromXml(value),
   );
 
+  if (uf.meta.extensions.hasMedia) {
+    item.media = Media.contentFromXml(uf, element);
+  }
+
   return item;
 }
 
