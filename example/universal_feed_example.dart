@@ -5,7 +5,7 @@ import 'dart:math';
 
 import 'package:universal_feed/universal_feed.dart';
 
-void main(List<String> args) async {
+Future<void> main(List<String> args) async {
   const feeds = [
     'https://www.nasa.gov/rss/dyn/breaking_news.rss',
     'https://pub.dev/feed.atom',
