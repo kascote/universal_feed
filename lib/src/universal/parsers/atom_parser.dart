@@ -27,7 +27,16 @@ void atomFeedParser(UniversalFeed uf, XmlElement root) {
     cb: (xml) => uf.authors.add(Author.fromXml(xml)),
   );
 
-  getElements<XmlElement>(root, 'link', cb: (value) => uf.links.add(Link.fromXml(value)));
+  getElements<XmlElement>(
+    root,
+    'link',
+    cb: (value) {
+      final link = Link.fromXml(value);
+      if (link.rel == LinkRelationType.self) uf.xmlLink = link;
+      if (link.rel == LinkRelationType.alternate && uf.htmlLink == null) uf.htmlLink = link;
+      uf.links.add(link);
+    },
+  );
 
   getElement<XmlElement>(
     root,
@@ -87,6 +96,16 @@ Item atomItemParser(UniversalFeed uf, Item item, XmlElement element) {
         ..updated = date;
     },
   );
+  getElement<String>(
+    element,
+    'published',
+    cb: (value) {
+      final date = Timestamp(value);
+      item
+        ..published = date
+        ..updated = date;
+    },
+  );
 
   getElement<String>(
     element,
@@ -100,6 +119,7 @@ Item atomItemParser(UniversalFeed uf, Item item, XmlElement element) {
   );
 
   getElement<String>(element, 'modified', cb: (value) => item.updated = Timestamp(value));
+  getElement<String>(element, 'updated', cb: (value) => item.updated = Timestamp(value));
   getElement<String>(element, 'id', cb: (value) => item.guid = value);
   getElements<XmlElement>(element, 'link', cb: (value) => item.links.add(Link.fromXml(value)));
   getElement<XmlElement>(element, 'summary', cb: (value) => item.description = decodeTextField(value));
