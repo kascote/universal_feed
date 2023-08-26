@@ -200,12 +200,27 @@ Map<String, TestFx> atom10Tests() {
     'feed_link_length.xml': (r) => r.links.first.length == '42301',
     'feed_link_multiple.xml': (r) =>
         r.links.first.href == 'http://www.example.com/' && r.links.last.href == 'http://www.example.com/post',
-    'feed_link_no_rel.xml': (r) => r.links.first.href == 'http://www.example.com/',
-    'feed_link_rel.xml': (r) => r.links.first.href == 'http://www.example.com/',
+    'feed_link_no_rel.xml': (r) {
+      return r.links.first.href == 'http://www.example.com/' &&
+          r.links.first.rel == LinkRelationType.other &&
+          r.htmlLink == null &&
+          r.xmlLink == null;
+    },
+    'feed_link_rel.xml': (r) =>
+        r.links.first.href == 'http://www.example.com/' &&
+        r.links.first.rel == LinkRelationType.alternate &&
+        r.htmlLink?.href == 'http://www.example.com/' &&
+        r.xmlLink == null,
     'feed_link_rel_other.xml': (r) =>
-        r.links.first.rel == LinkRelationType.other && r.links.first.originalRel == 'http://feedparser.org/rel/test',
+        r.links.first.rel == LinkRelationType.other &&
+        r.links.first.originalRel == 'http://feedparser.org/rel/test' &&
+        r.htmlLink == null &&
+        r.xmlLink == null,
     'feed_link_rel_related.xml': (r) => r.links.first.rel == LinkRelationType.related,
-    'feed_link_rel_self.xml': (r) => r.links.first.rel == LinkRelationType.self,
+    'feed_link_rel_self.xml': (r) =>
+        r.links.first.rel == LinkRelationType.self &&
+        r.xmlLink?.href == 'http://www.example.com/' &&
+        r.htmlLink == null,
     'feed_link_rel_via.xml': (r) => r.links.first.rel == LinkRelationType.via,
     'feed_link_title.xml': (r) => r.links.first.title == 'Example title',
     'feed_link_type.xml': (r) => r.links.first.type == 'text/html',

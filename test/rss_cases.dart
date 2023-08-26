@@ -100,6 +100,16 @@ Map<String, TestFx> rssTests() {
           r.links.last.rel == LinkRelationType.self &&
           r.xmlLink!.href == 'https://example.com/feed.xml';
     },
+    'channel_link_atom_alternate.xml': (r) {
+      return r.links.first.href == 'https://example.com/feed.xml' &&
+          r.links.first.type == 'application/rss+xml' &&
+          r.links.first.rel == LinkRelationType.self &&
+          r.xmlLink!.href == 'https://example.com/feed.xml' &&
+          r.links.last.href == 'https://example.com' &&
+          r.links.last.type == 'text/html' &&
+          r.links.last.rel == LinkRelationType.alternate &&
+          r.htmlLink!.href == 'https://example.com';
+    },
     'channel_managingEditor.xml': (r) {
       if (r.authors.isEmpty) return false;
       return r.authors.first.value == 'Example editor';

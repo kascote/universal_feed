@@ -73,15 +73,14 @@ void rssChannelParser(UniversalFeed uf, XmlElement channel) {
     final atomUrl = uf.meta.extensions.nsUrl(nsAtomNs);
     // Channel's link points to the Web site hosting the feed (not the feed itself)
     // Atom's link usually points to the feed itself
-    getElement<XmlElement>(
+    getElements<XmlElement>(
       channel,
       'link',
       cb: (value) {
         final link = Link.fromXml(value);
-        if (link.rel == LinkRelationType.self) {
-          uf.xmlLink = link;
-          uf.links.add(link);
-        }
+        if (link.rel == LinkRelationType.self) uf.xmlLink = link;
+        if (link.rel == LinkRelationType.alternate && uf.htmlLink == null) uf.htmlLink = link;
+        uf.links.add(link);
       },
       ns: atomUrl,
     );
