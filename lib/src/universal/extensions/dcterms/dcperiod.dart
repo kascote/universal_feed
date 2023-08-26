@@ -33,16 +33,12 @@ class DcPeriod {
       switch (lhs) {
         case 'start':
           period.start = rhs;
-          break;
         case 'end':
           period.end = rhs;
-          break;
         case 'scheme':
           period.scheme = rhs;
-          break;
         case 'name':
           period.name = rhs;
-          break;
       }
     }
 

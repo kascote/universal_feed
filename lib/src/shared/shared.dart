@@ -61,7 +61,6 @@ String textDecoder(String type, XmlElement item) {
     case 'xml':
     case 'xhtml':
       value = item.innerXml.trim();
-      break;
     // if the inner xml contains CDATA then return the text, if not,
     // consider the inner xml as html and only unescape it
     case 'xml2':
@@ -72,7 +71,6 @@ String textDecoder(String type, XmlElement item) {
         final unescape = HtmlUnescape();
         value = unescape.convert(inner);
       }
-      break;
     // decode html escaped text
     case '':
     case 'text':
@@ -83,12 +81,10 @@ String textDecoder(String type, XmlElement item) {
       // TODO(nelson): item.text already escape html, we need to review
       // how capable is and maybe deprecate HtmlUnescape
       value = HtmlUnescape().convert(item.text.trim());
-      break;
     // decode base64 text
     case 'application/octet-stream':
     case 'base64':
       value = utf8.decode(base64.decode(item.text.trim()));
-      break;
 
     default:
       throw FeedError('textDecoder: field encoded mode type unknown: $type');
