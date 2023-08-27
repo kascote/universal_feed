@@ -1,3 +1,11 @@
+## 0.4.0
+
+- fixes html and xml link resolution
+- fixes rss media extension parsing
+- updated dependencies
+- fixes xml library deprecated methods
+- implements UniversalFeed.tryParse()
+
 ## 0.3.0
 
 - IMPORTANT UPDATE: The library has undergone significant changes and is now
