@@ -25,4 +25,14 @@ void main() {
       throwsA(const TypeMatcher<FeedError>()),
     );
   });
+
+  test('must return null if document is invalid', () {
+    final rc = UniversalFeed.tryParse('content');
+    expect(rc, isNull);
+  });
+
+  test('must return null if document is malformed', () {
+    final rc = UniversalFeed.tryParse('<content>');
+    expect(rc, isNull);
+  });
 }

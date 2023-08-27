@@ -115,4 +115,15 @@ class UniversalFeed {
     atomXmlParser(feed, content);
     return feed;
   }
+
+  /// Try to parse a string into a UniversalFeed object if fail will return null.
+  static UniversalFeed? tryParse(String content) {
+    try {
+      return UniversalFeed.parseFromString(content);
+    } on XmlParserException {
+      return null;
+    } on XmlTagException {
+      return null;
+    }
+  }
 }
