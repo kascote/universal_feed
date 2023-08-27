@@ -93,9 +93,9 @@ class Author {
   /// Creates a new [Author] object from an [XmlElement]
   factory Author.fromXml(XmlElement element) {
     return Author(
-      name: element.getElement('name')?.text ?? '',
-      email: element.getElement('email')?.text ?? '',
-      url: element.getElement('uri')?.text ?? element.getElement('url')?.text ?? '',
+      name: element.getElement('name')?.innerText ?? '',
+      email: element.getElement('email')?.innerText ?? '',
+      url: element.getElement('uri')?.innerText ?? element.getElement('url')?.innerText ?? '',
       type: AuthorType.author,
     );
   }

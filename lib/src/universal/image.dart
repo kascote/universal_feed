@@ -30,7 +30,7 @@ class Image {
 
   /// Creates a new [Image] object from an [XmlElement]
   factory Image.fromXml(XmlElement node) {
-    final img = Image(node.getElement('url')?.text ?? '');
+    final img = Image(node.getElement('url')?.innerText ?? '');
     getElement<String>(node, 'title', cb: (value) => img.title = value);
     getElement<String>(node, 'link', cb: (value) => img.link = value);
     getElement<String>(node, 'width', cb: (value) => img.width = value);

@@ -13,7 +13,7 @@ typedef ElementCallback<T> = void Function(T);
 void getElement<T>(XmlElement node, String fieldName, {required ElementCallback<T> cb, String? ns}) {
   final element = node.getElement(fieldName, namespace: ns);
   if (element != null) {
-    if (T == String) cb(element.text as T);
+    if (T == String) cb(element.innerText as T);
     if (T == XmlElement) cb(element as T);
   }
 }
@@ -25,7 +25,7 @@ void getElements<T>(XmlElement node, String fieldName, {required ElementCallback
   if (elements.isEmpty) return;
 
   for (final element in elements) {
-    if (T == String) cb(element.text as T);
+    if (T == String) cb(element.innerText as T);
     if (T == XmlElement) cb(element as T);
   }
 }
@@ -45,9 +45,9 @@ void getElements<T>(XmlElement node, String fieldName, {required ElementCallback
 ///    some text1 some text2
 String siblingText(XmlNode node) {
   final nodes = node.descendants;
-  if (nodes.isEmpty) return node.text;
-  final value = nodes.first.siblings.where((n) => n is XmlText || n is XmlCDATA).map((n) => n.text).join().trim();
-  if (value.isEmpty) return node.text;
+  if (nodes.isEmpty) return node.innerText;
+  final value = nodes.first.siblings.where((n) => n is XmlText || n is XmlCDATA).map((n) => n.value).join().trim();
+  if (value.isEmpty) return node.innerText;
   return value;
 }
 
@@ -66,7 +66,7 @@ String textDecoder(String type, XmlElement item) {
     case 'xml2':
       final inner = item.innerXml.trim();
       if (inner.contains('CDATA')) {
-        value = item.text;
+        value = item.innerText;
       } else {
         final unescape = HtmlUnescape();
         value = unescape.convert(inner);
@@ -80,11 +80,11 @@ String textDecoder(String type, XmlElement item) {
     case 'escaped':
       // TODO(nelson): item.text already escape html, we need to review
       // how capable is and maybe deprecate HtmlUnescape
-      value = HtmlUnescape().convert(item.text.trim());
+      value = HtmlUnescape().convert(item.innerText.trim());
     // decode base64 text
     case 'application/octet-stream':
     case 'base64':
-      value = utf8.decode(base64.decode(item.text.trim()));
+      value = utf8.decode(base64.decode(item.innerText.trim()));
 
     default:
       throw FeedError('textDecoder: field encoded mode type unknown: $type');

@@ -183,7 +183,7 @@ Item rssItemParser(UniversalFeed uf, Item item, XmlElement element) {
     'source',
     cb: (value) {
       item.source = Link.create(href: value.getAttribute('url') ?? '', type: 'application/xml', rel: 'self');
-      item.source!.title = value.text;
+      item.source!.title = value.innerText;
     },
   );
   getElement<String>(
@@ -199,9 +199,9 @@ Item rssItemParser(UniversalFeed uf, Item item, XmlElement element) {
     cb: (eleGuid) {
       final isPermaLink = eleGuid.getAttribute('isPermaLink') ?? 'false';
       if (isPermaLink == 'true') {
-        item.link = Link.create(href: eleGuid.text, type: 'text/html', rel: 'alternate');
+        item.link = Link.create(href: eleGuid.innerText, type: 'text/html', rel: 'alternate');
       }
-      item.guid = eleGuid.text;
+      item.guid = eleGuid.innerText;
     },
   );
 

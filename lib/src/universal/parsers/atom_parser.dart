@@ -52,7 +52,7 @@ void atomFeedParser(UniversalFeed uf, XmlElement root) {
     root,
     'generator',
     cb: (xml) => uf.generator = Generator(
-      xml.text,
+      xml.innerText,
       xml.getAttribute('version') ?? '',
       xml.getAttribute('url') ?? xml.getAttribute('uri') ?? '',
     ),

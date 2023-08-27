@@ -43,7 +43,7 @@ class Category {
   /// Helper function to create a List of categories from
   /// an string separated by commas
   static List<Category>? loadTags(XmlElement node, {String? defaultScheme}) {
-    final tags = node.text.split(',').where((e) => e.isNotEmpty);
+    final tags = node.innerText.split(',').where((e) => e.isNotEmpty);
     if (tags.isEmpty) return null;
     return List.generate(
       tags.length,

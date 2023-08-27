@@ -47,15 +47,15 @@ class Geo {
   factory Geo.fromXml(UniversalFeed uf, XmlElement node) {
     final nsUrl = uf.meta.extensions.nsUrl(nsGeoNs);
     final geo = Geo._()
-      ..line = node.getElement('line', namespace: nsUrl)?.text
-      ..polygon = node.getElement('polygon', namespace: nsUrl)?.text
-      ..box = node.getElement('box', namespace: nsUrl)?.text
-      ..featureTypeTag = node.getElement('featuretypetag', namespace: nsUrl)?.text
-      ..relationshipTag = node.getElement('relationshiptag', namespace: nsUrl)?.text
-      ..featureName = node.getElement('featurename', namespace: nsUrl)?.text
-      ..elev = node.getElement('elev', namespace: nsUrl)?.text
-      ..floor = node.getElement('floor', namespace: nsUrl)?.text
-      ..radius = node.getElement('radius', namespace: nsUrl)?.text;
+      ..line = node.getElement('line', namespace: nsUrl)?.innerText
+      ..polygon = node.getElement('polygon', namespace: nsUrl)?.innerText
+      ..box = node.getElement('box', namespace: nsUrl)?.innerText
+      ..featureTypeTag = node.getElement('featuretypetag', namespace: nsUrl)?.innerText
+      ..relationshipTag = node.getElement('relationshiptag', namespace: nsUrl)?.innerText
+      ..featureName = node.getElement('featurename', namespace: nsUrl)?.innerText
+      ..elev = node.getElement('elev', namespace: nsUrl)?.innerText
+      ..floor = node.getElement('floor', namespace: nsUrl)?.innerText
+      ..radius = node.getElement('radius', namespace: nsUrl)?.innerText;
 
     return geo;
   }

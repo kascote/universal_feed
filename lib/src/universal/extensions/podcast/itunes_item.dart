@@ -36,14 +36,14 @@ class ItunesItem {
   factory ItunesItem.fromXml(UniversalFeed uf, XmlElement node) {
     final nsUrl = uf.meta.extensions.nsUrl(nsItunesNs);
     final ii = ItunesItem._()
-      ..duration = node.getElement('duration', namespace: nsUrl)?.text.trim()
-      ..explicit = node.getElement('explicit', namespace: nsUrl)?.text.trim()
-      ..title = node.getElement('title', namespace: nsUrl)?.text.trim()
-      ..episode = node.getElement('episode', namespace: nsUrl)?.text.trim()
-      ..season = node.getElement('season', namespace: nsUrl)?.text.trim()
-      ..episodeType = node.getElement('episodeType', namespace: nsUrl)?.text.trim()
-      ..block = node.getElement('block', namespace: nsUrl)?.text.trim()
-      ..summary = node.getElement('summary', namespace: nsUrl)?.text.trim();
+      ..duration = node.getElement('duration', namespace: nsUrl)?.innerText.trim()
+      ..explicit = node.getElement('explicit', namespace: nsUrl)?.innerText.trim()
+      ..title = node.getElement('title', namespace: nsUrl)?.innerText.trim()
+      ..episode = node.getElement('episode', namespace: nsUrl)?.innerText.trim()
+      ..season = node.getElement('season', namespace: nsUrl)?.innerText.trim()
+      ..episodeType = node.getElement('episodeType', namespace: nsUrl)?.innerText.trim()
+      ..block = node.getElement('block', namespace: nsUrl)?.innerText.trim()
+      ..summary = node.getElement('summary', namespace: nsUrl)?.innerText.trim();
     getElement<XmlElement>(
       node,
       'image',

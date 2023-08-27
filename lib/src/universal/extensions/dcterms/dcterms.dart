@@ -29,9 +29,9 @@ class DcTerms {
   factory DcTerms.parseFomXml(UniversalFeed uf, XmlElement node) {
     final nsUrl = uf.meta.extensions.nsUrl(nsDcTermsNs);
     final terms = DcTerms._()
-      ..created = node.getElement('created', namespace: nsUrl)?.text
-      ..issued = node.getElement('issued', namespace: nsUrl)?.text
-      ..modified = node.getElement('modified', namespace: nsUrl)?.text;
+      ..created = node.getElement('created', namespace: nsUrl)?.innerText
+      ..issued = node.getElement('issued', namespace: nsUrl)?.innerText
+      ..modified = node.getElement('modified', namespace: nsUrl)?.innerText;
     getElement<String>(node, 'valid', ns: nsUrl, cb: (value) => terms.valid = DcPeriod.fromString(value));
     getElement<String>(node, 'available', ns: nsUrl, cb: (value) => terms.available = DcPeriod.fromString(value));
 

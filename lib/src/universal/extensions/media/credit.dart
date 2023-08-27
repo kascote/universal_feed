@@ -16,7 +16,7 @@ class Credit {
 
   /// Creates a new [Credit] object from an [XmlElement]
   factory Credit.fromXml(XmlElement node) {
-    return Credit(node.text)
+    return Credit(node.innerText)
       ..role = node.getAttribute('role')
       ..scheme = node.getAttribute('scheme');
   }

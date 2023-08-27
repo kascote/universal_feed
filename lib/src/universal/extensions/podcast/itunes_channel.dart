@@ -76,28 +76,28 @@ class ItunesChannel {
       ns: nsUrl,
       cb: (value) {
         ic.owner = Author(
-          name: value.getElement('name', namespace: nsUrl)?.text ?? '',
-          email: value.getElement('email', namespace: nsUrl)?.text ?? '',
+          name: value.getElement('name', namespace: nsUrl)?.innerText ?? '',
+          email: value.getElement('email', namespace: nsUrl)?.innerText ?? '',
         );
       },
     );
 
     ic
-      ..explicit = node.getElement('explicit', namespace: nsUrl)?.text.trim()
-      ..author = node.getElement('author', namespace: nsUrl)?.text.trim()
-      ..title = node.getElement('title', namespace: nsUrl)?.text.trim()
-      ..type = node.getElement('type', namespace: nsUrl)?.text.trim()
-      ..newFeedUrl = node.getElement('new-feed-url', namespace: nsUrl)?.text.trim()
-      ..block = node.getElement('block', namespace: nsUrl)?.text.trim()
-      ..complete = node.getElement('complete', namespace: nsUrl)?.text.trim()
-      ..summary = node.getElement('summary', namespace: nsUrl)?.text.trim();
+      ..explicit = node.getElement('explicit', namespace: nsUrl)?.innerText.trim()
+      ..author = node.getElement('author', namespace: nsUrl)?.innerText.trim()
+      ..title = node.getElement('title', namespace: nsUrl)?.innerText.trim()
+      ..type = node.getElement('type', namespace: nsUrl)?.innerText.trim()
+      ..newFeedUrl = node.getElement('new-feed-url', namespace: nsUrl)?.innerText.trim()
+      ..block = node.getElement('block', namespace: nsUrl)?.innerText.trim()
+      ..complete = node.getElement('complete', namespace: nsUrl)?.innerText.trim()
+      ..summary = node.getElement('summary', namespace: nsUrl)?.innerText.trim();
 
     getElement<XmlElement>(
       node,
       'keywords',
       ns: nsUrl,
       cb: (xml) {
-        final kws = Set.of(xml.text.split(',').map((e) => e.trim())).where((e) => e.isNotEmpty);
+        final kws = Set.of(xml.innerText.split(',').map((e) => e.trim())).where((e) => e.isNotEmpty);
         if (kws.isEmpty) return;
         final cats = List<Category>.generate(
           kws.length,

@@ -14,6 +14,6 @@ class Rating {
 
   /// Creates a new [Rating] object from an [XmlElement]
   factory Rating.fromXml(XmlElement node) {
-    return Rating(node.text, node.getAttribute('scheme'));
+    return Rating(node.innerText, node.getAttribute('scheme'));
   }
 }
