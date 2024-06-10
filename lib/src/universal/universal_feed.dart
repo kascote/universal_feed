@@ -59,6 +59,11 @@ class UniversalFeed {
   /// rss ref:
   Image? image;
 
+  /// Specifies an image IRI that provides iconic visual identification for a channel.
+  ///
+  /// atom ref: https://www.ietf.org/rfc/rfc4287.txt
+  Image? icon;
+
   /// Copyright notice for content in the channel.
   ///
   /// rss ref: https://cyber.harvard.edu/rss/rss.html#optionalChannelElements
