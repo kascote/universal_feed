@@ -1,8 +1,8 @@
 import 'package:xml/xml.dart';
 
-import './dcperiod.dart';
 import '../../../../universal_feed.dart';
 import '../../../shared/shared.dart';
+import './dcperiod.dart';
 
 /// DcTerms is an extension to Dublin core
 ///

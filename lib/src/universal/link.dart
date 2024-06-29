@@ -13,7 +13,7 @@ enum LinkRelationType {
   /// performance of the search engine at "http://search.example.com" might
   /// contain, as a child of atom:feed:
   ///
-  ///     <link rel="related" href="http://search.example.com/"/>
+  /// `<link rel="related" href="http://search.example.com/"/>`
   ///
   /// An identical link might appear as a child of any atom:entry whose content
   /// contains a discussion of that same search engine.

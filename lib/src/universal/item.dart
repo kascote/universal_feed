@@ -1,8 +1,8 @@
 import 'package:xml/xml.dart';
 
+import '../../universal_feed.dart';
 import './parsers/atom_parser.dart';
 import './parsers/rss_parser.dart';
-import '../../universal_feed.dart';
 
 /// An item in a feed
 class Item {

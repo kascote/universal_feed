@@ -33,6 +33,7 @@ void getElements<T>(XmlElement node, String fieldName, {required ElementCallback
 /// Function that returns only text nodes from nodes at the same level.
 /// Example xml:
 ///
+/// ```xml
 ///     <node-1>
 ///       some text1
 ///       <some-node>
@@ -40,6 +41,7 @@ void getElements<T>(XmlElement node, String fieldName, {required ElementCallback
 ///       </some-node>
 ///       some text2
 ///     </node-1>
+/// ```
 ///
 /// the returned value will be
 ///    some text1 some text2
