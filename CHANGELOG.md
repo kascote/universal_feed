@@ -1,3 +1,9 @@
+## 0.5.0
+
+- first contribution! thanks @d370urn3ur
+- enabled parsing `logo` and `icon` elements from atoms feeds
+- bump dependencies, fixed analysis comments.
+
 ## 0.4.0
 
 - fixes html and xml link resolution
@@ -9,10 +15,10 @@
 ## 0.3.0
 
 - IMPORTANT UPDATE: The library has undergone significant changes and is now
-completely revamped. The RSS and Atom feeds are now combined into one entity,
-making them much easier to use. Please note that there may be more changes
-before we reach version 1.0. However, we hope it will not be as extensive as
-this one.
+  completely revamped. The RSS and Atom feeds are now combined into one entity,
+  making them much easier to use. Please note that there may be more changes
+  before we reach version 1.0. However, we hope it will not be as extensive as
+  this one.
 
 ## 0.2.0
 
