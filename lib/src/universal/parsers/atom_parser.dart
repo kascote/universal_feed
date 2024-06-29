@@ -58,8 +58,8 @@ void atomFeedParser(UniversalFeed uf, XmlElement root) {
     ),
   );
   getElement<String>(root, 'id', cb: (value) => uf.guid = value);
-  // getElement<String>(root, 'icon', cb: (value) => uf.icon = value);
-  getElement<XmlElement>(root, 'logo', cb: (element) => uf.image = Image.fromXml(element));
+  getElement<String>(root, 'icon', cb: (value) => uf.icon = Image(value));
+  getElement<String>(root, 'logo', cb: (value) => uf.image = Image(value));
   getElement<XmlElement>(root, 'rights', cb: (item) => uf.copyright = decodeTextField(item));
   getElement<XmlElement>(root, 'subtitle', cb: (item) => uf.description = decodeTextField(item));
 

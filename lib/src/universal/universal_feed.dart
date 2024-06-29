@@ -56,8 +56,14 @@ class UniversalFeed {
 
   /// Specifies a GIF, JPEG or PNG image that can be displayed with the channel.
   ///
-  /// rss ref:
+  /// rss ref: https://cyber.harvard.edu/rss/rss.html#ltimagegtSubelementOfLtchannelgt
+  /// atom ref: https://www.rfc-editor.org/rfc/rfc4287#section-4.2.8
   Image? image;
+
+  /// Specifies an image IRI that provides iconic visual identification for a channel.
+  ///
+  /// atom ref: https://www.rfc-editor.org/rfc/rfc4287#section-4.2.5
+  Image? icon;
 
   /// Copyright notice for content in the channel.
   ///
