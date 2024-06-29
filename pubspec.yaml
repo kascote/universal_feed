@@ -5,7 +5,7 @@ homepage: https://github.com/kascote/universal_feed
 repository: https://github.com/kascote/universal_feed
 issue_tracker: https://github.com/kascote/universal_feed/issues
 documentation: https://github.com/kascote/universal_feed/tree/main#readme
-topics: [rss, atom, feed, syndication, podcast, itunes, georss, dublin-core]
+topics: [rss, atom, feed, syndication, itunes]
 platforms:
   linux:
   macos:
