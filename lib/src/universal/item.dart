@@ -15,7 +15,7 @@ class Item {
   ///
   /// If the guid element has an attribute named "isPermaLink" with a value of true, the reader
   /// may assume that it is a permalink to the item, that is, a url that can be opened in a Web browser,
-  /// that points to the full item described by the <item> element.
+  /// that points to the full item described by the `<item>` element.
   /// isPermaLink is optional, its default value is true. If its value is false, the guid may not be assumed
   /// to be a url, or a url to anything in particular.
   ///
@@ -61,9 +61,9 @@ class Item {
   /// Name and Email address of the author of the item.
   ///
   /// It's the email address of the author of the item. For newspapers and magazines syndicating via RSS,
-  /// the author is the person who wrote the article that the <item> describes. For collaborative weblogs,
+  /// the author is the person who wrote the article that the `<item>` describes. For collaborative weblogs,
   /// the author of the item might be different from the managing editor or webmaster. For a weblog authored by a single
-  /// individual it would make sense to omit the <author> element.
+  /// individual it would make sense to omit the `<author>` element.
   ///
   /// rss ref: https://cyber.harvard.edu/rss/rss.html#ltauthorgtSubelementOfLtitemgt
   final List<Author> authors = [];

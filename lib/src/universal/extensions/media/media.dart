@@ -3,7 +3,7 @@ import 'package:xml/xml.dart';
 import '../../../../universal_feed.dart';
 import '../../../shared/shared.dart';
 
-/// An RSS module that supplements the <enclosure> element capabilities of RSS
+/// An RSS module that supplements the `<enclosure>` element capabilities of RSS
 /// 2.0 to allow for more robust media syndication.
 ///
 /// RSS enclosures are already being used to syndicate audio files
@@ -16,14 +16,14 @@ import '../../../shared/shared.dart';
 class Media {
   Media._();
 
-  /// <media:group> is a sub-element of <item>. It allows grouping of <media:content>
+  /// `<media:group>` is a sub-element of `<item>`. It allows grouping of `<media:content>`
   /// elements that are effectively the same content, yet different representations.
   ///
   /// ref: https://www.rssboard.org/media-rss#media-group
   List<Media> group = [];
 
-  /// <media:content> is a sub-element of either <item> or <media:group>.
-  /// Media objects that are not the same content should not be included in the same <media:group> element.
+  /// `<media:content>` is a sub-element of either `<item>` or `<media:group>`.
+  /// Media objects that are not the same content should not be included in the same `<media:group>` element.
   ///
   /// ref: https://www.rssboard.org/media-rss#media-content
   List<MediaContent> content = [];

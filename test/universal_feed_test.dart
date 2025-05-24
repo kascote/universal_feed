@@ -100,7 +100,7 @@ Tfx<T> runner<T>(String path, TGenerator<T> generator) {
     try {
       final p = generator(content);
       rc = fx(p);
-    } catch (err, stk) {
+    } on Object catch (err, stk) {
       rc = false;
       sb
         ..writeln(err)

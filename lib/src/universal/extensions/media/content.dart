@@ -3,7 +3,7 @@ import 'package:xml/xml.dart';
 import '../../../../universal_feed.dart';
 import '../../../shared/shared.dart';
 
-/// An RSS module that supplements the <enclosure> element capabilities of RSS 2.0 to allow for more robust media syndication.
+/// An RSS module that supplements the `<enclosure>` element capabilities of RSS 2.0 to allow for more robust media syndication.
 ///
 /// https://www.rssboard.org/media-rss
 class MediaContent {
@@ -78,8 +78,8 @@ class MediaContent {
   /// Notable entity and the contribution to the creation of the media object.
   List<Credit> credits = [];
 
-  /// <media:content> is a sub-element of either <item> or <media:group>. Media objects that are not the same content
-  /// should not be included in the same <media:group> element. The sequence of these items implies the order of
+  /// `<media:content>` is a sub-element of either `<item>` or `<media:group>`. Media objects that are not the same content
+  /// should not be included in the same `<media:group>` element. The sequence of these items implies the order of
   /// presentation. While many of the attributes appear to be audio/video specific, this element can be used to
   /// publish any type of media. It contains 14 attributes, most of which are optional.
   ///

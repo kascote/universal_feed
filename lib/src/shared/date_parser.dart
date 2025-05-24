@@ -44,10 +44,12 @@ DateTime? parseDate(String value) {
     if (p.rgx.hasMatch(value)) {
       try {
         return (p.cb != null) ? p.cb!(value.trim(), p) : defaultParser(value.trim(), p);
-      } on FormatException {
-        // ignore: avoid_print
-        print('(regular) format error: [$value] with [${p.format}]');
-        rethrow;
+      } on FormatException catch (e) {
+        throw FormatException(
+          'Error parsing date: [$value] with [${p.format}]',
+          e.source,
+          e.offset,
+        );
       }
     }
   }
@@ -59,10 +61,12 @@ DateTime? parseDate(String value) {
 DateTime defaultParser(String value, ParseInfo pi) {
   try {
     return DateFormat(pi.format).parseUtc(removeEndingZ(value));
-  } on FormatException {
-    // ignore: avoid_print
-    print('(regular) format error: [$value] with [${pi.format}]');
-    rethrow;
+  } on FormatException catch (e) {
+    throw FormatException(
+      'Error parsing date: [$value] with [${pi.format}]',
+      e.source,
+      e.offset,
+    );
   }
 }
 

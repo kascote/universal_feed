@@ -5,7 +5,7 @@ import 'package:xml/xml.dart';
 /// says how big it is in bytes, and type says what its type is, a standard MIME type.
 ///
 /// The url must be an http url.
-///    <enclosure url="http://www.scripting.com/mp3s/weatherReportSuite.mp3" length="12216320" type="audio/mpeg" />
+///    `<enclosure url="http://www.scripting.com/mp3s/weatherReportSuite.mp3" length="12216320" type="audio/mpeg" />`
 class Enclosure {
   /// Length in bytes of the object
   final String length;

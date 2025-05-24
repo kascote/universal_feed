@@ -1,4 +1,3 @@
-// ignore_for_file: avoid_print
 import 'dart:convert';
 import 'dart:io';
 import 'dart:math';
@@ -15,7 +14,7 @@ Future<void> main(List<String> args) async {
     final feedContent = await readUrl(feed);
     final uf = UniversalFeed.parseFromString(feedContent);
     showContent(uf);
-    print('-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=');
+    stdout.writeln('-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=');
   }
 }
 
@@ -39,7 +38,7 @@ void showContent(UniversalFeed feed) {
     logData('item link: ', item.links.first.href);
     logData('item published: ', join([item.published?.value, item.published?.parseValue()?.toIso8601String()]));
     logData('item updated: ', join([item.updated?.value, item.updated?.parseValue()?.toIso8601String()]));
-    print('>-----');
+    stdout.writeln('>-----');
   }
 }
 
@@ -49,7 +48,7 @@ String join(List<String?> values) {
 }
 
 void logData(String label, String data) {
-  if (data.isNotEmpty) print('$label $data');
+  if (data.isNotEmpty) stdout.writeln('$label $data');
 }
 
 // function to read a file from internet
