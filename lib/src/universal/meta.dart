@@ -10,6 +10,9 @@ enum FeedKind {
 
   /// Atom feed
   atom,
+
+  /// JSON feed
+  json,
 }
 
 /// Metadata information related to the feed

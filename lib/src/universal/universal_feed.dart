@@ -3,6 +3,7 @@ import 'package:xml/xml.dart';
 import '../../universal_feed.dart';
 import './parsers/atom_parser.dart';
 import './parsers/rss_parser.dart';
+import 'parsers/json_parser.dart';
 
 /// Feed is the root element of the UniversalFeed.
 ///
@@ -101,6 +102,16 @@ class UniversalFeed {
   /// Generate a new UniversalFeed object from an feed string.
   /// The string must be an XML string with RSS or Atom encoding.
   factory UniversalFeed.parseFromString(String content) {
+    content = content.trim();
+
+    if (content.isEmpty) {
+      throw XmlParserException('The content cannot be empty.');
+    }
+
+    if (content.startsWith('{')) {
+      return jsonParser(UniversalFeed._(), content);
+    }
+
     final doc = XmlDocument.parse(content);
     final root = doc.rootElement;
 

@@ -46,6 +46,9 @@ class Namespaces {
     }
   }
 
+  /// Returns an empty Namespace object
+  factory Namespaces.empty() => Namespaces([]);
+
   /// Returns true if the feed has the Atom namespace
   bool get hasAtom => _extensions.containsKey(nsAtomNs);
 

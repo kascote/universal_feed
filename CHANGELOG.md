@@ -1,3 +1,7 @@
+## 0.6.0
+
+- adds support for json feeds
+
 ## 0.5.0
 
 - first contribution! thanks @d370urn3ur

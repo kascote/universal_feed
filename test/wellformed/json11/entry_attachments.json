@@ -1,0 +1,18 @@
+{
+  "version": "https://jsonfeed.org/version/1.1",
+  "title": "Example JSON",
+  "items": [
+    {
+      "id": "entry-001",
+      "title": "Entry Title",
+      "attachments": [
+        {
+          "url": "https://example.com/file.pdf",
+          "type": "application/pdf",
+          "size_in_bytes": 1024000,
+          "duration_in_seconds": 300
+        }
+      ]
+    }
+  ]
+}

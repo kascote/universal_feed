@@ -8,6 +8,7 @@ Future<void> main(List<String> args) async {
   const feeds = [
     'https://www.nasa.gov/rss/dyn/breaking_news.rss',
     'https://pub.dev/feed.atom',
+    'https://www.manton.org/feed.json',
   ];
 
   for (final feed in feeds) {
@@ -35,7 +36,7 @@ void showContent(UniversalFeed feed) {
     final item = feed.items[i];
     logData('item title: ', item.title ?? '');
     logData('item description: ', item.description ?? '');
-    logData('item link: ', item.links.first.href);
+    logData('item link: ', item.links.isEmpty ? '' : item.links.first.href);
     logData('item published: ', join([item.published?.value, item.published?.parseValue()?.toIso8601String()]));
     logData('item updated: ', join([item.updated?.value, item.updated?.parseValue()?.toIso8601String()]));
     stdout.writeln('>-----');
@@ -57,5 +58,6 @@ Future<String> readUrl(String url) async {
   final request = await httpClient.getUrl(Uri.parse(url));
   final response = await request.close();
   final contents = await response.transform<String>(utf8.decoder).join();
+  httpClient.close(force: true);
   return contents;
 }

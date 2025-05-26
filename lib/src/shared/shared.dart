@@ -18,6 +18,15 @@ void getElement<T>(XmlElement node, String fieldName, {required ElementCallback<
   }
 }
 
+/// Helper function to retrieve the node or the node content as Text and execute the callback
+/// only if the required node exists
+void getJsElement<T>(Map<String, dynamic> node, String fieldName, {required ElementCallback<T> cb}) {
+  final element = node[fieldName];
+  if (element != null) {
+    if (T == String) cb(element as T);
+  }
+}
+
 /// Helper function to retrieve all the elements that match a node name. The callback will receive
 /// each node individually
 void getElements<T>(XmlElement node, String fieldName, {required ElementCallback<T> cb, String? ns}) {
@@ -27,6 +36,18 @@ void getElements<T>(XmlElement node, String fieldName, {required ElementCallback
   for (final element in elements) {
     if (T == String) cb(element.innerText as T);
     if (T == XmlElement) cb(element as T);
+  }
+}
+
+/// Helper function to retrieve all the elements that match a node name. The callback will receive
+/// each node individually
+void getJsElements<T>(Map<String, dynamic> node, String fieldName, {required ElementCallback<T> cb}) {
+  final elements = node[fieldName] as List<dynamic>?;
+  if (elements == null) return;
+  final tmp = elements.whereType<T>();
+
+  for (final element in tmp) {
+    cb(element);
   }
 }
 

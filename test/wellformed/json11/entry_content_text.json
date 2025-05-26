@@ -1,0 +1,11 @@
+{
+  "version": "https://jsonfeed.org/version/1.1",
+  "title": "Example JSON",
+  "items": [
+    {
+      "id": "entry-001",
+      "title": "Entry Title",
+      "content_text": "This is the plain text content of the entry."
+    }
+  ]
+}

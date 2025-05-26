@@ -16,8 +16,12 @@ class Enclosure {
   /// URI pointing to the object
   final String url;
 
+  /// Duration of the media object (optional)
+  /// How the duration (minutes, seconds, etc) is expressed depends on the generator.
+  final String? duration;
+
   /// Creates a new [Enclosure] object
-  const Enclosure({required this.url, required this.length, this.type = 'application/octet-stream'});
+  const Enclosure({required this.url, required this.length, this.type = 'application/octet-stream', this.duration});
 
   /// Creates an [Enclosure] object from an [XmlElement]
   factory Enclosure.rssFromXml(XmlElement node) {
@@ -25,6 +29,7 @@ class Enclosure {
       url: node.getAttribute('url') ?? node.getAttribute('href') ?? '',
       length: node.getAttribute('length') ?? '',
       type: node.getAttribute('type') ?? '',
+      duration: node.getAttribute('duration') ?? '',
     );
   }
 }

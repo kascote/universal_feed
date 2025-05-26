@@ -1,0 +1,11 @@
+{
+  "version": "https://jsonfeed.org/version/1.1",
+  "title": "Example JSON",
+  "items": [
+    {
+      "id": "entry-001",
+      "title": "Entry Title",
+      "date_modified": "2025-01-16T14:45:00Z"
+    }
+  ]
+}

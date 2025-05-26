@@ -1,8 +1,9 @@
 import 'package:xml/xml.dart';
 
 import '../../universal_feed.dart';
-import './parsers/atom_parser.dart';
-import './parsers/rss_parser.dart';
+import 'parsers/atom_parser.dart';
+import 'parsers/json_parser.dart';
+import 'parsers/rss_parser.dart';
 
 /// An item in a feed
 class Item {
@@ -139,6 +140,13 @@ class Item {
   factory Item.atomFromXml(UniversalFeed uf, XmlElement atomItem) {
     final item = Item._();
     atomItemParser(uf, item, atomItem);
+    return item;
+  }
+
+  /// Creates a new [Item] from a json array
+  factory Item.jsonFromJson(UniversalFeed uf, Map<String, dynamic> jsonItem) {
+    final item = Item._();
+    jsonItemParser(uf, item, jsonItem);
     return item;
   }
 }

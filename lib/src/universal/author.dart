@@ -100,6 +100,16 @@ class Author {
     );
   }
 
+  /// Creates a new [Author] object from a JSON object
+  factory Author.fromJson(Map<String, dynamic> json) {
+    return Author(
+      name: json['name'] as String? ?? '',
+      email: '',
+      url: json['url'] as String?,
+      type: AuthorType.author,
+    );
+  }
+
   /// Returns the parser author's value
   ///
   /// Depending on [name] and [email] content could returns:

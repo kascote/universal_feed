@@ -8,6 +8,8 @@ import 'atom_cases.dart';
 import 'dcterm_cases.dart';
 import 'georss_cases.dart';
 import 'itunes_cases.dart';
+import 'json10_cases.dart';
+import 'json11_cases.dart';
 import 'media_rss_cases.dart';
 import 'rss_cases.dart';
 import 'syndication_cases.dart';
@@ -81,6 +83,24 @@ void main() {
     () => atomTests().forEach(
       runner<UniversalFeed>(
         './test/wellformed/atom',
+        UniversalFeed.parseFromString,
+      ),
+    ),
+  );
+  test(
+    'JSON Feed v1',
+    () => json10Tests().forEach(
+      runner<UniversalFeed>(
+        './test/wellformed/json10',
+        UniversalFeed.parseFromString,
+      ),
+    ),
+  );
+  test(
+    'JSON Feed v1.1',
+    () => json11Tests().forEach(
+      runner<UniversalFeed>(
+        './test/wellformed/json11',
         UniversalFeed.parseFromString,
       ),
     ),

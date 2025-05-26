@@ -1,0 +1,10 @@
+{
+  "version": "https://jsonfeed.org/version/1.1",
+  "title": "Test Feed",
+  "authors": [
+    {
+      "name": "Example author",
+      "url": "http://example.com/"
+    }
+  ]
+}
