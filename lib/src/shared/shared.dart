@@ -44,11 +44,7 @@ void getElements<T>(XmlElement node, String fieldName, {required ElementCallback
 void getJsElements<T>(Map<String, dynamic> node, String fieldName, {required ElementCallback<T> cb}) {
   final elements = node[fieldName] as List<dynamic>?;
   if (elements == null) return;
-  final tmp = elements.whereType<T>();
-
-  for (final element in tmp) {
-    cb(element);
-  }
+  elements.whereType<T>().forEach(cb);
 }
 
 /// Function that returns only text nodes from nodes at the same level.

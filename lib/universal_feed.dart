@@ -15,7 +15,7 @@
 /// there is no attempt to parse it when the feed is parsed. The Timestamp
 /// object has methods to help with the parsing.
 
-library universal_feed;
+library;
 
 export 'src/shared/date_parser.dart';
 export 'src/shared/errors.dart';
