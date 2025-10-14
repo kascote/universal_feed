@@ -1,6 +1,7 @@
 import 'package:xml/xml.dart';
 
 import '../../../../universal_feed.dart';
+import '../../../shared/extensions.dart';
 import '../../../shared/shared.dart';
 
 /// An RSS module that supplements the `<enclosure>` element capabilities of RSS
@@ -69,74 +70,67 @@ class Media {
 
     final media = Media._();
 
-    getElements<XmlElement>(
-      node,
-      'content',
-      ns: nsUrl,
-      cb: (xml) => media.content.add(MediaContent.fromXml(uf, xml)),
-    );
-
-    getElements<XmlElement>(
-      node,
-      'group',
-      ns: nsUrl,
-      cb: (group) {
-        media.group.add(Media.contentFromXml(uf, group));
-      },
-    );
-
-    getElement<XmlElement>(node, 'title', ns: nsUrl, cb: (value) => media.title = textDecoder('plain', value));
-    getElement<XmlElement>(
-      node,
-      'description',
-      ns: nsUrl,
-      cb: (value) => media.description = textDecoder('plain', value),
-    );
-
-    getElements<XmlElement>(
-      node,
-      'rating',
-      ns: nsUrl,
-      cb: (xml) {
-        media.rating.add(Rating.fromXml(xml));
-      },
-    );
-
-    getElements<XmlElement>(
-      node,
-      'keywords',
-      ns: nsUrl,
-      cb: (xml) {
-        final keywords = Category.loadTags(xml, defaultScheme: 'keyword');
-        if (keywords != null) media.categories.addAll(keywords);
-      },
-    );
-
-    getElements<XmlElement>(
-      node,
-      'category',
-      ns: nsUrl,
-      cb: (xml) {
-        final category = Category.fromXml(xml);
-        if (category != null) media.categories.add(category);
-      },
-    );
-
-    getElements<XmlElement>(
-      node,
-      'thumbnail',
-      ns: nsUrl,
-      cb: (xml) => media.thumbnails.add(Image.fromXmlAttributes(xml)),
-    );
-
-    getElement<XmlElement>(node, 'player', ns: nsUrl, cb: (value) => media.player = Player.fromXml(value));
-
-    getElements<XmlElement>(
-      node,
-      'credit',
-      ns: nsUrl,
-      cb: (xml) => media.credits.add(Credit.fromXml(xml)),
-    );
+    node
+      ..forEachElementXml(
+        'content',
+        (xml) => media.content.add(MediaContent.fromXml(uf, xml)),
+        ns: nsUrl,
+      )
+      ..forEachElementXml(
+        'group',
+        (group) {
+          media.group.add(Media.contentFromXml(uf, group));
+        },
+        ns: nsUrl,
+      )
+      ..ifPresentXml(
+        'title',
+        (value) => media.title = textDecoder('plain', value),
+        ns: nsUrl,
+      )
+      ..ifPresentXml(
+        'description',
+        (value) => media.description = textDecoder('plain', value),
+        ns: nsUrl,
+      )
+      ..forEachElementXml(
+        'rating',
+        (xml) {
+          media.rating.add(Rating.fromXml(xml));
+        },
+        ns: nsUrl,
+      )
+      ..forEachElementXml(
+        'keywords',
+        (xml) {
+          final keywords = Category.loadTags(xml, defaultScheme: 'keyword');
+          if (keywords != null) media.categories.addAll(keywords);
+        },
+        ns: nsUrl,
+      )
+      ..forEachElementXml(
+        'category',
+        (xml) {
+          final category = Category.fromXml(xml);
+          if (category != null) media.categories.add(category);
+        },
+        ns: nsUrl,
+      )
+      ..forEachElementXml(
+        'thumbnail',
+        (xml) => media.thumbnails.add(Image.fromXmlAttributes(xml)),
+        ns: nsUrl,
+      )
+      ..ifPresentXml(
+        'player',
+        (value) => media.player = Player.fromXml(value),
+        ns: nsUrl,
+      )
+      ..forEachElementXml(
+        'credit',
+        (xml) => media.credits.add(Credit.fromXml(xml)),
+        ns: nsUrl,
+      );
 
     return media;
   }

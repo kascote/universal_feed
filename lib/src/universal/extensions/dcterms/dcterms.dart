@@ -1,7 +1,7 @@
 import 'package:xml/xml.dart';
 
 import '../../../../universal_feed.dart';
-import '../../../shared/shared.dart';
+import '../../../shared/extensions.dart';
 import './dcperiod.dart';
 
 /// DcTerms is an extension to Dublin core
@@ -32,8 +32,17 @@ class DcTerms {
       ..created = node.getElement('created', namespace: nsUrl)?.innerText
       ..issued = node.getElement('issued', namespace: nsUrl)?.innerText
       ..modified = node.getElement('modified', namespace: nsUrl)?.innerText;
-    getElement<String>(node, 'valid', ns: nsUrl, cb: (value) => terms.valid = DcPeriod.fromString(value));
-    getElement<String>(node, 'available', ns: nsUrl, cb: (value) => terms.available = DcPeriod.fromString(value));
+    node
+      ..ifPresent(
+        'valid',
+        (value) => terms.valid = DcPeriod.fromString(value),
+        ns: nsUrl,
+      )
+      ..ifPresent(
+        'available',
+        (value) => terms.available = DcPeriod.fromString(value),
+        ns: nsUrl,
+      );
 
     return terms;
   }

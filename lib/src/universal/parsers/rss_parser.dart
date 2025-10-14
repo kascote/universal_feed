@@ -1,6 +1,7 @@
 import 'package:xml/xml.dart';
 
 import '../../../universal_feed.dart';
+import '../../shared/extensions.dart';
 import '../../shared/shared.dart';
 
 /// Parse an RSS feed
@@ -26,57 +27,62 @@ void rssXmlParser(UniversalFeed uf, XmlDocument doc) {
 
 /// Parse the channel element of an rss feed
 void rssChannelParser(UniversalFeed uf, XmlElement channel) {
-  getElement<String>(channel, 'title', cb: (value) => uf.title = value);
-  getElement<XmlElement>(channel, 'description', cb: (value) => uf.description = textDecoder('xml2', value));
-  getElement<String>(
-    channel,
-    'link',
-    cb: (value) {
-      uf.htmlLink = Link.create(href: value, rel: 'alternate', type: 'text/html');
-      uf.links.add(uf.htmlLink!);
-    },
-  );
-  getElement<String>(channel, 'lastBuildDate', cb: (value) => uf.updated = Timestamp(value));
-  getElement<String>(channel, 'pubDate', cb: (value) => uf.published = Timestamp(value));
-  getElement<String>(
-    channel,
-    'author',
-    cb: (value) => uf.authors.add(Author.fromString(value)..type = AuthorType.author),
-  );
-  getElement<String>(
-    channel,
-    'managingEditor',
-    cb: (value) => uf.authors.add(Author.fromString(value)..type = AuthorType.editor),
-  );
-  getElement<String>(
-    channel,
-    'webMaster',
-    cb: (value) => uf.authors.add(Author.fromString(value)..type = AuthorType.webMaster),
-  );
-  getElement<String>(channel, 'language', cb: (value) => uf.language = value);
-  getElement<XmlElement>(channel, 'image', cb: (value) => uf.image = Image.fromXml(value));
-  getElement<String>(channel, 'copyright', cb: (value) => uf.copyright = value);
-  getElement<String>(channel, 'generator', cb: (value) => uf.generator = Generator.create(value));
-  getElements<XmlElement>(
-    channel,
-    'category',
-    cb: (value) {
-      final category = Category.fromXml(value);
-      if (category != null) {
-        uf.categories.add(category);
-      }
-    },
-  );
-  getElement<String>(channel, 'docs', cb: (value) => uf.docs = value);
+  channel
+    ..ifPresent('title', (value) => uf.title = value)
+    ..ifPresentXml(
+      'description',
+      (value) => uf.description = textDecoder('xml2', value),
+    )
+    ..ifPresent(
+      'link',
+      (value) {
+        uf.htmlLink = Link.create(
+          href: value,
+          rel: 'alternate',
+          type: 'text/html',
+        );
+        uf.links.add(uf.htmlLink!);
+      },
+    )
+    ..ifPresent('lastBuildDate', (value) => uf.updated = Timestamp(value))
+    ..ifPresent('pubDate', (value) => uf.published = Timestamp(value))
+    ..ifPresent(
+      'author',
+      (value) => uf.authors.add(Author.fromString(value)..type = AuthorType.author),
+    )
+    ..ifPresent(
+      'managingEditor',
+      (value) => uf.authors.add(Author.fromString(value)..type = AuthorType.editor),
+    )
+    ..ifPresent(
+      'webMaster',
+      (value) => uf.authors.add(Author.fromString(value)..type = AuthorType.webMaster),
+    )
+    ..ifPresent('language', (value) => uf.language = value)
+    ..ifPresentXml('image', (value) => uf.image = Image.fromXml(value))
+    ..ifPresent('copyright', (value) => uf.copyright = value)
+    ..ifPresent(
+      'generator',
+      (value) => uf.generator = Generator.create(value),
+    )
+    ..forEachElementXml(
+      'category',
+      (value) {
+        final category = Category.fromXml(value);
+        if (category != null) {
+          uf.categories.add(category);
+        }
+      },
+    )
+    ..ifPresent('docs', (value) => uf.docs = value);
 
   if (uf.meta.extensions.hasAtom) {
     final atomUrl = uf.meta.extensions.nsUrl(nsAtomNs);
     // Channel's link points to the Web site hosting the feed (not the feed itself)
     // Atom's link usually points to the feed itself
-    getElements<XmlElement>(
-      channel,
+    channel.forEachElementXml(
       'link',
-      cb: (value) {
+      (value) {
         final link = Link.fromXml(value);
         if (link.rel == LinkRelationType.self) uf.xmlLink = link;
         if (link.rel == LinkRelationType.alternate && uf.htmlLink == null) uf.htmlLink = link;
@@ -88,172 +94,176 @@ void rssChannelParser(UniversalFeed uf, XmlElement channel) {
 
   if (uf.meta.extensions.hasDc) {
     final dcUrl = uf.meta.extensions.nsUrl(nsDublinCoreNs);
-    getElement<String>(channel, 'title', cb: (value) => uf.title = value, ns: dcUrl);
-    getElement<String>(
-      channel,
-      'author',
-      cb: (value) => uf.authors.add(Author.fromString(value)..type = AuthorType.author),
-      ns: dcUrl,
-    );
-    getElement<String>(
-      channel,
-      'creator',
-      cb: (value) => uf.authors.add(Author.fromString(value)..type = AuthorType.creator),
-      ns: dcUrl,
-    );
-    getElement<String>(
-      channel,
-      'contributor',
-      cb: (value) => uf.authors.add(Author.fromString(value)..type = AuthorType.contributor),
-      ns: dcUrl,
-    );
-    getElement<String>(
-      channel,
-      'publisher',
-      cb: (value) => uf.authors.add(Author.fromString(value)..type = AuthorType.publisher),
-      ns: dcUrl,
-    );
-    getElement<String>(channel, 'date', cb: (value) => uf.updated = Timestamp(value), ns: dcUrl);
-    getElement<String>(channel, 'rights', cb: (value) => uf.copyright = value, ns: dcUrl);
-    getElements<String>(
-      channel,
-      'subject',
-      cb: (value) => uf.categories.add(Category(label: value)),
-      ns: dcUrl,
-    );
+    channel
+      ..ifPresent('title', (value) => uf.title = value, ns: dcUrl)
+      ..ifPresent(
+        'author',
+        (value) => uf.authors.add(Author.fromString(value)..type = AuthorType.author),
+        ns: dcUrl,
+      )
+      ..ifPresent(
+        'creator',
+        (value) => uf.authors.add(Author.fromString(value)..type = AuthorType.creator),
+        ns: dcUrl,
+      )
+      ..ifPresent(
+        'contributor',
+        (value) => uf.authors.add(
+          Author.fromString(value)..type = AuthorType.contributor,
+        ),
+        ns: dcUrl,
+      )
+      ..ifPresent(
+        'publisher',
+        (value) => uf.authors.add(Author.fromString(value)..type = AuthorType.publisher),
+        ns: dcUrl,
+      )
+      ..ifPresent(
+        'date',
+        (value) => uf.updated = Timestamp(value),
+        ns: dcUrl,
+      )
+      ..ifPresent('rights', (value) => uf.copyright = value, ns: dcUrl)
+      ..forEachElement(
+        'subject',
+        (value) => uf.categories.add(Category(label: value)),
+        ns: dcUrl,
+      );
   }
 }
 
 /// Parse an rss item
 Item rssItemParser(UniversalFeed uf, Item item, XmlElement element) {
-  getElement<String>(element, 'title', cb: (value) => item.title = value);
-  getElement<String>(element, 'description', cb: (value) => item.description = value);
+  element
+    ..ifPresent('title', (value) => item.title = value)
+    ..ifPresent('description', (value) => item.description = value);
 
   if (uf.meta.extensions.hasContent) {
-    getElements<XmlElement>(
-      element,
+    element.forEachElementXml(
       'encoded',
-      cb: (value) => item.content.add(Content.fromXml(value, defaultType: 'text')),
+      (value) => item.content.add(Content.fromXml(value, defaultType: 'text')),
       ns: uf.meta.extensions.nsUrl(nsContentNs),
     );
   }
 
-  getElement<String>(
-    element,
-    'link',
-    cb: (value) {
-      final lnk = Link.create(href: value, type: 'link', rel: 'alternate');
-      item.link = lnk;
-      item.links.add(lnk);
-    },
-  );
-  getElement<String>(
-    element,
-    'pubDate',
-    cb: (value) {
-      final date = Timestamp(value);
-      item
-        ..published = date
-        ..updated = date;
-    },
-  );
-  getElements<String>(
-    element,
-    'author',
-    cb: (value) => item.authors.add(Author.fromString(value)..type = AuthorType.author),
-  );
-  getElement<XmlElement>(element, 'image', cb: (value) => item.image = Image.fromXml(value));
-  getElements<XmlElement>(
-    element,
-    'category',
-    cb: (value) {
-      final category = Category.fromXml(value);
-      if (category != null) {
-        item.categories.add(category);
-      }
-    },
-  );
-  getElements<XmlElement>(
-    element,
-    'enclosure',
-    cb: (value) => item.enclosures.add(Enclosure.rssFromXml(value)),
-  );
-  getElement<XmlElement>(
-    element,
-    'source',
-    cb: (value) {
-      item.source = Link.create(href: value.getAttribute('url') ?? '', type: 'application/xml', rel: 'self');
-      item.source!.title = value.innerText;
-    },
-  );
-  getElement<String>(
-    element,
-    'comments',
-    cb: (value) => item.comments = Link.create(rel: 'alternate', type: 'text/html', href: value),
-  );
-
-  // is the last attribute read, so we can set the Link if isPermaLink is true
-  getElement<XmlElement>(
-    element,
-    'guid',
-    cb: (eleGuid) {
-      final isPermaLink = eleGuid.getAttribute('isPermaLink') ?? 'false';
-      if (isPermaLink == 'true') {
-        item.link = Link.create(href: eleGuid.innerText, type: 'text/html', rel: 'alternate');
-      }
-      item.guid = eleGuid.innerText;
-    },
-  );
-
-  if (uf.meta.extensions.hasDc) {
-    final dcUrl = uf.meta.extensions.nsUrl(nsDublinCoreNs);
-    getElement<String>(
-      element,
-      'author',
-      cb: (value) => item.authors.add(Author.fromString(value)..type = AuthorType.author),
-      ns: dcUrl,
-    );
-    getElement<String>(
-      element,
-      'contributor',
-      cb: (value) => item.authors.add(Author.fromString(value)..type = AuthorType.contributor),
-      ns: dcUrl,
-    );
-    getElements<String>(
-      element,
-      'creator',
-      cb: (value) => item.authors.add(Author.fromString(value)..type = AuthorType.creator),
-      ns: dcUrl,
-    );
-    getElement<String>(
-      element,
-      'date',
-      cb: (value) {
+  element
+    ..ifPresent(
+      'link',
+      (value) {
+        final lnk = Link.create(href: value, type: 'link', rel: 'alternate');
+        item.link = lnk;
+        item.links.add(lnk);
+      },
+    )
+    ..ifPresent(
+      'pubDate',
+      (value) {
         final date = Timestamp(value);
         item
           ..published = date
           ..updated = date;
       },
-      ns: dcUrl,
+    )
+    ..forEachElement(
+      'author',
+      (value) => item.authors.add(Author.fromString(value)..type = AuthorType.author),
+    )
+    ..ifPresentXml('image', (value) => item.image = Image.fromXml(value))
+    ..forEachElementXml(
+      'category',
+      (value) {
+        final category = Category.fromXml(value);
+        if (category != null) {
+          item.categories.add(category);
+        }
+      },
+    )
+    ..forEachElementXml(
+      'enclosure',
+      (value) => item.enclosures.add(Enclosure.rssFromXml(value)),
+    )
+    ..ifPresentXml(
+      'source',
+      (value) {
+        item.source = Link.create(
+          href: value.getAttribute('url') ?? '',
+          type: 'application/xml',
+          rel: 'self',
+        );
+        item.source!.title = value.innerText;
+      },
+    )
+    ..ifPresent(
+      'comments',
+      (value) => item.comments = Link.create(
+        rel: 'alternate',
+        type: 'text/html',
+        href: value,
+      ),
+    )
+    // is the last attribute read, so we can set the Link if isPermaLink is true
+    ..ifPresentXml(
+      'guid',
+      (eleGuid) {
+        final isPermaLink = eleGuid.getAttribute('isPermaLink') ?? 'false';
+        if (isPermaLink == 'true') {
+          item.link = Link.create(
+            href: eleGuid.innerText,
+            type: 'text/html',
+            rel: 'alternate',
+          );
+        }
+        item.guid = eleGuid.innerText;
+      },
     );
-    getElement<String>(
-      element,
-      'description',
-      cb: (value) => item.description = value,
-      ns: dcUrl,
-    );
-    getElement<String>(
-      element,
-      'publisher',
-      cb: (value) => item.authors.add(Author.fromString(value)..type = AuthorType.publisher),
-      ns: dcUrl,
-    );
-    getElement<String>(
-      element,
-      'title',
-      cb: (value) => item.title = value,
-      ns: dcUrl,
-    );
+
+  if (uf.meta.extensions.hasDc) {
+    final dcUrl = uf.meta.extensions.nsUrl(nsDublinCoreNs);
+    element
+      ..ifPresent(
+        'author',
+        (value) => item.authors.add(Author.fromString(value)..type = AuthorType.author),
+        ns: dcUrl,
+      )
+      ..ifPresent(
+        'contributor',
+        (value) => item.authors.add(
+          Author.fromString(value)..type = AuthorType.contributor,
+        ),
+        ns: dcUrl,
+      )
+      ..forEachElement(
+        'creator',
+        (value) => item.authors.add(Author.fromString(value)..type = AuthorType.creator),
+        ns: dcUrl,
+      )
+      ..ifPresent(
+        'date',
+        (value) {
+          final date = Timestamp(value);
+          item
+            ..published = date
+            ..updated = date;
+        },
+        ns: dcUrl,
+      )
+      ..ifPresent(
+        'description',
+        (value) => item.description = value,
+        ns: dcUrl,
+      )
+      ..ifPresent(
+        'publisher',
+        (value) => item.authors.add(
+          Author.fromString(value)..type = AuthorType.publisher,
+        ),
+        ns: dcUrl,
+      )
+      ..ifPresent(
+        'title',
+        (value) => item.title = value,
+        ns: dcUrl,
+      );
   }
 
   if (uf.meta.extensions.hasMedia) {

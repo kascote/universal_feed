@@ -11,12 +11,25 @@ import '../../shared/shared.dart';
 UniversalFeed jsonParser(UniversalFeed feed, String content) {
   final json = jsonDecode(content) as Map<String, dynamic>;
 
-  final versionStr = _getRequiredElement<String>(json, 'version', 'The version is required.');
+  final versionStr = _getRequiredElement<String>(
+    json,
+    'version',
+    'The version is required.',
+  );
   final versionUri = Uri.tryParse(versionStr);
   if (versionUri == null) throw FeedError('The version is not a valid URI.');
   feed
-    ..title = _getRequiredElement<String>(json, 'title', 'The title is required.')
-    ..meta = MetaData(FeedKind.json, versionUri.pathSegments.last, Namespaces.empty(), encoding: 'utf8');
+    ..title = _getRequiredElement<String>(
+      json,
+      'title',
+      'The title is required.',
+    )
+    ..meta = MetaData(
+      FeedKind.json,
+      versionUri.pathSegments.last,
+      Namespaces.empty(),
+      encoding: 'utf8',
+    );
 
   _jsonFeedParser(feed, json);
   final items = json['items'] as List<dynamic>?;
@@ -33,11 +46,19 @@ void _jsonFeedParser(UniversalFeed uf, Map<String, dynamic> json) {
   json
     ..ifPresent<String>(
       'home_page_url',
-      (value) => uf.htmlLink = Link.create(href: value, rel: 'alternate', type: 'text/html'),
+      (value) => uf.htmlLink = Link.create(
+        href: value,
+        rel: 'alternate',
+        type: 'text/html',
+      ),
     )
     ..ifPresent<String>(
       'feed_url',
-      (value) => uf.xmlLink = Link.create(href: value, rel: 'self', type: 'application/json'),
+      (value) => uf.xmlLink = Link.create(
+        href: value,
+        rel: 'self',
+        type: 'application/json',
+      ),
     )
     ..ifPresent<String>('description', (value) => uf.description = value)
     ..ifPresent<String>('language', (value) => uf.language = value)
@@ -59,10 +80,18 @@ void jsonItemParser(UniversalFeed feed, Item item, Map<String, dynamic> json) {
     )
     ..ifPresent<String>(
       'external_url',
-      (value) => item.links.add(Link.create(href: value, rel: 'related', type: 'text/html')),
+      (value) => item.links.add(
+        Link.create(href: value, rel: 'related', type: 'text/html'),
+      ),
     )
-    ..ifPresent<String>('date_modified', (value) => item.updated = Timestamp(value))
-    ..ifPresent<String>('date_published', (value) => item.published = Timestamp(value))
+    ..ifPresent<String>(
+      'date_modified',
+      (value) => item.updated = Timestamp(value),
+    )
+    ..ifPresent<String>(
+      'date_published',
+      (value) => item.published = Timestamp(value),
+    )
     ..ifPresent<String>('image', (value) => item.image = Image(value))
     ..ifPresent<String>(
       'content_html',
@@ -109,7 +138,9 @@ List<Author> _parseAuthors(Map<String, dynamic> json) {
 
   final authorsArray = json['authors'] as List<dynamic>?;
   if (authorsArray != null) {
-    authors.addAll(authorsArray.map((e) => Author.fromJson(e as Map<String, dynamic>)));
+    authors.addAll(
+      authorsArray.map((e) => Author.fromJson(e as Map<String, dynamic>)),
+    );
   }
 
   // Fallback to single author (JSON Feed 1.0)
@@ -124,7 +155,11 @@ List<Author> _parseAuthors(Map<String, dynamic> json) {
 }
 
 // Validates and retrieves a required field from JSON
-T _getRequiredElement<T>(Map<String, dynamic> json, String fieldName, String errorMessage) {
+T _getRequiredElement<T>(
+  Map<String, dynamic> json,
+  String fieldName,
+  String errorMessage,
+) {
   final value = json.getTyped<T>(fieldName);
   if (value == null) throw FeedError(errorMessage);
   return value;

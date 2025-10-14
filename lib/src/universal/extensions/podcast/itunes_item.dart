@@ -1,7 +1,7 @@
 import 'package:xml/xml.dart';
 
 import '../../../../universal_feed.dart';
-import '../../../shared/shared.dart';
+import '../../../shared/extensions.dart';
 
 /// Singe Itunes item
 class ItunesItem {
@@ -44,14 +44,13 @@ class ItunesItem {
       ..episodeType = node.getElement('episodeType', namespace: nsUrl)?.innerText.trim()
       ..block = node.getElement('block', namespace: nsUrl)?.innerText.trim()
       ..summary = node.getElement('summary', namespace: nsUrl)?.innerText.trim();
-    getElement<XmlElement>(
-      node,
+    node.ifPresentXml(
       'image',
-      ns: nsUrl,
-      cb: (value) {
+      (value) {
         final url = value.getAttribute('href') ?? value.getAttribute('url');
         if (url != null) ii.image = Image(url.trim());
       },
+      ns: nsUrl,
     );
 
     return ii;

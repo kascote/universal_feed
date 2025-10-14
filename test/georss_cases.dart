@@ -16,7 +16,7 @@ Map<String, TestFx> geoRssTests() {
   };
 }
 
-// TODO(nelson): 
+// TODO(nelson): check
 // typedef TestFxAtom = bool Function(Atom r);
 // Map<String, TestFxAtom> geoAtomTests() {
 //   return {

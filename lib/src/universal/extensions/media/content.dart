@@ -1,6 +1,7 @@
 import 'package:xml/xml.dart';
 
 import '../../../../universal_feed.dart';
+import '../../../shared/extensions.dart';
 import '../../../shared/shared.dart';
 
 /// An RSS module that supplements the `<enclosure>` element capabilities of RSS 2.0 to allow for more robust media syndication.
@@ -104,50 +105,53 @@ class MediaContent {
       ..width = node.getAttribute('width')
       ..lang = node.getAttribute('lang');
 
-    getElements<XmlElement>(
-      node,
-      'rating',
-      ns: nsUrl,
-      cb: (xml) => mc.rating.add(Rating.fromXml(xml)),
-    );
-
-    getElement<XmlElement>(node, 'title', ns: nsUrl, cb: (value) => mc.title = textDecoder('plain', value));
-    getElement<XmlElement>(node, 'description', ns: nsUrl, cb: (value) => mc.description = textDecoder('plain', value));
-    getElements<XmlElement>(
-      node,
-      'keywords',
-      ns: nsUrl,
-      cb: (xml) {
-        final categories = Category.loadTags(xml, defaultScheme: 'keyword');
-        if (categories != null) mc.categories.addAll(categories);
-      },
-    );
-
-    getElements<XmlElement>(
-      node,
-      'category',
-      ns: nsUrl,
-      cb: (xml) {
-        final category = Category.fromXml(xml);
-        if (category != null) mc.categories.add(category);
-      },
-    );
-
-    getElements<XmlElement>(
-      node,
-      'thumbnail',
-      ns: nsUrl,
-      cb: (xml) => mc.thumbnails.add(Image.fromXmlAttributes(xml)),
-    );
-
-    getElement<XmlElement>(node, 'player', ns: nsUrl, cb: (value) => mc.player = Player.fromXml(value));
-
-    getElement<XmlElement>(
-      node,
-      'credit',
-      ns: nsUrl,
-      cb: (xml) => mc.credits.add(Credit.fromXml(xml)),
-    );
+    node
+      ..forEachElementXml(
+        'rating',
+        (xml) => mc.rating.add(Rating.fromXml(xml)),
+        ns: nsUrl,
+      )
+      ..ifPresentXml(
+        'title',
+        (value) => mc.title = textDecoder('plain', value),
+        ns: nsUrl,
+      )
+      ..ifPresentXml(
+        'description',
+        (value) => mc.description = textDecoder('plain', value),
+        ns: nsUrl,
+      )
+      ..forEachElementXml(
+        'keywords',
+        (xml) {
+          final categories = Category.loadTags(xml, defaultScheme: 'keyword');
+          if (categories != null) mc.categories.addAll(categories);
+        },
+        ns: nsUrl,
+      )
+      ..forEachElementXml(
+        'category',
+        (xml) {
+          final category = Category.fromXml(xml);
+          if (category != null) mc.categories.add(category);
+        },
+        ns: nsUrl,
+      )
+      ..forEachElementXml(
+        'thumbnail',
+        (xml) => mc.thumbnails.add(Image.fromXmlAttributes(xml)),
+        ns: nsUrl,
+      )
+      ..ifPresentXml(
+        'player',
+        (value) => mc.player = Player.fromXml(value),
+        ns: nsUrl,
+      )
+      ..ifPresentXml(
+        'credit',
+        (xml) => mc.credits.add(Credit.fromXml(xml)),
+        ns: nsUrl,
+      );
 
     return mc;
   }

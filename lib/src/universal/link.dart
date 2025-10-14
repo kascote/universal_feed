@@ -73,7 +73,10 @@ class Link {
     required String rel,
   }) {
     return Link(
-      rel: LinkRelationType.values.firstWhere((e) => e.name == rel, orElse: () => LinkRelationType.other),
+      rel: LinkRelationType.values.firstWhere(
+        (e) => e.name == rel,
+        orElse: () => LinkRelationType.other,
+      ),
       type: type,
       href: href,
     );
@@ -84,10 +87,13 @@ class Link {
     final rel = element.getAttribute('rel') ?? '';
 
     return Link(
-      rel: LinkRelationType.values.firstWhere((e) => e.name == rel, orElse: () => LinkRelationType.other),
-      type: element.getAttribute('type') ?? '',
-      href: element.getAttribute('href') ?? '',
-    )
+        rel: LinkRelationType.values.firstWhere(
+          (e) => e.name == rel,
+          orElse: () => LinkRelationType.other,
+        ),
+        type: element.getAttribute('type') ?? '',
+        href: element.getAttribute('href') ?? '',
+      )
       ..title = element.getAttribute('title') ?? ''
       ..length = element.getAttribute('length') ?? ''
       ..originalRel = rel;

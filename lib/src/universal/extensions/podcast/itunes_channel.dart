@@ -1,7 +1,7 @@
 import 'package:xml/xml.dart';
 
 import '../../../../universal_feed.dart';
-import '../../../shared/shared.dart';
+import '../../../shared/extensions.dart';
 
 /// Itunes Channel information
 class ItunesChannel {
@@ -47,40 +47,37 @@ class ItunesChannel {
     final nsUrl = rf.meta.extensions.nsUrl(nsItunesNs);
     final ic = ItunesChannel._();
 
-    getElement<XmlElement>(
-      node,
-      'image',
-      ns: nsUrl,
-      cb: (value) {
-        final url = value.getAttribute('href') ?? value.getAttribute('url');
-        if (url != null) ic.image = Image(url.trim());
-      },
-    );
-    getElement<XmlElement>(
-      node,
-      'category',
-      ns: nsUrl,
-      cb: (value) {
-        final cat = value.getAttribute('text')?.trim();
-        if (cat == null || cat.isEmpty) return;
+    node
+      ..ifPresentXml(
+        'image',
+        (value) {
+          final url = value.getAttribute('href') ?? value.getAttribute('url');
+          if (url != null) ic.image = Image(url.trim());
+        },
+        ns: nsUrl,
+      )
+      ..ifPresentXml(
+        'category',
+        (value) {
+          final cat = value.getAttribute('text')?.trim();
+          if (cat == null || cat.isEmpty) return;
 
-        ic.categories.add(Category(label: cat));
-        final subCat = value.getElement('category', namespace: nsUrl)?.getAttribute('text')?.trim();
-        if (subCat != null && subCat.isNotEmpty) ic.categories.add(Category(label: subCat));
-      },
-    );
-
-    getElement<XmlElement>(
-      node,
-      'owner',
-      ns: nsUrl,
-      cb: (value) {
-        ic.owner = Author(
-          name: value.getElement('name', namespace: nsUrl)?.innerText ?? '',
-          email: value.getElement('email', namespace: nsUrl)?.innerText ?? '',
-        );
-      },
-    );
+          ic.categories.add(Category(label: cat));
+          final subCat = value.getElement('category', namespace: nsUrl)?.getAttribute('text')?.trim();
+          if (subCat != null && subCat.isNotEmpty) ic.categories.add(Category(label: subCat));
+        },
+        ns: nsUrl,
+      )
+      ..ifPresentXml(
+        'owner',
+        (value) {
+          ic.owner = Author(
+            name: value.getElement('name', namespace: nsUrl)?.innerText ?? '',
+            email: value.getElement('email', namespace: nsUrl)?.innerText ?? '',
+          );
+        },
+        ns: nsUrl,
+      );
 
     ic
       ..explicit = node.getElement('explicit', namespace: nsUrl)?.innerText.trim()
@@ -92,12 +89,12 @@ class ItunesChannel {
       ..complete = node.getElement('complete', namespace: nsUrl)?.innerText.trim()
       ..summary = node.getElement('summary', namespace: nsUrl)?.innerText.trim();
 
-    getElement<XmlElement>(
-      node,
+    node.ifPresentXml(
       'keywords',
-      ns: nsUrl,
-      cb: (xml) {
-        final kws = Set.of(xml.innerText.split(',').map((e) => e.trim())).where((e) => e.isNotEmpty);
+      (xml) {
+        final kws = Set.of(
+          xml.innerText.split(',').map((e) => e.trim()),
+        ).where((e) => e.isNotEmpty);
         if (kws.isEmpty) return;
         final cats = List<Category>.generate(
           kws.length,
@@ -105,6 +102,7 @@ class ItunesChannel {
         );
         ic.categories.addAll(cats);
       },
+      ns: nsUrl,
     );
 
     return ic;

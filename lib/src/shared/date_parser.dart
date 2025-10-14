@@ -177,7 +177,6 @@ final List<ParseInfo> parseInfo = [
   //   RegExp(r'\w{3}\s\w{3}\s\d{1,2}\s\d\d:\d\d:\d\d\s\w{3}\s\d{4}'),
   //   'EEE MMM d H:mm:s Z yyyy',
   // ),
-
   ParseInfo(
     'invalid RFC 822 (no time)',
     RegExp(r'^\d{2}\s\w{3}\s\d{4}$'),

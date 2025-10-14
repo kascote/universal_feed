@@ -1,6 +1,6 @@
 import 'package:xml/xml.dart';
 
-import '../shared/shared.dart';
+import '../shared/extensions.dart';
 
 /// Information related to an image attached to an entry or feed.
 class Image {
@@ -31,11 +31,12 @@ class Image {
   /// Creates a new [Image] object from an [XmlElement]
   factory Image.fromXml(XmlElement node) {
     final img = Image(node.getElement('url')?.innerText ?? '');
-    getElement<String>(node, 'title', cb: (value) => img.title = value);
-    getElement<String>(node, 'link', cb: (value) => img.link = value);
-    getElement<String>(node, 'width', cb: (value) => img.width = value);
-    getElement<String>(node, 'height', cb: (value) => img.height = value);
-    getElement<String>(node, 'description', cb: (value) => img.description = value);
+    node
+      ..ifPresent('title', (value) => img.title = value)
+      ..ifPresent('link', (value) => img.link = value)
+      ..ifPresent('width', (value) => img.width = value)
+      ..ifPresent('height', (value) => img.height = value)
+      ..ifPresent('description', (value) => img.description = value);
 
     return img;
   }

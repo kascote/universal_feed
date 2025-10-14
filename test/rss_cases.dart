@@ -192,17 +192,16 @@ Map<String, TestFx> rssTests() {
     // 'channel_rating.xml': (r) => r.channel.rating == '(PICS-1.1 "http://www.classify.org/safesurf/" 1 r (SS~~000 1))',
 
     // ITEMS
-
     'item_description.xml': (r) => r.items.first.description == 'Example description',
     'item_description_br.xml': (r) =>
         r.items.first.description == 'article title<br /><br /> article byline<br/><br/>text of article',
     'item_description_br_shorttag.xml': (r) => r.items.first.description == '<b>x</b><br/>',
     'item_description_code_br.xml': (r) => r.items.first.description == '<code>&lt;br /></code>',
     'item_description_escaped_markup.xml': (r) => r.items.first.description == '<p>Example description</p>',
+
     // 'item_description_naked_markup.xml': (r) => r.items.first.description == '<p>Example description</p>',
     // 'item_description_not_a_doctype.xml': (r) => r.items.first.description == '<!\' <a href="foo">',
     // 'item_description_not_a_doctype2.xml': (r) => r.items.first.description == '<!\' <a href="foo">',
-
     'item_author.xml': (r) => r.items.first.authors.first.value == 'Example editor',
     'item_author_map_author_detail_email.xml': (r) => r.items.first.authors.first.email == 'me@example.com',
     'item_author_map_author_detail_email2.xml': (r) {

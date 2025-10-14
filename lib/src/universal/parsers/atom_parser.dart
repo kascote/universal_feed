@@ -1,6 +1,7 @@
 import 'package:xml/xml.dart';
 
 import '../../../universal_feed.dart';
+import '../../shared/extensions.dart';
 import '../../shared/shared.dart';
 
 /// Parses an Atom feed
@@ -15,134 +16,130 @@ void atomXmlParser(UniversalFeed uf, XmlElement root) {
 
 /// Parses the main feed element of an Atom feed
 void atomFeedParser(UniversalFeed uf, XmlElement root) {
-  getElements<XmlElement>(
-    root,
-    'author',
-    cb: (xml) => uf.authors.add(Author.fromXml(xml)),
-  );
-
-  getElements<XmlElement>(
-    root,
-    'contributor',
-    cb: (xml) => uf.authors.add(Author.fromXml(xml)),
-  );
-
-  getElements<XmlElement>(
-    root,
-    'link',
-    cb: (value) {
-      final link = Link.fromXml(value);
-      if (link.rel == LinkRelationType.self) uf.xmlLink = link;
-      if (link.rel == LinkRelationType.alternate && uf.htmlLink == null) uf.htmlLink = link;
-      uf.links.add(link);
-    },
-  );
-
-  getElement<XmlElement>(
-    root,
-    'title',
-    cb: (item) => uf.title = uf.meta.version == '0.3'
-        ? textDecoder(item.getAttribute('mode') ?? 'xml', item)
-        : textDecoder(item.getAttribute('type') ?? 'text', item),
-  );
-
-  getElement<String>(root, 'updated', cb: (value) => uf.updated = Timestamp(value));
-  getElement<String>(root, 'modified', cb: (value) => uf.updated = Timestamp(value));
-  getElement<XmlElement>(
-    root,
-    'generator',
-    cb: (xml) => uf.generator = Generator(
-      xml.innerText,
-      xml.getAttribute('version') ?? '',
-      xml.getAttribute('url') ?? xml.getAttribute('uri') ?? '',
-    ),
-  );
-  getElement<String>(root, 'id', cb: (value) => uf.guid = value);
-  getElement<String>(root, 'icon', cb: (value) => uf.icon = Image(value));
-  getElement<String>(root, 'logo', cb: (value) => uf.image = Image(value));
-  getElement<XmlElement>(root, 'rights', cb: (item) => uf.copyright = decodeTextField(item));
-  getElement<XmlElement>(root, 'subtitle', cb: (item) => uf.description = decodeTextField(item));
-
-  getElements<XmlElement>(
-    root,
-    'category',
-    cb: (value) {
-      final category = Category.fromXml(value);
-      if (category != null) {
-        uf.categories.add(category);
-      }
-    },
-  );
+  root
+    ..forEachElementXml(
+      'author',
+      (xml) => uf.authors.add(Author.fromXml(xml)),
+    )
+    ..forEachElementXml(
+      'contributor',
+      (xml) => uf.authors.add(Author.fromXml(xml)),
+    )
+    ..forEachElementXml(
+      'link',
+      (value) {
+        final link = Link.fromXml(value);
+        if (link.rel == LinkRelationType.self) uf.xmlLink = link;
+        if (link.rel == LinkRelationType.alternate && uf.htmlLink == null) uf.htmlLink = link;
+        uf.links.add(link);
+      },
+    )
+    ..ifPresentXml(
+      'title',
+      (item) => uf.title = uf.meta.version == '0.3'
+          ? textDecoder(item.getAttribute('mode') ?? 'xml', item)
+          : textDecoder(item.getAttribute('type') ?? 'text', item),
+    )
+    ..ifPresent('updated', (value) => uf.updated = Timestamp(value))
+    ..ifPresent('modified', (value) => uf.updated = Timestamp(value))
+    ..ifPresentXml(
+      'generator',
+      (xml) => uf.generator = Generator(
+        xml.innerText,
+        xml.getAttribute('version') ?? '',
+        xml.getAttribute('url') ?? xml.getAttribute('uri') ?? '',
+      ),
+    )
+    ..ifPresent('id', (value) => uf.guid = value)
+    ..ifPresent('icon', (value) => uf.icon = Image(value))
+    ..ifPresent('logo', (value) => uf.image = Image(value))
+    ..ifPresentXml('rights', (item) => uf.copyright = decodeTextField(item))
+    ..ifPresentXml(
+      'subtitle',
+      (item) => uf.description = decodeTextField(item),
+    )
+    ..forEachElementXml(
+      'category',
+      (value) {
+        final category = Category.fromXml(value);
+        if (category != null) {
+          uf.categories.add(category);
+        }
+      },
+    );
 }
 
 /// Parses an Atom item
 Item atomItemParser(UniversalFeed uf, Item item, XmlElement element) {
-  getElements<XmlElement>(element, 'author', cb: (xml) => item.authors.add(Author.fromXml(xml)));
-  getElements<XmlElement>(element, 'content', cb: (xml) => item.content.add(Content.fromXml(xml)));
-
-  getElements<XmlElement>(
-    element,
-    'contributor',
-    cb: (xml) => item.authors.add(Author.fromXml(xml)..type = AuthorType.contributor),
-  );
-
-  getElement<String>(
-    element,
-    'created',
-    cb: (value) {
-      final date = Timestamp(value);
-      item
-        ..published = date
-        ..updated = date;
-    },
-  );
-  getElement<String>(
-    element,
-    'published',
-    cb: (value) {
-      final date = Timestamp(value);
-      item
-        ..published = date
-        ..updated = date;
-    },
-  );
-
-  getElement<String>(
-    element,
-    'issued',
-    cb: (value) {
-      final date = Timestamp(value);
-      item
-        ..published = date
-        ..updated = date;
-    },
-  );
-
-  getElement<String>(element, 'modified', cb: (value) => item.updated = Timestamp(value));
-  getElement<String>(element, 'updated', cb: (value) => item.updated = Timestamp(value));
-  getElement<String>(element, 'id', cb: (value) => item.guid = value);
-  getElements<XmlElement>(element, 'link', cb: (value) => item.links.add(Link.fromXml(value)));
-  getElement<XmlElement>(element, 'summary', cb: (value) => item.description = decodeTextField(value));
-  getElement<XmlElement>(element, 'title', cb: (value) => item.title = decodeTextField(value));
-
-  getElements<XmlElement>(
-    element,
-    'category',
-    cb: (value) {
-      final category = Category.fromXml(value);
-      if (category != null) {
-        item.categories.add(category);
-      }
-    },
-  );
-
-  getElement<XmlElement>(element, 'rights', cb: (value) => item.copyright = decodeTextField(value));
-
-  getElement<XmlElement>(
-    element,
-    'source',
-    cb: (value) => item.sourceEntry = UniversalFeed.parseFromXml(value),
-  );
+  element
+    ..forEachElementXml(
+      'author',
+      (xml) => item.authors.add(Author.fromXml(xml)),
+    )
+    ..forEachElementXml(
+      'content',
+      (xml) => item.content.add(Content.fromXml(xml)),
+    )
+    ..forEachElementXml(
+      'contributor',
+      (xml) => item.authors.add(Author.fromXml(xml)..type = AuthorType.contributor),
+    )
+    ..ifPresent(
+      'created',
+      (value) {
+        final date = Timestamp(value);
+        item
+          ..published = date
+          ..updated = date;
+      },
+    )
+    ..ifPresent(
+      'published',
+      (value) {
+        final date = Timestamp(value);
+        item
+          ..published = date
+          ..updated = date;
+      },
+    )
+    ..ifPresent(
+      'issued',
+      (value) {
+        final date = Timestamp(value);
+        item
+          ..published = date
+          ..updated = date;
+      },
+    )
+    ..ifPresent('modified', (value) => item.updated = Timestamp(value))
+    ..ifPresent('updated', (value) => item.updated = Timestamp(value))
+    ..ifPresent('id', (value) => item.guid = value)
+    ..forEachElementXml(
+      'link',
+      (value) => item.links.add(Link.fromXml(value)),
+    )
+    ..ifPresentXml(
+      'summary',
+      (value) => item.description = decodeTextField(value),
+    )
+    ..ifPresentXml('title', (value) => item.title = decodeTextField(value))
+    ..forEachElementXml(
+      'category',
+      (value) {
+        final category = Category.fromXml(value);
+        if (category != null) {
+          item.categories.add(category);
+        }
+      },
+    )
+    ..ifPresentXml(
+      'rights',
+      (value) => item.copyright = decodeTextField(value),
+    )
+    ..ifPresentXml(
+      'source',
+      (value) => item.sourceEntry = UniversalFeed.parseFromXml(value),
+    );
 
   if (uf.meta.extensions.hasMedia) {
     item.media = Media.contentFromXml(uf, element);
