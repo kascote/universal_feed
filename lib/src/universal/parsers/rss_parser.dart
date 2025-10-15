@@ -202,11 +202,12 @@ Item rssItemParser(UniversalFeed uf, Item item, XmlElement element) {
       ),
     )
     // is the last attribute read, so we can set the Link if isPermaLink is true
+    // and no explicit link was provided
     ..ifPresentXml(
       'guid',
       (eleGuid) {
-        final isPermaLink = eleGuid.getAttribute('isPermaLink') ?? 'false';
-        if (isPermaLink == 'true') {
+        final isPermaLink = eleGuid.getAttribute('isPermaLink') ?? 'true';
+        if (isPermaLink == 'true' && item.link == null) {
           item.link = Link.create(
             href: eleGuid.innerText,
             type: 'text/html',

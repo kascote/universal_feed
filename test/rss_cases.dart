@@ -248,6 +248,7 @@ Map<String, TestFx> rssTests() {
     'item_enclosure_url.xml': (r) => r.items.first.enclosures.first.url == 'http://example.com/',
 
     'item_guid.xml': (r) => r.items.first.guid == 'http://guid.example.com/',
+    'item_guid_map_link.xml': (r) => r.items.first.link?.href == 'http://guid.example.com/',
     'item_guid_conflict_link.xml': (r) => r.items.first.link?.href == 'http://link.example.com/',
     'item_guid_isPermaLink_conflict_link.xml': (r) => r.items.first.links.first.href == 'http://link.example.com/',
     'item_guid_isPermaLink_map_link.xml': (r) => r.items.first.link?.href == 'http://guid.example.com/',
