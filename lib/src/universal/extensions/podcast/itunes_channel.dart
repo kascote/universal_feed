@@ -1,7 +1,4 @@
-import 'package:xml/xml.dart';
-
 import '../../../../universal_feed.dart';
-import '../../../shared/extensions.dart';
 
 /// Itunes Channel information
 class ItunesChannel {
@@ -40,71 +37,6 @@ class ItunesChannel {
   /// if the entry has 'keywords', they will be added here to with the scheme 'keyword'
   List<Category> categories = [];
 
-  ItunesChannel._();
-
-  /// Creates a new [ItunesChannel] from an [XmlElement]
-  factory ItunesChannel.fromXml(UniversalFeed rf, XmlElement node) {
-    final nsUrl = rf.meta.extensions.nsUrl(nsItunesNs);
-    final ic = ItunesChannel._();
-
-    node
-      ..ifPresentXml(
-        'image',
-        (value) {
-          final url = value.getAttribute('href') ?? value.getAttribute('url');
-          if (url != null) ic.image = Image(url.trim());
-        },
-        ns: nsUrl,
-      )
-      ..ifPresentXml(
-        'category',
-        (value) {
-          final cat = value.getAttribute('text')?.trim();
-          if (cat == null || cat.isEmpty) return;
-
-          ic.categories.add(Category(label: cat));
-          final subCat = value.getElement('category', namespace: nsUrl)?.getAttribute('text')?.trim();
-          if (subCat != null && subCat.isNotEmpty) ic.categories.add(Category(label: subCat));
-        },
-        ns: nsUrl,
-      )
-      ..ifPresentXml(
-        'owner',
-        (value) {
-          ic.owner = Author(
-            name: value.getElement('name', namespace: nsUrl)?.innerText ?? '',
-            email: value.getElement('email', namespace: nsUrl)?.innerText ?? '',
-          );
-        },
-        ns: nsUrl,
-      );
-
-    ic
-      ..explicit = node.getElement('explicit', namespace: nsUrl)?.innerText.trim()
-      ..author = node.getElement('author', namespace: nsUrl)?.innerText.trim()
-      ..title = node.getElement('title', namespace: nsUrl)?.innerText.trim()
-      ..type = node.getElement('type', namespace: nsUrl)?.innerText.trim()
-      ..newFeedUrl = node.getElement('new-feed-url', namespace: nsUrl)?.innerText.trim()
-      ..block = node.getElement('block', namespace: nsUrl)?.innerText.trim()
-      ..complete = node.getElement('complete', namespace: nsUrl)?.innerText.trim()
-      ..summary = node.getElement('summary', namespace: nsUrl)?.innerText.trim();
-
-    node.ifPresentXml(
-      'keywords',
-      (xml) {
-        final kws = Set.of(
-          xml.innerText.split(',').map((e) => e.trim()),
-        ).where((e) => e.isNotEmpty);
-        if (kws.isEmpty) return;
-        final cats = List<Category>.generate(
-          kws.length,
-          (p) => Category(label: kws.elementAt(p), scheme: 'keyword'),
-        );
-        ic.categories.addAll(cats);
-      },
-      ns: nsUrl,
-    );
-
-    return ic;
-  }
+  /// Creates a new empty [ItunesChannel]
+  ItunesChannel();
 }

@@ -3,25 +3,33 @@ import 'package:xml/xml.dart';
 import '../../../universal_feed.dart';
 import '../../shared/extensions.dart';
 import '../../shared/shared.dart';
+import '../extensions/content/content_parser.dart';
+import '../extensions/dcterms/dc_parser.dart';
+import '../extensions/dcterms/dcterms_parser.dart';
+import '../extensions/extension_parser.dart';
+import '../extensions/geo/geo_parser.dart';
+import '../extensions/links/links_parser.dart';
+import '../extensions/media/media_parser.dart';
+import '../extensions/podcast/itunes_channel_parser.dart';
+import '../extensions/podcast/itunes_item_parser.dart';
+import '../extensions/syndication/syndication_parser.dart';
 
 /// Parse an RSS feed
 void rssXmlParser(UniversalFeed uf, XmlDocument doc) {
   final root = doc.rootElement;
   final channel = root.getElement('channel');
   if (channel == null) return;
+
+  final parsers = _getExtensionParsers(uf);
+
   rssChannelParser(uf, channel);
-
-  if (uf.meta.extensions.hasSyndication) {
-    uf.syndication = Syndication.fromXml(uf, channel);
-  }
-
-  if (uf.meta.extensions.hasItunes) {
-    uf.podcast = ItunesChannel.fromXml(uf, channel);
-  }
+  _parseChannelExtensions(uf, channel, parsers.channel);
 
   final rssItems = channel.findElements('item');
   for (final rssItem in rssItems) {
-    uf.items.add(Item.rssFromXml(uf, rssItem));
+    final item = Item.rssFromXml(uf, rssItem);
+    _parseItemExtensions(uf, item, rssItem, parsers.item);
+    uf.items.add(item);
   }
 }
 
@@ -75,78 +83,13 @@ void rssChannelParser(UniversalFeed uf, XmlElement channel) {
       },
     )
     ..ifPresent('docs', (value) => uf.docs = value);
-
-  if (uf.meta.extensions.hasAtom) {
-    final atomUrl = uf.meta.extensions.nsUrl(nsAtomNs);
-    // Channel's link points to the Web site hosting the feed (not the feed itself)
-    // Atom's link usually points to the feed itself
-    channel.forEachElementXml(
-      'link',
-      (value) {
-        final link = Link.fromXml(value);
-        if (link.rel == LinkRelationType.self) uf.xmlLink = link;
-        if (link.rel == LinkRelationType.alternate && uf.htmlLink == null) uf.htmlLink = link;
-        uf.links.add(link);
-      },
-      ns: atomUrl,
-    );
-  }
-
-  if (uf.meta.extensions.hasDc) {
-    final dcUrl = uf.meta.extensions.nsUrl(nsDublinCoreNs);
-    channel
-      ..ifPresent('title', (value) => uf.title = value, ns: dcUrl)
-      ..ifPresent(
-        'author',
-        (value) => uf.authors.add(Author.fromString(value)..type = AuthorType.author),
-        ns: dcUrl,
-      )
-      ..ifPresent(
-        'creator',
-        (value) => uf.authors.add(Author.fromString(value)..type = AuthorType.creator),
-        ns: dcUrl,
-      )
-      ..ifPresent(
-        'contributor',
-        (value) => uf.authors.add(
-          Author.fromString(value)..type = AuthorType.contributor,
-        ),
-        ns: dcUrl,
-      )
-      ..ifPresent(
-        'publisher',
-        (value) => uf.authors.add(Author.fromString(value)..type = AuthorType.publisher),
-        ns: dcUrl,
-      )
-      ..ifPresent(
-        'date',
-        (value) => uf.updated = Timestamp(value),
-        ns: dcUrl,
-      )
-      ..ifPresent('rights', (value) => uf.copyright = value, ns: dcUrl)
-      ..forEachElement(
-        'subject',
-        (value) => uf.categories.add(Category(label: value)),
-        ns: dcUrl,
-      );
-  }
 }
 
 /// Parse an rss item
 Item rssItemParser(UniversalFeed uf, Item item, XmlElement element) {
   element
     ..ifPresent('title', (value) => item.title = value)
-    ..ifPresent('description', (value) => item.description = value);
-
-  if (uf.meta.extensions.hasContent) {
-    element.forEachElementXml(
-      'encoded',
-      (value) => item.content.add(Content.fromXml(value, defaultType: 'text')),
-      ns: uf.meta.extensions.nsUrl(nsContentNs),
-    );
-  }
-
-  element
+    ..ifPresent('description', (value) => item.description = value)
     ..ifPresent(
       'link',
       (value) {
@@ -218,70 +161,70 @@ Item rssItemParser(UniversalFeed uf, Item item, XmlElement element) {
       },
     );
 
-  if (uf.meta.extensions.hasDc) {
-    final dcUrl = uf.meta.extensions.nsUrl(nsDublinCoreNs);
-    element
-      ..ifPresent(
-        'author',
-        (value) => item.authors.add(Author.fromString(value)..type = AuthorType.author),
-        ns: dcUrl,
-      )
-      ..ifPresent(
-        'contributor',
-        (value) => item.authors.add(
-          Author.fromString(value)..type = AuthorType.contributor,
-        ),
-        ns: dcUrl,
-      )
-      ..forEachElement(
-        'creator',
-        (value) => item.authors.add(Author.fromString(value)..type = AuthorType.creator),
-        ns: dcUrl,
-      )
-      ..ifPresent(
-        'date',
-        (value) {
-          final date = Timestamp(value);
-          item
-            ..published = date
-            ..updated = date;
-        },
-        ns: dcUrl,
-      )
-      ..ifPresent(
-        'description',
-        (value) => item.description = value,
-        ns: dcUrl,
-      )
-      ..ifPresent(
-        'publisher',
-        (value) => item.authors.add(
-          Author.fromString(value)..type = AuthorType.publisher,
-        ),
-        ns: dcUrl,
-      )
-      ..ifPresent(
-        'title',
-        (value) => item.title = value,
-        ns: dcUrl,
-      );
-  }
-
-  if (uf.meta.extensions.hasMedia) {
-    item.media = Media.contentFromXml(uf, element);
-  }
-
-  if (uf.meta.extensions.hasGeoRss) {
-    item.geo = Geo.fromXml(uf, element);
-  }
-
-  if (uf.meta.extensions.hasDcTerms) {
-    item.dcterms = DcTerms.parseFomXml(uf, element);
-  }
-
-  if (uf.meta.extensions.hasItunes) {
-    item.podcast = ItunesItem.fromXml(uf, element);
-  }
-
   return item;
+}
+
+void _parseChannelExtensions(
+  UniversalFeed uf,
+  XmlElement channel,
+  List<ChannelExtensionParser> parsers,
+) {
+  for (final parser in parsers) {
+    parser.parseChannel(uf, channel);
+  }
+}
+
+void _parseItemExtensions(
+  UniversalFeed uf,
+  Item item,
+  XmlElement element,
+  List<ItemExtensionParser> itemParsers,
+) {
+  for (final parser in itemParsers) {
+    parser.parseItem(uf, item, element);
+  }
+}
+
+/// Returns both channel and item extension parsers.
+/// Parsers that implement both interfaces are created once and added to both lists.
+({List<ChannelExtensionParser> channel, List<ItemExtensionParser> item}) _getExtensionParsers(UniversalFeed uf) {
+  final channelParsers = <ChannelExtensionParser>[];
+  final itemParsers = <ItemExtensionParser>[];
+
+  // Extensions that work at BOTH levels
+  if (uf.meta.extensions.hasDc) {
+    final dcParser = DublinCoreParser(uf.meta.extensions.nsUrl(nsDublinCoreNs)!);
+    channelParsers.add(dcParser);
+    itemParsers.add(dcParser);
+  }
+
+  // Extensions that need separate parsers for channel vs item
+  if (uf.meta.extensions.hasItunes) {
+    channelParsers.add(ItunesChannelParser(uf.meta.extensions.nsUrl(nsItunesNs)!));
+    itemParsers.add(ItunesItemParser(uf.meta.extensions.nsUrl(nsItunesNs)!));
+  }
+
+  // Channel-only extensions
+  if (uf.meta.extensions.hasAtom) {
+    channelParsers.add(AtomLinksParser(uf.meta.extensions.nsUrl(nsAtomNs)!));
+  }
+  if (uf.meta.extensions.hasSyndication) {
+    channelParsers.add(SyndicationParser(uf.meta.extensions.nsUrl(nsSyndicationNs)!));
+  }
+
+  // Item-only extensions
+  if (uf.meta.extensions.hasContent) {
+    itemParsers.add(ContentParser(uf.meta.extensions.nsUrl(nsContentNs)!));
+  }
+  if (uf.meta.extensions.hasMedia) {
+    itemParsers.add(MediaParser(uf.meta.extensions.nsUrl(nsMediaNs)!));
+  }
+  if (uf.meta.extensions.hasGeoRss) {
+    itemParsers.add(GeoRssParser(uf.meta.extensions.nsUrl(nsGeoNs)!));
+  }
+  if (uf.meta.extensions.hasDcTerms) {
+    itemParsers.add(DcTermsParser(uf.meta.extensions.nsUrl(nsDcTermsNs)!));
+  }
+
+  return (channel: channelParsers, item: itemParsers);
 }

@@ -1,7 +1,3 @@
-import 'package:xml/xml.dart';
-
-import '../../../../universal_feed.dart';
-
 /// Provides syndication hints to aggregators and others picking up this RDF
 /// Site Summary (RSS) feed regarding how often it is updated. For example,
 /// if you updated your file twice an hour, updatePeriod would be "hourly" and
@@ -29,16 +25,6 @@ class Syndication {
 
   /// Creates a new [Syndication] object
   Syndication({this.updatePeriod = 'daily', this.updateFrequency = '1', this.updateBase});
-
-  /// Parse a Syndication tag from an [XmlElement]
-  factory Syndication.fromXml(UniversalFeed uf, XmlElement node) {
-    final nsUrl = uf.meta.extensions.nsUrl(nsSyndicationNs);
-    return Syndication(
-      updatePeriod: node.getElement('updatePeriod', namespace: nsUrl)?.innerText.trim() ?? 'daily',
-      updateFrequency: node.getElement('updateFrequency', namespace: nsUrl)?.innerText.trim() ?? '1',
-      updateBase: node.getElement('updateBase', namespace: nsUrl)?.innerText.trim(),
-    );
-  }
 
   @override
   String toString() {

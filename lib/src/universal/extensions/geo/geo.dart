@@ -1,7 +1,3 @@
-import 'package:xml/xml.dart';
-
-import '../../../../universal_feed.dart';
-
 /// Geo Spec
 ///
 /// https://en.wikipedia.org/wiki/GeoRSS
@@ -43,22 +39,6 @@ class Geo {
   /// circular area around a point geometry.
   String? radius;
 
-  ///
-  factory Geo.fromXml(UniversalFeed uf, XmlElement node) {
-    final nsUrl = uf.meta.extensions.nsUrl(nsGeoNs);
-    final geo = Geo._()
-      ..line = node.getElement('line', namespace: nsUrl)?.innerText
-      ..polygon = node.getElement('polygon', namespace: nsUrl)?.innerText
-      ..box = node.getElement('box', namespace: nsUrl)?.innerText
-      ..featureTypeTag = node.getElement('featuretypetag', namespace: nsUrl)?.innerText
-      ..relationshipTag = node.getElement('relationshiptag', namespace: nsUrl)?.innerText
-      ..featureName = node.getElement('featurename', namespace: nsUrl)?.innerText
-      ..elev = node.getElement('elev', namespace: nsUrl)?.innerText
-      ..floor = node.getElement('floor', namespace: nsUrl)?.innerText
-      ..radius = node.getElement('radius', namespace: nsUrl)?.innerText;
-
-    return geo;
-  }
-
-  Geo._();
+  /// Creates a new empty [Geo]
+  Geo();
 }

@@ -3,6 +3,9 @@ import 'package:xml/xml.dart';
 import '../../../../universal_feed.dart';
 import '../../../shared/extensions.dart';
 import '../../../shared/shared.dart';
+import 'credit.dart';
+import 'player.dart';
+import 'rating.dart';
 
 /// An RSS module that supplements the `<enclosure>` element capabilities of RSS 2.0 to allow for more robust media syndication.
 ///

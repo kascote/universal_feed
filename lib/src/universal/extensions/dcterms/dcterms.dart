@@ -1,7 +1,3 @@
-import 'package:xml/xml.dart';
-
-import '../../../../universal_feed.dart';
-import '../../../shared/extensions.dart';
 import './dcperiod.dart';
 
 /// DcTerms is an extension to Dublin core
@@ -23,27 +19,6 @@ class DcTerms {
   /// Date (often a range) that the resource will become or did become available.
   DcPeriod? available;
 
-  DcTerms._();
-
-  ///
-  factory DcTerms.parseFomXml(UniversalFeed uf, XmlElement node) {
-    final nsUrl = uf.meta.extensions.nsUrl(nsDcTermsNs);
-    final terms = DcTerms._()
-      ..created = node.getElement('created', namespace: nsUrl)?.innerText
-      ..issued = node.getElement('issued', namespace: nsUrl)?.innerText
-      ..modified = node.getElement('modified', namespace: nsUrl)?.innerText;
-    node
-      ..ifPresent(
-        'valid',
-        (value) => terms.valid = DcPeriod.fromString(value),
-        ns: nsUrl,
-      )
-      ..ifPresent(
-        'available',
-        (value) => terms.available = DcPeriod.fromString(value),
-        ns: nsUrl,
-      );
-
-    return terms;
-  }
+  /// Creates a new empty [DcTerms]
+  DcTerms();
 }

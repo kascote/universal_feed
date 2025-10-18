@@ -1,6 +1,10 @@
 import 'package:xml/xml.dart';
 
 import '../../universal_feed.dart';
+import 'extensions/dcterms/dcterms.dart';
+import 'extensions/geo/geo.dart';
+import 'extensions/media/media.dart';
+import 'extensions/podcast/itunes_item.dart';
 import 'parsers/atom_parser.dart';
 import 'parsers/json_parser.dart';
 import 'parsers/rss_parser.dart';
@@ -101,7 +105,7 @@ class Item {
   /// than the atom:entry elements) MAY be preserved
   ///
   /// atom ref: https://www.rfc-editor.org/rfc/rfc4287.html#section-4.2.11
-  UniversalFeed? sourceEntry;
+  Source? sourceEntry;
 
   /// URL of a page for comments relating to the item.
   ///

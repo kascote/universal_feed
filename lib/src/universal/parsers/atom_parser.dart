@@ -3,14 +3,21 @@ import 'package:xml/xml.dart';
 import '../../../universal_feed.dart';
 import '../../shared/extensions.dart';
 import '../../shared/shared.dart';
+import '../extensions/extension_parser.dart';
+import '../extensions/media/media_parser.dart';
 
 /// Parses an Atom feed
 void atomXmlParser(UniversalFeed uf, XmlElement root) {
   atomFeedParser(uf, root);
 
+  // Get extension parsers once for the entire feed (same pattern as RSS parser)
+  final itemParsers = _getItemExtensionParsers(uf);
+
   final items = root.findElements('entry');
-  for (final item in items) {
-    uf.items.add(Item.atomFromXml(uf, item));
+  for (final itemElement in items) {
+    final item = Item.atomFromXml(uf, itemElement);
+    _parseItemExtensions(uf, item, itemElement, itemParsers);
+    uf.items.add(item);
   }
 }
 
@@ -138,18 +145,32 @@ Item atomItemParser(UniversalFeed uf, Item item, XmlElement element) {
     )
     ..ifPresentXml(
       'source',
-      (value) => item.sourceEntry = UniversalFeed.parseFromXml(value),
+      (value) => item.sourceEntry = Source.fromXml(value),
     );
-
-  if (uf.meta.extensions.hasMedia) {
-    item.media = Media.contentFromXml(uf, element);
-  }
 
   return item;
 }
 
-/// Helper t Decode a text field
-String decodeTextField(XmlElement element) {
-  final type = element.getAttribute('mode') ?? element.getAttribute('type') ?? 'text';
-  return textDecoder(type, element);
+/// Parse item-level extensions
+void _parseItemExtensions(
+  UniversalFeed uf,
+  Item item,
+  XmlElement element,
+  List<ItemExtensionParser> itemParsers,
+) {
+  for (final parser in itemParsers) {
+    parser.parseItem(uf, item, element);
+  }
+}
+
+/// Returns item extension parsers for Atom feeds
+List<ItemExtensionParser> _getItemExtensionParsers(UniversalFeed uf) {
+  final itemParsers = <ItemExtensionParser>[];
+
+  // Item-only extensions
+  if (uf.meta.extensions.hasMedia) {
+    itemParsers.add(MediaParser(uf.meta.extensions.nsUrl(nsMediaNs)!));
+  }
+
+  return itemParsers;
 }

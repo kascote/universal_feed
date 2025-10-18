@@ -3,6 +3,8 @@ import 'package:xml/xml.dart';
 import '../../universal_feed.dart';
 import './parsers/atom_parser.dart';
 import './parsers/rss_parser.dart';
+import 'extensions/podcast/itunes_channel.dart';
+import 'extensions/syndication/syndication.dart';
 import 'parsers/json_parser.dart';
 
 /// Feed is the root element of the UniversalFeed.
@@ -123,13 +125,6 @@ class UniversalFeed {
       atomXmlParser(feed, root);
     }
 
-    return feed;
-  }
-
-  /// Generate a new UniversalFeed object from an XML element.
-  factory UniversalFeed.parseFromXml(XmlElement content) {
-    final feed = UniversalFeed._();
-    atomXmlParser(feed, content);
     return feed;
   }
 

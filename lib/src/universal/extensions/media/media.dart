@@ -1,8 +1,8 @@
-import 'package:xml/xml.dart';
-
 import '../../../../universal_feed.dart';
-import '../../../shared/extensions.dart';
-import '../../../shared/shared.dart';
+import 'content.dart';
+import 'credit.dart';
+import 'player.dart';
+import 'rating.dart';
 
 /// An RSS module that supplements the `<enclosure>` element capabilities of RSS
 /// 2.0 to allow for more robust media syndication.
@@ -15,7 +15,8 @@ import '../../../shared/shared.dart';
 ///
 /// ref: https://www.rssboard.org/media-rss
 class Media {
-  Media._();
+  /// Creates a new empty [Media]
+  Media();
 
   /// `<media:group>` is a sub-element of `<item>`. It allows grouping of `<media:content>`
   /// elements that are effectively the same content, yet different representations.
@@ -63,75 +64,4 @@ class Media {
   ///
   /// ref: https://www.rssboard.org/media-rss#media-player
   Player? player;
-
-  /// Creates a new [Media] object from an [XmlElement]
-  factory Media.contentFromXml(UniversalFeed uf, XmlElement node) {
-    final nsUrl = uf.meta.extensions.nsUrl(nsMediaNs);
-
-    final media = Media._();
-
-    node
-      ..forEachElementXml(
-        'content',
-        (xml) => media.content.add(MediaContent.fromXml(uf, xml)),
-        ns: nsUrl,
-      )
-      ..forEachElementXml(
-        'group',
-        (group) {
-          media.group.add(Media.contentFromXml(uf, group));
-        },
-        ns: nsUrl,
-      )
-      ..ifPresentXml(
-        'title',
-        (value) => media.title = textDecoder('plain', value),
-        ns: nsUrl,
-      )
-      ..ifPresentXml(
-        'description',
-        (value) => media.description = textDecoder('plain', value),
-        ns: nsUrl,
-      )
-      ..forEachElementXml(
-        'rating',
-        (xml) {
-          media.rating.add(Rating.fromXml(xml));
-        },
-        ns: nsUrl,
-      )
-      ..forEachElementXml(
-        'keywords',
-        (xml) {
-          final keywords = Category.loadTags(xml, defaultScheme: 'keyword');
-          if (keywords != null) media.categories.addAll(keywords);
-        },
-        ns: nsUrl,
-      )
-      ..forEachElementXml(
-        'category',
-        (xml) {
-          final category = Category.fromXml(xml);
-          if (category != null) media.categories.add(category);
-        },
-        ns: nsUrl,
-      )
-      ..forEachElementXml(
-        'thumbnail',
-        (xml) => media.thumbnails.add(Image.fromXmlAttributes(xml)),
-        ns: nsUrl,
-      )
-      ..ifPresentXml(
-        'player',
-        (value) => media.player = Player.fromXml(value),
-        ns: nsUrl,
-      )
-      ..forEachElementXml(
-        'credit',
-        (xml) => media.credits.add(Credit.fromXml(xml)),
-        ns: nsUrl,
-      );
-
-    return media;
-  }
 }

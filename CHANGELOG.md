@@ -1,3 +1,12 @@
+## 0.7.0
+
+- refactor how extensions are handled. Now each feed type has its own extension
+  handler.
+- refactor internal parser methods.
+- fix how permalinks are handled in rss feeds. Now follow the spec more closely.
+- Atom Item's source property updated to be a Source object and not a nested
+  UniversalFeed
+
 ## 0.6.0
 
 - adds support for json feeds
