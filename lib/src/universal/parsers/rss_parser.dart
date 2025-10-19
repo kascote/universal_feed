@@ -2,7 +2,6 @@ import 'package:xml/xml.dart';
 
 import '../../../universal_feed.dart';
 import '../../shared/extensions.dart';
-import '../../shared/shared.dart';
 import '../extensions/content/content_parser.dart';
 import '../extensions/dcterms/dc_parser.dart';
 import '../extensions/dcterms/dcterms_parser.dart';
@@ -37,10 +36,7 @@ void rssXmlParser(UniversalFeed uf, XmlDocument doc) {
 void rssChannelParser(UniversalFeed uf, XmlElement channel) {
   channel
     ..ifPresent('title', (value) => uf.title = value)
-    ..ifPresentXml(
-      'description',
-      (value) => uf.description = textDecoder('xml2', value),
-    )
+    ..ifPresentXml('description', (value) => uf.description = value.decodeText(uf.meta.kind))
     ..ifPresent(
       'link',
       (value) {
@@ -54,25 +50,13 @@ void rssChannelParser(UniversalFeed uf, XmlElement channel) {
     )
     ..ifPresent('lastBuildDate', (value) => uf.updated = Timestamp(value))
     ..ifPresent('pubDate', (value) => uf.published = Timestamp(value))
-    ..ifPresent(
-      'author',
-      (value) => uf.authors.add(Author.fromString(value)..type = AuthorType.author),
-    )
-    ..ifPresent(
-      'managingEditor',
-      (value) => uf.authors.add(Author.fromString(value)..type = AuthorType.editor),
-    )
-    ..ifPresent(
-      'webMaster',
-      (value) => uf.authors.add(Author.fromString(value)..type = AuthorType.webMaster),
-    )
+    ..ifPresent('author', (value) => uf.authors.add(Author.fromString(value)..type = AuthorType.author))
+    ..ifPresent('managingEditor', (value) => uf.authors.add(Author.fromString(value)..type = AuthorType.editor))
+    ..ifPresent('webMaster', (value) => uf.authors.add(Author.fromString(value)..type = AuthorType.webMaster))
     ..ifPresent('language', (value) => uf.language = value)
     ..ifPresentXml('image', (value) => uf.image = Image.fromXml(value))
     ..ifPresent('copyright', (value) => uf.copyright = value)
-    ..ifPresent(
-      'generator',
-      (value) => uf.generator = Generator.create(value),
-    )
+    ..ifPresent('generator', (value) => uf.generator = Generator.create(value))
     ..forEachElementXml(
       'category',
       (value) {
@@ -121,10 +105,7 @@ Item rssItemParser(UniversalFeed uf, Item item, XmlElement element) {
         }
       },
     )
-    ..forEachElementXml(
-      'enclosure',
-      (value) => item.enclosures.add(Enclosure.rssFromXml(value)),
-    )
+    ..forEachElementXml('enclosure', (value) => item.enclosures.add(Enclosure.rssFromXml(value)))
     ..ifPresentXml(
       'source',
       (value) {

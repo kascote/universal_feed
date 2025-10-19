@@ -60,11 +60,7 @@ class Link {
   String? length;
 
   /// Creates a new Link
-  Link({
-    required this.rel,
-    required this.type,
-    required this.href,
-  });
+  Link._({required this.rel, required this.type, required this.href});
 
   /// Helper factory to handle the [rel] attribute
   factory Link.create({
@@ -72,31 +68,28 @@ class Link {
     required String href,
     required String rel,
   }) {
-    return Link(
-      rel: LinkRelationType.values.firstWhere(
-        (e) => e.name == rel,
-        orElse: () => LinkRelationType.other,
-      ),
-      type: type,
-      href: href,
-    );
+    return Link._(rel: _relationTypeFromString(rel), type: type, href: href);
   }
 
   /// Creates a [Link] from an [XmlElement]
   factory Link.fromXml(XmlElement element) {
     final rel = element.getAttribute('rel') ?? '';
 
-    return Link(
-        rel: LinkRelationType.values.firstWhere(
-          (e) => e.name == rel,
-          orElse: () => LinkRelationType.other,
-        ),
+    return Link._(
+        rel: _relationTypeFromString(rel),
         type: element.getAttribute('type') ?? '',
         href: element.getAttribute('href') ?? '',
       )
       ..title = element.getAttribute('title') ?? ''
       ..length = element.getAttribute('length') ?? ''
       ..originalRel = rel;
+  }
+
+  static LinkRelationType _relationTypeFromString(String relation) {
+    return LinkRelationType.values.firstWhere(
+      (type) => type.name == relation,
+      orElse: () => LinkRelationType.other,
+    );
   }
 
   @override

@@ -2,7 +2,6 @@ import 'package:xml/xml.dart';
 
 import '../../../../universal_feed.dart';
 import '../../../shared/extensions.dart';
-import '../../../shared/shared.dart';
 import '../extension_parser.dart';
 import 'content.dart';
 import 'credit.dart';
@@ -30,67 +29,27 @@ class MediaParser implements ItemExtensionParser {
     final media = Media();
 
     node
-      ..forEachElementXml(
-        'content',
-        (xml) => media.content.add(MediaContent.fromXml(feed, xml)),
-        ns: namespaceUrl,
-      )
-      ..forEachElementXml(
-        'group',
-        (group) {
-          // Recursive parsing for nested media groups
-          media.group.add(_parseMedia(feed, group));
-        },
-        ns: namespaceUrl,
-      )
-      ..ifPresentXml(
-        'title',
-        (value) => media.title = textDecoder('plain', value),
-        ns: namespaceUrl,
-      )
-      ..ifPresentXml(
-        'description',
-        (value) => media.description = textDecoder('plain', value),
-        ns: namespaceUrl,
-      )
-      ..forEachElementXml(
-        'rating',
-        (xml) {
-          media.rating.add(Rating.fromXml(xml));
-        },
-        ns: namespaceUrl,
-      )
-      ..forEachElementXml(
-        'keywords',
-        (xml) {
-          final keywords = Category.loadTags(xml, defaultScheme: 'keyword');
-          if (keywords != null) media.categories.addAll(keywords);
-        },
-        ns: namespaceUrl,
-      )
-      ..forEachElementXml(
-        'category',
-        (xml) {
-          final category = Category.fromXml(xml);
-          if (category != null) media.categories.add(category);
-        },
-        ns: namespaceUrl,
-      )
-      ..forEachElementXml(
-        'thumbnail',
-        (xml) => media.thumbnails.add(Image.fromXmlAttributes(xml)),
-        ns: namespaceUrl,
-      )
-      ..ifPresentXml(
-        'player',
-        (value) => media.player = Player.fromXml(value),
-        ns: namespaceUrl,
-      )
-      ..forEachElementXml(
-        'credit',
-        (xml) => media.credits.add(Credit.fromXml(xml)),
-        ns: namespaceUrl,
-      );
+      ..forEachElementXml('content', (xml) => media.content.add(MediaContent.fromXml(feed, xml)), ns: namespaceUrl)
+      ..forEachElementXml('group', (group) {
+        // Recursive parsing for nested media groups
+        media.group.add(_parseMedia(feed, group));
+      }, ns: namespaceUrl)
+      ..ifPresentXml('title', (value) => media.title = value.decodeAs('plain'), ns: namespaceUrl)
+      ..ifPresentXml('description', (value) => media.description = value.decodeAs('plain'), ns: namespaceUrl)
+      ..forEachElementXml('rating', (xml) {
+        media.rating.add(Rating.fromXml(xml));
+      }, ns: namespaceUrl)
+      ..forEachElementXml('keywords', (xml) {
+        final keywords = Category.loadTags(xml, defaultScheme: 'keyword');
+        if (keywords != null) media.categories.addAll(keywords);
+      }, ns: namespaceUrl)
+      ..forEachElementXml('category', (xml) {
+        final category = Category.fromXml(xml);
+        if (category != null) media.categories.add(category);
+      }, ns: namespaceUrl)
+      ..forEachElementXml('thumbnail', (xml) => media.thumbnails.add(Image.fromXmlAttributes(xml)), ns: namespaceUrl)
+      ..ifPresentXml('player', (value) => media.player = Player.fromXml(value), ns: namespaceUrl)
+      ..forEachElementXml('credit', (xml) => media.credits.add(Credit.fromXml(xml)), ns: namespaceUrl);
 
     return media;
   }

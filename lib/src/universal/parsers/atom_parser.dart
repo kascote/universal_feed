@@ -2,7 +2,6 @@ import 'package:xml/xml.dart';
 
 import '../../../universal_feed.dart';
 import '../../shared/extensions.dart';
-import '../../shared/shared.dart';
 import '../extensions/extension_parser.dart';
 import '../extensions/media/media_parser.dart';
 
@@ -24,14 +23,8 @@ void atomXmlParser(UniversalFeed uf, XmlElement root) {
 /// Parses the main feed element of an Atom feed
 void atomFeedParser(UniversalFeed uf, XmlElement root) {
   root
-    ..forEachElementXml(
-      'author',
-      (xml) => uf.authors.add(Author.fromXml(xml)),
-    )
-    ..forEachElementXml(
-      'contributor',
-      (xml) => uf.authors.add(Author.fromXml(xml)),
-    )
+    ..forEachElementXml('author', (xml) => uf.authors.add(Author.fromXml(xml)))
+    ..forEachElementXml('contributor', (xml) => uf.authors.add(Author.fromXml(xml)))
     ..forEachElementXml(
       'link',
       (value) {
@@ -41,12 +34,7 @@ void atomFeedParser(UniversalFeed uf, XmlElement root) {
         uf.links.add(link);
       },
     )
-    ..ifPresentXml(
-      'title',
-      (item) => uf.title = uf.meta.version == '0.3'
-          ? textDecoder(item.getAttribute('mode') ?? 'xml', item)
-          : textDecoder(item.getAttribute('type') ?? 'text', item),
-    )
+    ..ifPresentXml('title', (item) => uf.title = item.decodeText(uf.meta.kind, atomVersion: uf.meta.version))
     ..ifPresent('updated', (value) => uf.updated = Timestamp(value))
     ..ifPresent('modified', (value) => uf.updated = Timestamp(value))
     ..ifPresentXml(
@@ -60,11 +48,8 @@ void atomFeedParser(UniversalFeed uf, XmlElement root) {
     ..ifPresent('id', (value) => uf.guid = value)
     ..ifPresent('icon', (value) => uf.icon = Image(value))
     ..ifPresent('logo', (value) => uf.image = Image(value))
-    ..ifPresentXml('rights', (item) => uf.copyright = decodeTextField(item))
-    ..ifPresentXml(
-      'subtitle',
-      (item) => uf.description = decodeTextField(item),
-    )
+    ..ifPresentXml('rights', (item) => uf.copyright = item.decodeText(uf.meta.kind))
+    ..ifPresentXml('subtitle', (item) => uf.description = item.decodeText(uf.meta.kind))
     ..forEachElementXml(
       'category',
       (value) {
@@ -76,60 +61,29 @@ void atomFeedParser(UniversalFeed uf, XmlElement root) {
     );
 }
 
+/// Updates the published and updated fields of an item
+void _updatePublishedUpdated(Item item, String value) {
+  final date = Timestamp(value);
+  item
+    ..published ??= date
+    ..updated ??= date;
+}
+
 /// Parses an Atom item
 Item atomItemParser(UniversalFeed uf, Item item, XmlElement element) {
   element
-    ..forEachElementXml(
-      'author',
-      (xml) => item.authors.add(Author.fromXml(xml)),
-    )
-    ..forEachElementXml(
-      'content',
-      (xml) => item.content.add(Content.fromXml(xml)),
-    )
-    ..forEachElementXml(
-      'contributor',
-      (xml) => item.authors.add(Author.fromXml(xml)..type = AuthorType.contributor),
-    )
-    ..ifPresent(
-      'created',
-      (value) {
-        final date = Timestamp(value);
-        item
-          ..published = date
-          ..updated = date;
-      },
-    )
-    ..ifPresent(
-      'published',
-      (value) {
-        final date = Timestamp(value);
-        item
-          ..published = date
-          ..updated = date;
-      },
-    )
-    ..ifPresent(
-      'issued',
-      (value) {
-        final date = Timestamp(value);
-        item
-          ..published = date
-          ..updated = date;
-      },
-    )
+    ..forEachElementXml('author', (xml) => item.authors.add(Author.fromXml(xml)))
+    ..forEachElementXml('content', (xml) => item.content.add(Content.fromXml(xml)))
+    ..forEachElementXml('contributor', (xml) => item.authors.add(Author.fromXml(xml)..type = AuthorType.contributor))
+    ..ifPresent('created', (value) => _updatePublishedUpdated(item, value))
+    ..ifPresent('published', (value) => _updatePublishedUpdated(item, value))
+    ..ifPresent('issued', (value) => _updatePublishedUpdated(item, value))
     ..ifPresent('modified', (value) => item.updated = Timestamp(value))
     ..ifPresent('updated', (value) => item.updated = Timestamp(value))
     ..ifPresent('id', (value) => item.guid = value)
-    ..forEachElementXml(
-      'link',
-      (value) => item.links.add(Link.fromXml(value)),
-    )
-    ..ifPresentXml(
-      'summary',
-      (value) => item.description = decodeTextField(value),
-    )
-    ..ifPresentXml('title', (value) => item.title = decodeTextField(value))
+    ..forEachElementXml('link', (value) => item.links.add(Link.fromXml(value)))
+    ..ifPresentXml('summary', (value) => item.description = value.decodeText(uf.meta.kind))
+    ..ifPresentXml('title', (value) => item.title = value.decodeText(uf.meta.kind))
     ..forEachElementXml(
       'category',
       (value) {
@@ -139,14 +93,8 @@ Item atomItemParser(UniversalFeed uf, Item item, XmlElement element) {
         }
       },
     )
-    ..ifPresentXml(
-      'rights',
-      (value) => item.copyright = decodeTextField(value),
-    )
-    ..ifPresentXml(
-      'source',
-      (value) => item.sourceEntry = Source.fromXml(value),
-    );
+    ..ifPresentXml('rights', (value) => item.copyright = value.decodeText(uf.meta.kind))
+    ..ifPresentXml('source', (value) => item.sourceEntry = Source.fromXml(value));
 
   return item;
 }

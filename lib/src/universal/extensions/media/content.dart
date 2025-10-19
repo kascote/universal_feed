@@ -2,7 +2,6 @@ import 'package:xml/xml.dart';
 
 import '../../../../universal_feed.dart';
 import '../../../shared/extensions.dart';
-import '../../../shared/shared.dart';
 import 'credit.dart';
 import 'player.dart';
 import 'rating.dart';
@@ -109,52 +108,20 @@ class MediaContent {
       ..lang = node.getAttribute('lang');
 
     node
-      ..forEachElementXml(
-        'rating',
-        (xml) => mc.rating.add(Rating.fromXml(xml)),
-        ns: nsUrl,
-      )
-      ..ifPresentXml(
-        'title',
-        (value) => mc.title = textDecoder('plain', value),
-        ns: nsUrl,
-      )
-      ..ifPresentXml(
-        'description',
-        (value) => mc.description = textDecoder('plain', value),
-        ns: nsUrl,
-      )
-      ..forEachElementXml(
-        'keywords',
-        (xml) {
-          final categories = Category.loadTags(xml, defaultScheme: 'keyword');
-          if (categories != null) mc.categories.addAll(categories);
-        },
-        ns: nsUrl,
-      )
-      ..forEachElementXml(
-        'category',
-        (xml) {
-          final category = Category.fromXml(xml);
-          if (category != null) mc.categories.add(category);
-        },
-        ns: nsUrl,
-      )
-      ..forEachElementXml(
-        'thumbnail',
-        (xml) => mc.thumbnails.add(Image.fromXmlAttributes(xml)),
-        ns: nsUrl,
-      )
-      ..ifPresentXml(
-        'player',
-        (value) => mc.player = Player.fromXml(value),
-        ns: nsUrl,
-      )
-      ..ifPresentXml(
-        'credit',
-        (xml) => mc.credits.add(Credit.fromXml(xml)),
-        ns: nsUrl,
-      );
+      ..forEachElementXml('rating', (xml) => mc.rating.add(Rating.fromXml(xml)), ns: nsUrl)
+      ..ifPresentXml('title', (value) => mc.title = value.decodeAs('plain'), ns: nsUrl)
+      ..ifPresentXml('description', (value) => mc.description = value.decodeAs('plain'), ns: nsUrl)
+      ..forEachElementXml('keywords', (xml) {
+        final categories = Category.loadTags(xml, defaultScheme: 'keyword');
+        if (categories != null) mc.categories.addAll(categories);
+      }, ns: nsUrl)
+      ..forEachElementXml('category', (xml) {
+        final category = Category.fromXml(xml);
+        if (category != null) mc.categories.add(category);
+      }, ns: nsUrl)
+      ..forEachElementXml('thumbnail', (xml) => mc.thumbnails.add(Image.fromXmlAttributes(xml)), ns: nsUrl)
+      ..ifPresentXml('player', (value) => mc.player = Player.fromXml(value), ns: nsUrl)
+      ..ifPresentXml('credit', (xml) => mc.credits.add(Credit.fromXml(xml)), ns: nsUrl);
 
     return mc;
   }

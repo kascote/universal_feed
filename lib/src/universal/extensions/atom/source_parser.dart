@@ -2,15 +2,9 @@ import 'package:xml/xml.dart';
 
 import '../../../../universal_feed.dart';
 import '../../../shared/extensions.dart';
-import '../../../shared/shared.dart';
 
 /// Parses an Atom source element
-///
-/// NOTE: This parser contains duplicated logic from atomFeedParser in atom_parser.dart.
-/// This duplication is intentional to keep Source as a separate lightweight type.
-/// If you modify this parser, consider whether atomFeedParser needs similar changes.
 void atomSourceParser(Source source, XmlElement element) {
-  // DUPLICATED: This parsing logic mirrors atomFeedParser for feed-level metadata
   element
     ..forEachElementXml(
       'author',
@@ -33,8 +27,8 @@ void atomSourceParser(Source source, XmlElement element) {
     ..ifPresentXml(
       'title',
       (item) {
-        // Note: source elements are only in Atom 1.0+, so we use 'type' not 'mode'
-        source.title = textDecoder(item.getAttribute('type') ?? 'text', item);
+        // Note: source elements are only in Atom 1.0+, so we use default atomVersion
+        source.title = item.decodeText(FeedKind.atom);
       },
     )
     ..ifPresent('updated', (value) => source.updated = Timestamp(value))
@@ -50,11 +44,8 @@ void atomSourceParser(Source source, XmlElement element) {
     ..ifPresent('id', (value) => source.guid = value)
     ..ifPresent('icon', (value) => source.icon = Image(value))
     ..ifPresent('logo', (value) => source.image = Image(value))
-    ..ifPresentXml('rights', (item) => source.copyright = decodeTextField(item))
-    ..ifPresentXml(
-      'subtitle',
-      (item) => source.subtitle = decodeTextField(item),
-    )
+    ..ifPresentXml('rights', (item) => source.copyright = item.decodeText(FeedKind.atom))
+    ..ifPresentXml('subtitle', (item) => source.subtitle = item.decodeText(FeedKind.atom))
     ..forEachElementXml(
       'category',
       (value) {

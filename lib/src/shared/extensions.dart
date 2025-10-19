@@ -1,5 +1,8 @@
 import 'package:xml/xml.dart';
 
+import '../../universal_feed.dart';
+import 'shared.dart';
+
 /// Extensions for common types to simplify code and improve readability.
 extension JsonMapExtensions on Map<String, dynamic> {
   /// Retrieves a value from the map and casts it to the specified type [T].
@@ -60,4 +63,24 @@ extension XmlElementParsing on XmlElement {
   }) {
     findElements(name, namespace: ns).forEach(callback);
   }
+
+  /// Decodes the text content of the element based on the feed kind and attributes.
+  String decodeText(FeedKind feedKind, {String atomVersion = '1.0'}) {
+    switch (feedKind) {
+      case FeedKind.atom:
+        // Atom 0.3 uses 'mode', Atom 1.0+ uses 'type'
+        if (atomVersion == '0.3') {
+          return textDecoder(getAttribute('mode') ?? 'xml', this);
+        }
+        final type = getAttribute('mode') ?? getAttribute('type') ?? 'text';
+        return textDecoder(type, this);
+      case FeedKind.rss:
+        return textDecoder('xml2', this);
+      case FeedKind.json:
+        return textDecoder(getAttribute('type') ?? 'text', this);
+    }
+  }
+
+  /// Decodes the text content with an explicit type.
+  String decodeAs(String type) => textDecoder(type, this);
 }

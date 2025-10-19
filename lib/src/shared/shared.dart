@@ -77,9 +77,3 @@ String textDecoder(String type, XmlElement item) {
 
   return value;
 }
-
-/// Helper to decode a text field
-String decodeTextField(XmlElement element) {
-  final type = element.getAttribute('mode') ?? element.getAttribute('type') ?? 'text';
-  return textDecoder(type, element);
-}
