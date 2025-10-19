@@ -32,18 +32,31 @@ class ParseInfo {
 
 /// Makes a best effort to parse different date time formats.
 /// The returned DateTime will be in UTC
+///
+/// First attempts to use Dart's built-in DateTime.parse() which handles:
+/// - Standard ISO 8601 formats (yyyy-mm-dd, yyyy-mm-ddThh:mm:ss, etc.)
+/// - MSSQL-style formats (yyyy-mm-dd hh:mm:ss.f)
+/// - W3CDTF formats with timezone offsets
+///
+/// If that fails, falls back to custom pattern matching for:
+/// - RFC 822 date formats (with 2 or 4 digit years)
+/// - Named timezone formats (PDT, EST, etc.)
+/// - Numeric timezone offsets (+/-hhmm)
+/// - Partial date formats (yyyy, yyyy-mm, etc.)
 DateTime? parseDate(String value) {
+  final trimmedValue = value.trim();
+
   try {
-    final d = DateTime.parse(value);
-    return DateTime.utc(d.year, d.month, d.day, d.hour, d.minute, d.second);
+    final d = DateTime.parse(trimmedValue);
+    return DateTime.utc(d.year, d.month, d.day, d.hour, d.minute, d.second, d.millisecond);
   } on FormatException {
     // noop
   }
 
   for (final p in parseInfo) {
-    if (p.rgx.hasMatch(value)) {
+    if (p.rgx.hasMatch(trimmedValue)) {
       try {
-        return (p.cb != null) ? p.cb!(value.trim(), p) : defaultParser(value.trim(), p);
+        return (p.cb != null) ? p.cb!(trimmedValue, p) : defaultParser(trimmedValue, p);
       } on FormatException catch (e) {
         throw FormatException(
           'Error parsing date: [$value] with [${p.format}]',
@@ -85,7 +98,7 @@ DateTime parseWithNumericTz(String value, ParseInfo pi) {
 
     if (matchStr != null && matchStr.group(2) != null) {
       final offsetStr = matchStr.group(2)!;
-      final offsetInt = int.parse(matchStr.group(2)!);
+      final offsetInt = int.parse(offsetStr);
       final duration = Duration(
         hours: int.parse(offsetStr.substring(1, 3)),
         minutes: int.parse(offsetStr.substring(3)),
@@ -131,7 +144,7 @@ DateTime parseWithNamedTz(String value, ParseInfo pi) {
 
 /// Removes the last character if it is Z
 String removeEndingZ(String value) {
-  return value.endsWith('Z') ? value.substring(0, value.length) : value;
+  return value.endsWith('Z') ? value.substring(0, value.length - 1) : value;
 }
 
 /// ParseInfo holds the data of all date formats supported and how to parse them
@@ -142,32 +155,32 @@ String removeEndingZ(String value) {
 final List<ParseInfo> parseInfo = [
   ParseInfo(
     'invalid RFC 822 (no seconds)',
-    RegExp(r'^\d{2}\s\w{3}\s\d{4}\s\d\d:\d\d\s[GMTUTC]*$'),
+    RegExp(r'^\d{1,2}\s\w{3}\s\d{4}\s\d\d:\d\d\s[GMTUTC]*$'),
     'd MMM yyy H:mm',
   ),
 
   ParseInfo(
     'valid RFC 822 (4-digit year) no seconds, offset with letters',
-    RegExp(r'\w{3},\s\d{2}\s\w{3}\s\d{4}\s\d\d:\d\d\s([GMTUTC])*'),
+    RegExp(r'^\w{3},\s\d{1,2}\s\w{3}\s\d{4}\s\d\d:\d\d\s([GMTUTC])*$'),
     'EEE, d MMM yyyy H:mm',
   ),
 
   ParseInfo(
     'valid RFC 822 (4-digit year) offset with digits',
-    RegExp(r'\w{3},\s\d{2}\s\w{3}\s\d{4}\s([\d:])*\s([+\-]\d{4})'),
+    RegExp(r'^\w{3},\s\d{1,2}\s\w{3}\s\d{4}\s([\d:])*\s([+\-]\d{4})$'),
     'EEE, d MMM yyyy H:mm:s',
     cb: parseWithNumericTz,
   ),
 
   ParseInfo(
     'valid RFC 822 (2-digit year)',
-    RegExp(r'\w{3},\s\d{2}\s\w{3}\s\d{2}\s([\d:])*\s([GMTUTC])*'),
+    RegExp(r'^\w{3},\s\d{1,2}\s\w{3}\s\d{2}\s([\d:])*\s([GMTUTC])*$'),
     'EEE, d MMM yy H:mm:s',
   ),
 
   ParseInfo(
     'valid RFC 822 (4-digit year) offset with letters',
-    RegExp(r'\w{3},\s\d{2}\s\w{3}\s\d{4}\s([\d:])*\s([A-Z]{3,4})'),
+    RegExp(r'^\w{3},\s\d{1,2}\s\w{3}\s\d{4}\s([\d:])*\s([A-Z]{3,4})$'),
     'EEE, d MMM yyyy H:mm:s',
     cb: parseWithNamedTz,
   ),
@@ -203,13 +216,13 @@ final List<ParseInfo> parseInfo = [
   // valid ISO 8601 (yymmdd) -- deprecated on ISO 8601:2004
   ParseInfo(
     'bogus RFC 822 (invalid month)',
-    RegExp(r'\w{3},\s\d{2}\s\w{3,10}\s\d{4}\s([\d:])*\s\w{3}'),
+    RegExp(r'^\w{3},\s\d{1,2}\s\w{3,10}\s\d{4}\s([\d:])*\s\w{3}$'),
     'EEE, d MMMM yyyy H:mm:s',
   ),
 
   ParseInfo(
     'invalid RFC 822 with a Z at the end',
-    RegExp(r'^\w{3},\s\d{2}\s\w{3}\s\d{4}\s([\d:])*\sZ$'),
+    RegExp(r'^\w{3},\s\d{1,2}\s\w{3}\s\d{4}\s([\d:])*\sZ$'),
     'EEE, d MMM yyyy H:mm:s',
   ),
 ];

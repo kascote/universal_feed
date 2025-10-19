@@ -132,4 +132,9 @@ void main() {
     final d = Timestamp('2004-07-08 23:56:58');
     expect(d.parseValue()?.toIso8601String(), '2004-07-08T23:56:58.000Z');
   });
+
+  test('valid RFC 822 (1-digit day)', () {
+    final d = Timestamp('Thu, 2 Feb 2017 10:40:19 +0000');
+    expect(d.parseValue()?.toIso8601String(), '2017-02-02T10:40:19.000Z');
+  });
 }
