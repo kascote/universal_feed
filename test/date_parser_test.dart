@@ -137,4 +137,39 @@ void main() {
     final d = Timestamp('Thu, 2 Feb 2017 10:40:19 +0000');
     expect(d.parseValue()?.toIso8601String(), '2017-02-02T10:40:19.000Z');
   });
+
+  test('invalid date returns null', () {
+    final d = Timestamp('completely invalid date');
+    expect(d.parseValue(), isNull);
+  });
+
+  test('malformed RFC 822 with invalid month abbrev', () {
+    final d = Timestamp('99 XXX 2004 22:20 GMT');
+    expect(d.parseValue(), isNull);
+  });
+
+  test('malformed RFC 822 with invalid numeric TZ', () {
+    final d = Timestamp('Thu, 99 XXX 2004 19:48:21 +9999');
+    expect(d.parseValue(), isNull);
+  });
+
+  test('malformed RFC 822 with invalid named TZ', () {
+    final d = Timestamp('Thu, 99 XXX 2004 19:48:21 ZZZZ');
+    expect(d.parseValue(), isNull);
+  });
+
+  test('malformed W3CDTF yyyy', () {
+    final d = Timestamp('999X');
+    expect(d.parseValue(), isNull);
+  });
+
+  test('malformed W3CDTF yyyy-mm', () {
+    final d = Timestamp('2004-XX');
+    expect(d.parseValue(), isNull);
+  });
+
+  test('malformed ISO 8601 -yy-mm', () {
+    final d = Timestamp('-XX-99');
+    expect(d.parseValue(), isNull);
+  });
 }

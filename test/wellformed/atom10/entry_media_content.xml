@@ -1,0 +1,10 @@
+<!--
+Description: entry with media:content
+Expect:      not bozo and entries[0]['media_content'][0]['url']
+-->
+<feed xmlns="http://www.w3.org/2005/Atom" xmlns:media="http://search.yahoo.com/mrss/">
+  <entry>
+    <title>Test Entry</title>
+    <media:content url="http://example.com/video.mp4" type="video/mp4" />
+  </entry>
+</feed>

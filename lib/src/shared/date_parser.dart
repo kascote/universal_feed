@@ -46,8 +46,8 @@ class ParseInfo {
 /// - Numeric timezone offsets (+/-hhmm)
 /// - Partial date formats (yyyy, yyyy-mm, etc.)
 ///
-/// Returns `null` for unparseable dates instead of throwing exceptions. This 
-/// allows feed parsing to continue even when date fields are malformed, 
+/// Returns `null` for unparseable dates instead of throwing exceptions. This
+/// allows feed parsing to continue even when date fields are malformed,
 /// deferring to the caller to decide how to handle missing date information.
 DateTime? parseDate(String value) {
   final trimmedValue = value.trim();

@@ -77,7 +77,7 @@ extension XmlElementParsing on XmlElement {
       case FeedKind.rss:
         return textDecoder('xml2', this);
       case FeedKind.json:
-        return textDecoder(getAttribute('type') ?? 'text', this);
+        throw StateError('decodeText called on JSON feed (should use JSON parsing)');
     }
   }
 

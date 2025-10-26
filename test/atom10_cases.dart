@@ -93,6 +93,8 @@ Map<String, TestFx> atom10Tests() {
     'entry_link_rel_via.xml': (r) => r.items.first.links.first.rel == LinkRelationType.via,
     'entry_link_title.xml': (r) => r.items.first.links.first.title == 'Example title',
     'entry_link_type.xml': (r) => r.items.first.links.first.type == 'text/html',
+    'entry_media_content.xml': (r) =>
+        r.items.first.media != null && r.items.first.media!.content.first.url == 'http://example.com/video.mp4',
     'entry_rights.xml': (r) => r.items.first.copyright == 'Example Atom',
     'entry_rights_content_value.xml': (r) => r.items.first.copyright == 'Example Atom',
     'entry_rights_escaped_markup.xml': (r) => r.items.first.copyright == 'Example <b>Atom</b>',
@@ -137,6 +139,75 @@ Map<String, TestFx> atom10Tests() {
     },
     'entry_source_contributor_name.xml': (r) => r.items.first.sourceEntry?.authors.first.name == 'Example contributor',
     'entry_source_contributor_uri.xml': (r) => r.items.first.sourceEntry?.authors.first.url == 'http://example.com/',
+    'entry_source_generator.xml': (r) => r.items.first.sourceEntry?.generator?.name == 'Example generator',
+    'entry_source_generator_name.xml': (r) => r.items.first.sourceEntry?.generator?.name == 'Example generator',
+    'entry_source_generator_uri.xml': (r) => r.items.first.sourceEntry?.generator?.url == 'http://example.com/',
+    'entry_source_generator_version.xml': (r) => r.items.first.sourceEntry?.generator?.version == '2.65',
+    'entry_source_icon.xml': (r) => r.items.first.sourceEntry?.icon?.url == 'http://example.com/favicon.ico',
+    'entry_source_id.xml': (r) => r.items.first.sourceEntry?.guid == 'http://example.com/',
+    'entry_source_link_alternate_map_link.xml': (r) =>
+        r.items.first.sourceEntry?.links.first.href == 'http://www.example.com/',
+    'entry_source_link_alternate_map_link_2.xml': (r) =>
+        r.items.first.sourceEntry?.links.first.href == 'http://www.example.com/',
+    'entry_source_link_href.xml': (r) => r.items.first.sourceEntry?.links.first.href == 'http://www.example.com/',
+    'entry_source_link_hreflang.xml': (r) => r.items.first.sourceEntry?.links.first.href == 'http://www.example.com/',
+    'entry_source_link_length.xml': (r) => r.items.first.sourceEntry?.links.first.length == '42301',
+    'entry_source_link_multiple.xml': (r) =>
+        r.items.first.sourceEntry?.links.first.href == 'http://www.example.com/' &&
+        r.items.first.sourceEntry?.links.last.href == 'http://www.example.com/post',
+    'entry_source_link_no_rel.xml': (r) => r.items.first.sourceEntry?.links.first.href == 'http://www.example.com/',
+    'entry_source_link_rel.xml': (r) => r.items.first.sourceEntry?.links.first.href == 'http://www.example.com/',
+    'entry_source_link_rel_other.xml': (r) =>
+        r.items.first.sourceEntry?.links.first.rel == LinkRelationType.other &&
+        r.items.first.sourceEntry?.links.first.originalRel == 'http://feedparser.org/rel/test',
+    'entry_source_link_rel_related.xml': (r) => r.items.first.sourceEntry?.links.first.rel == LinkRelationType.related,
+    'entry_source_link_rel_self.xml': (r) => r.items.first.sourceEntry?.links.first.rel == LinkRelationType.self,
+    'entry_source_link_rel_via.xml': (r) => r.items.first.sourceEntry?.links.first.rel == LinkRelationType.via,
+    'entry_source_link_title.xml': (r) => r.items.first.sourceEntry?.links.first.title == 'Example title',
+    'entry_source_link_type.xml': (r) => r.items.first.sourceEntry?.links.first.type == 'text/html',
+    'entry_source_logo.xml': (r) => r.items.first.sourceEntry?.image?.url == 'http://example.com/logo.jpg',
+    'entry_source_rights.xml': (r) => r.items.first.sourceEntry?.copyright == 'Example Atom',
+    'entry_source_rights_base64.xml': (r) => r.items.first.sourceEntry?.copyright == 'Example <b>Atom</b>',
+    'entry_source_rights_base64_2.xml': (r) =>
+        r.items.first.sourceEntry?.copyright == '<p>History of the &lt;blink&gt; tag</p>',
+    'entry_source_rights_content_type.xml': (r) => r.items.first.sourceEntry?.copyright == 'Example Atom',
+    'entry_source_rights_content_type_text.xml': (r) => r.items.first.sourceEntry?.copyright == 'Example Atom',
+    'entry_source_rights_content_value.xml': (r) => r.items.first.sourceEntry?.copyright == 'Example Atom',
+    'entry_source_rights_escaped_markup.xml': (r) => r.items.first.sourceEntry?.copyright == 'Example <b>Atom</b>',
+    'entry_source_rights_inline_markup.xml': (r) =>
+        r.items.first.sourceEntry?.copyright == '<div xmlns="http://www.w3.org/1999/xhtml">Example <b>Atom</b></div>',
+    'entry_source_rights_inline_markup_2.xml': (r) =>
+        r.items.first.sourceEntry?.copyright ==
+        '<div xmlns="http://www.w3.org/1999/xhtml">History of the &lt;blink> tag</div>',
+    'entry_source_rights_text_plain.xml': (r) => r.items.first.sourceEntry?.copyright == 'Example Atom',
+    'entry_source_subittle_content_type_text.xml': (r) => r.items.first.sourceEntry?.subtitle == 'Example Atom',
+    'entry_source_subtitle.xml': (r) => r.items.first.sourceEntry?.subtitle == 'Example Atom',
+    'entry_source_subtitle_base64.xml': (r) => r.items.first.sourceEntry?.subtitle == 'Example <b>Atom</b>',
+    'entry_source_subtitle_base64_2.xml': (r) =>
+        r.items.first.sourceEntry?.subtitle == '<p>History of the &lt;blink&gt; tag</p>',
+    'entry_source_subtitle_content_type.xml': (r) => r.items.first.sourceEntry?.subtitle == 'Example Atom',
+    'entry_source_subtitle_content_value.xml': (r) => r.items.first.sourceEntry?.subtitle == 'Example Atom',
+    'entry_source_subtitle_escaped_markup.xml': (r) => r.items.first.sourceEntry?.subtitle == 'Example <b>Atom</b>',
+    'entry_source_subtitle_inline_markup.xml': (r) =>
+        r.items.first.sourceEntry?.subtitle == '<div xmlns="http://www.w3.org/1999/xhtml">Example <b>Atom</b></div>',
+    'entry_source_subtitle_inline_markup_2.xml': (r) =>
+        r.items.first.sourceEntry?.subtitle ==
+        '<div xmlns="http://www.w3.org/1999/xhtml">History of the &lt;blink> tag</div>',
+    'entry_source_subtitle_text_plain.xml': (r) => r.items.first.sourceEntry?.subtitle == 'Example Atom',
+    'entry_source_title.xml': (r) => r.items.first.sourceEntry?.title == 'Example Atom',
+    'entry_source_title_base64.xml': (r) => r.items.first.sourceEntry?.title == 'Example <b>Atom</b>',
+    'entry_source_title_base64_2.xml': (r) =>
+        r.items.first.sourceEntry?.title == '<p>History of the &lt;blink&gt; tag</p>',
+    'entry_source_title_content_type.xml': (r) => r.items.first.sourceEntry?.title == 'Example Atom',
+    'entry_source_title_content_type_text.xml': (r) => r.items.first.sourceEntry?.title == 'Example Atom',
+    'entry_source_title_content_value.xml': (r) => r.items.first.sourceEntry?.title == 'Example Atom',
+    'entry_source_title_escaped_markup.xml': (r) => r.items.first.sourceEntry?.title == 'Example <b>Atom</b>',
+    'entry_source_title_inline_markup.xml': (r) =>
+        r.items.first.sourceEntry?.title == '<div xmlns="http://www.w3.org/1999/xhtml">Example <b>Atom</b></div>',
+    'entry_source_title_inline_markup_2.xml': (r) =>
+        r.items.first.sourceEntry?.title ==
+        '<div xmlns="http://www.w3.org/1999/xhtml">History of the &lt;blink> tag</div>',
+    'entry_source_title_text_plain.xml': (r) => r.items.first.sourceEntry?.title == 'Example Atom',
     'entry_title.xml': (r) => r.items.first.title == 'Example Atom',
     'entry_title_base64.xml': (r) => r.items.first.title == 'Example <b>Atom</b>',
     'entry_title_base64_2.xml': (r) => r.items.first.title == '<p>History of the &lt;blink&gt; tag</p>',
@@ -186,6 +257,7 @@ Map<String, TestFx> atom10Tests() {
     'feed_contributor_name.xml': (r) => r.authors.first.name == 'Example contributor',
     'feed_contributor_uri.xml': (r) => r.authors.first.url == 'http://example.com/',
     'feed_contributor_url.xml': (r) => r.authors.first.url == 'http://example.com/',
+    'feed_category_term.xml': (r) => r.categories.first.term == 'atom10',
     'feed_generator.xml': (r) => r.generator!.name == 'Example generator',
     'feed_generator_name.xml': (r) => r.generator!.name == 'Example generator',
     'feed_generator_url.xml': (r) => r.generator!.url == 'http://example.com/',

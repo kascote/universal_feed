@@ -1,5 +1,6 @@
 import 'package:test/test.dart';
 import 'package:universal_feed/src/shared/extensions.dart';
+import 'package:universal_feed/universal_feed.dart';
 import 'package:xml/xml.dart';
 
 void main() {
@@ -783,6 +784,84 @@ void main() {
         });
 
         expect(alternateLinks, equals(['http://example.com/1', 'http://example.com/3']));
+      });
+    });
+
+    group('decodeText', () {
+      test('decodes Atom 1.0+ text content', () {
+        final xml = XmlDocument.parse('''
+          <root>
+            <title type="text">Plain Text</title>
+          </root>
+        ''');
+        final element = xml.rootElement.findElements('title').first;
+
+        final result = element.decodeText(FeedKind.atom);
+        expect(result, equals('Plain Text'));
+      });
+
+      test('decodes Atom 0.3 content with mode attribute', () {
+        final xml = XmlDocument.parse('''
+          <root>
+            <title mode="xml">XML Content</title>
+          </root>
+        ''');
+        final element = xml.rootElement.findElements('title').first;
+
+        final result = element.decodeText(FeedKind.atom, atomVersion: '0.3');
+        expect(result, equals('XML Content'));
+      });
+
+      test('decodes RSS content', () {
+        final xml = XmlDocument.parse('''
+          <root>
+            <title>RSS Title</title>
+          </root>
+        ''');
+        final element = xml.rootElement.findElements('title').first;
+
+        final result = element.decodeText(FeedKind.rss);
+        expect(result, equals('RSS Title'));
+      });
+
+      test('throws StateError for JSON feed (unreachable)', () {
+        final xml = XmlDocument.parse('''
+          <root>
+            <title type="text">JSON Title</title>
+          </root>
+        ''');
+        final element = xml.rootElement.findElements('title').first;
+
+        expect(
+          () => element.decodeText(FeedKind.json),
+          throwsStateError,
+        );
+      });
+
+      test('uses default text type for Atom when no type attribute', () {
+        final xml = XmlDocument.parse('''
+          <root>
+            <title>Default Text</title>
+          </root>
+        ''');
+        final element = xml.rootElement.findElements('title').first;
+
+        final result = element.decodeText(FeedKind.atom);
+        expect(result, equals('Default Text'));
+      });
+    });
+
+    group('decodeAs', () {
+      test('decodes with explicit type', () {
+        final xml = XmlDocument.parse('''
+          <root>
+            <content>Test Content</content>
+          </root>
+        ''');
+        final element = xml.rootElement.findElements('content').first;
+
+        final result = element.decodeAs('text');
+        expect(result, equals('Test Content'));
       });
     });
   });

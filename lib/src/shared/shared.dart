@@ -38,8 +38,8 @@ String siblingText(XmlNode node) {
 ///
 /// Supports multiple encoding types: xml, html, base64, html escaped, and text.
 ///
-/// Returns empty string for unknown encoding types instead of throwing an 
-/// exception, allowing feed parsing to continue even when encountering 
+/// Returns empty string for unknown encoding types instead of throwing an
+/// exception, allowing feed parsing to continue even when encountering
 /// unfamiliar content encoding modes.
 String textDecoder(String type, XmlElement item) {
   String value;

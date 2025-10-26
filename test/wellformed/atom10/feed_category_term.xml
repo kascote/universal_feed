@@ -1,0 +1,12 @@
+<!--
+Description: feed category term
+Expect:      not bozo and feed['tags'][0]['term'] == 'atom10'
+-->
+<feed xmlns="http://www.w3.org/2005/Atom">
+  <title>Test Feed</title>
+  <category term="atom10" label="Atom 1.0"/>
+  <entry>
+    <title>Test Entry</title>
+    <id>http://example.com/1</id>
+  </entry>
+</feed>
