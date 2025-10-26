@@ -58,7 +58,9 @@ class MetaData {
       case 'RDF':
         return MetaData(FeedKind.rss, '0.90', namespaces, encoding: encoding);
       default:
-        throw FeedError('Unknown feed type: ${root.localName}');
+        throw UnsupportedFeedFormatException(
+          detectedFormat: root.localName,
+        );
     }
   }
 }

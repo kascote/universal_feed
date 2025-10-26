@@ -3,8 +3,6 @@ import 'dart:convert';
 import 'package:html_unescape/html_unescape.dart';
 import 'package:xml/xml.dart';
 
-import 'errors.dart';
-
 /// Helper function to retrieve all the elements that match a node name. The callback will receive
 /// each node individually
 void getJsElements<T>(Map<String, dynamic> node, String fieldName, {required void Function(T) cb}) {
@@ -36,8 +34,13 @@ String siblingText(XmlNode node) {
   return value;
 }
 
-/// Decode different options of text nodes
-/// can decode xml, html, base64, html escaped
+/// Decode different options of text nodes.
+///
+/// Supports multiple encoding types: xml, html, base64, html escaped, and text.
+///
+/// Returns empty string for unknown encoding types instead of throwing an 
+/// exception, allowing feed parsing to continue even when encountering 
+/// unfamiliar content encoding modes.
 String textDecoder(String type, XmlElement item) {
   String value;
   switch (type) {
@@ -72,7 +75,8 @@ String textDecoder(String type, XmlElement item) {
       value = utf8.decode(base64.decode(item.innerText.trim()));
 
     default:
-      throw FeedError('textDecoder: field encoded mode type unknown: $type');
+      // Liberal parsing: return empty string for unknown encoding types
+      value = '';
   }
 
   return value;

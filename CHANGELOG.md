@@ -6,6 +6,12 @@
 - fix how permalinks are handled in rss feeds. Now follow the spec more closely.
 - Atom Item's source property updated to be a Source object and not a nested
   UniversalFeed
+- fix bug on rfc822 date parsing with one day digit
+- improve exceptions definition (FeedException, UnsupportedFeedFormatException,
+  MissingRequiredFieldException, InvalidFieldValueException)
+- fix date parser to consistently return null instead of throwing
+- fix tryParse to catch all exception types
+- improve documentation for exceptions and parsing methods
 
 ## 0.6.0
 

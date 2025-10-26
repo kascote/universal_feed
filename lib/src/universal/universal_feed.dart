@@ -101,13 +101,25 @@ class UniversalFeed {
 
   UniversalFeed._();
 
-  /// Generate a new UniversalFeed object from an feed string.
-  /// The string must be an XML string with RSS or Atom encoding.
+  /// Parses a feed string into a UniversalFeed object.
+  ///
+  /// Supports RSS (0.90-2.0), Atom (0.3, 1.0), and JSON Feed (1.0, 1.1) formats.
+  /// The [content] string must contain valid feed data (XML or JSON).
+  ///
+  /// Throws:
+  /// * [ArgumentError] if [content] is empty
+  /// * [UnsupportedFeedFormatException] if the feed format is not recognized
+  /// * [MissingRequiredFieldException] if required fields are missing (JSON Feed)
+  /// * [InvalidFieldValueException] if field values are malformed
+  /// * [XmlParserException] if XML is malformed
+  /// * [FormatException] if JSON is malformed
+  ///
+  /// For a non-throwing alternative, use [tryParse].
   factory UniversalFeed.parseFromString(String content) {
     content = content.trim();
 
     if (content.isEmpty) {
-      throw XmlParserException('The content cannot be empty.');
+      throw ArgumentError.value(content, 'content', 'Content cannot be empty');
     }
 
     if (content.startsWith('{')) {
@@ -128,13 +140,39 @@ class UniversalFeed {
     return feed;
   }
 
-  /// Try to parse a string into a UniversalFeed object if fail will return null.
+  /// Attempts to parse a feed string, returning `null` if parsing fails.
+  ///
+  /// This is a convenience method that catches all parsing exceptions and returns
+  /// `null` instead of throwing. Use this when you don't want to handle exceptions
+  /// yourself and prefer a simple null check.
+  ///
+  /// Returns:
+  /// * A [UniversalFeed] object if parsing succeeds
+  /// * `null` if parsing fails due to malformed input
+  ///
+  /// Example:
+  /// ```dart
+  /// final feed = UniversalFeed.tryParse(feedString);
+  /// if (feed != null) {
+  ///   print(feed.title);
+  /// } else {
+  ///   print('Failed to parse feed');
+  /// }
+  /// ```
   static UniversalFeed? tryParse(String content) {
     try {
       return UniversalFeed.parseFromString(content);
+    } on FeedException {
+      // Unsupported format, missing required fields, invalid field values
+      return null;
     } on XmlParserException {
+      // Malformed XML
       return null;
     } on XmlTagException {
+      // XML tag errors
+      return null;
+    } on FormatException {
+      // JSON parsing errors
       return null;
     }
   }

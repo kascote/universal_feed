@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:intl/intl.dart';
 
 import './tz_data.dart';
@@ -43,6 +45,10 @@ class ParseInfo {
 /// - Named timezone formats (PDT, EST, etc.)
 /// - Numeric timezone offsets (+/-hhmm)
 /// - Partial date formats (yyyy, yyyy-mm, etc.)
+///
+/// Returns `null` for unparseable dates instead of throwing exceptions. This 
+/// allows feed parsing to continue even when date fields are malformed, 
+/// deferring to the caller to decide how to handle missing date information.
 DateTime? parseDate(String value) {
   final trimmedValue = value.trim();
 
@@ -58,11 +64,11 @@ DateTime? parseDate(String value) {
       try {
         return (p.cb != null) ? p.cb!(trimmedValue, p) : defaultParser(trimmedValue, p);
       } on FormatException catch (e) {
-        throw FormatException(
-          'Error parsing date: [$value] with [${p.format}]',
-          e.source,
-          e.offset,
-        );
+        assert(() {
+          stderr.writeln('Debug: Error parsing date [$value] with [${p.format}]: $e');
+          return true;
+        }(), 'Date parsing failed, trying next pattern');
+        continue;
       }
     }
   }
@@ -75,11 +81,11 @@ DateTime defaultParser(String value, ParseInfo pi) {
   try {
     return DateFormat(pi.format).parseUtc(removeEndingZ(value));
   } on FormatException catch (e) {
-    throw FormatException(
-      'Error parsing date: [$value] with [${pi.format}]',
-      e.source,
-      e.offset,
-    );
+    assert(() {
+      stderr.writeln('Debug: defaultParser error for [$value] with [${pi.format}]: $e');
+      return true;
+    }(), 'defaultParser failed');
+    rethrow;
   }
 }
 
@@ -108,8 +114,12 @@ DateTime parseWithNumericTz(String value, ParseInfo pi) {
     }
 
     return tmp;
-  } on FormatException {
-    throw FormatException('(parseWithNumericTz) format error: [$dateStr] with [${pi.format}]');
+  } on FormatException catch (e) {
+    assert(() {
+      stderr.writeln('Debug: parseWithNumericTz error for [$dateStr] with [${pi.format}]: $e');
+      return true;
+    }(), 'parseWithNumericTz failed');
+    rethrow;
   }
 }
 
@@ -137,8 +147,12 @@ DateTime parseWithNamedTz(String value, ParseInfo pi) {
     }
 
     return tmp;
-  } on FormatException {
-    throw FormatException('(parseWithNamedTz) format error: [$dateStr] with [${pi.format}]');
+  } on FormatException catch (e) {
+    assert(() {
+      stderr.writeln('Debug: parseWithNamedTz error for [$dateStr] with [${pi.format}]: $e');
+      return true;
+    }(), 'parseWithNamedTz failed');
+    rethrow;
   }
 }
 

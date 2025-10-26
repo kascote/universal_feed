@@ -17,7 +17,13 @@ UniversalFeed jsonParser(UniversalFeed feed, String content) {
     'The version is required.',
   );
   final versionUri = Uri.tryParse(versionStr);
-  if (versionUri == null) throw FeedError('The version is not a valid URI.');
+  if (versionUri == null) {
+    throw InvalidFieldValueException(
+      fieldName: 'version',
+      actualValue: versionStr,
+      expectedType: 'valid JSON Feed URI',
+    );
+  }
   feed
     ..title = _getRequiredElement<String>(
       json,
@@ -161,6 +167,11 @@ T _getRequiredElement<T>(
   String errorMessage,
 ) {
   final value = json.getTyped<T>(fieldName);
-  if (value == null) throw FeedError(errorMessage);
+  if (value == null) {
+    throw MissingRequiredFieldException(
+      fieldName: fieldName,
+      feedType: 'JSON Feed',
+    );
+  }
   return value;
 }
