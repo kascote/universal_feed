@@ -2,21 +2,35 @@ import 'package:xml/xml.dart';
 
 import '../../../universal_feed.dart';
 import '../../shared/extensions.dart';
+import '../../shared/shared.dart';
 import '../extensions/extension_parser.dart';
 import '../extensions/media/media_parser.dart';
 
 /// Parses an Atom feed
-void atomXmlParser(UniversalFeed uf, XmlElement root) {
+void atomXmlParser(
+  UniversalFeed uf,
+  XmlElement root, {
+  OnChannelParse? onChannelParse,
+  OnItemParse? onItemParse,
+}) {
   atomFeedParser(uf, root);
+  uf.feedId = uf.guid ?? generateFallbackFeedId();
 
-  // Get extension parsers once for the entire feed (same pattern as RSS parser)
+  onChannelParse?.call(uf, XmlRawElement(uf.feedId, root));
+
   final itemParsers = _getItemExtensionParsers(uf);
 
   final items = root.findElements('entry');
+  var itemIndex = 0;
   for (final itemElement in items) {
-    final item = Item.atomFromXml(uf, itemElement);
+    final itemId = 'item_$itemIndex';
+    final item = Item.atomFromXml(uf, itemElement, itemId);
     _parseItemExtensions(uf, item, itemElement, itemParsers);
+
+    onItemParse?.call(item, XmlRawElement(item.itemId, itemElement));
+
     uf.items.add(item);
+    itemIndex++;
   }
 }
 

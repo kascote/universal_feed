@@ -2,6 +2,7 @@ import 'package:xml/xml.dart';
 
 import '../../../universal_feed.dart';
 import '../../shared/extensions.dart';
+import '../../shared/shared.dart';
 import '../extensions/content/content_parser.dart';
 import '../extensions/dcterms/dc_parser.dart';
 import '../extensions/dcterms/dcterms_parser.dart';
@@ -14,7 +15,12 @@ import '../extensions/podcast/itunes_item_parser.dart';
 import '../extensions/syndication/syndication_parser.dart';
 
 /// Parse an RSS feed
-void rssXmlParser(UniversalFeed uf, XmlDocument doc) {
+void rssXmlParser(
+  UniversalFeed uf,
+  XmlDocument doc, {
+  OnChannelParse? onChannelParse,
+  OnItemParse? onItemParse,
+}) {
   final root = doc.rootElement;
   final channel = root.getElement('channel');
   if (channel == null) return;
@@ -23,12 +29,21 @@ void rssXmlParser(UniversalFeed uf, XmlDocument doc) {
 
   rssChannelParser(uf, channel);
   _parseChannelExtensions(uf, channel, parsers.channel);
+  uf.feedId = uf.guid ?? uf.htmlLink?.href ?? generateFallbackFeedId();
+
+  onChannelParse?.call(uf, XmlRawElement(uf.feedId, channel));
 
   final rssItems = channel.findElements('item');
+  var itemIndex = 0;
   for (final rssItem in rssItems) {
-    final item = Item.rssFromXml(uf, rssItem);
+    final itemId = 'item_$itemIndex';
+    final item = Item.rssFromXml(uf, rssItem, itemId);
     _parseItemExtensions(uf, item, rssItem, parsers.item);
+
+    onItemParse?.call(item, XmlRawElement(item.itemId, rssItem));
+
     uf.items.add(item);
+    itemIndex++;
   }
 }
 

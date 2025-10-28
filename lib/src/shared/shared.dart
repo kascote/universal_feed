@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:math';
 
 import 'package:html_unescape/html_unescape.dart';
 import 'package:xml/xml.dart';
@@ -80,4 +81,11 @@ String textDecoder(String type, XmlElement item) {
   }
 
   return value;
+}
+
+/// Generates a fallback feedId when no guid/link/id is available.
+String generateFallbackFeedId() {
+  final timestamp = DateTime.now().millisecondsSinceEpoch;
+  final random = Random().nextInt(999999);
+  return 'feed_${timestamp}_$random';
 }

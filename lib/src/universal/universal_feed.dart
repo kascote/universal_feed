@@ -16,6 +16,11 @@ class UniversalFeed {
   /// Contains metadata information for the Feed.
   late final MetaData meta;
 
+  /// Stable identifier for the feed.
+  ///
+  /// This is an opaque identifier used to uniquely identify the feed
+  late final String feedId;
+
   /// Unique identifier for the feed.
   String? guid;
 
@@ -106,6 +111,10 @@ class UniversalFeed {
   /// Supports RSS (0.90-2.0), Atom (0.3, 1.0), and JSON Feed (1.0, 1.1) formats.
   /// The [content] string must contain valid feed data (XML or JSON).
   ///
+  /// Optional callbacks:
+  /// * [onChannelParse]: Called after parsing the feed/channel with access to raw element
+  /// * [onItemParse]: Called after parsing each item/entry with access to raw element
+  ///
   /// Throws:
   /// * [ArgumentError] if [content] is empty
   /// * [UnsupportedFeedFormatException] if the feed format is not recognized
@@ -115,7 +124,11 @@ class UniversalFeed {
   /// * [FormatException] if JSON is malformed
   ///
   /// For a non-throwing alternative, use [tryParse].
-  factory UniversalFeed.parseFromString(String content) {
+  factory UniversalFeed.parseFromString(
+    String content, {
+    OnChannelParse? onChannelParse,
+    OnItemParse? onItemParse,
+  }) {
     content = content.trim();
 
     if (content.isEmpty) {
@@ -123,7 +136,12 @@ class UniversalFeed {
     }
 
     if (content.startsWith('{')) {
-      return jsonParser(UniversalFeed._(), content);
+      return jsonParser(
+        UniversalFeed._(),
+        content,
+        onChannelParse: onChannelParse,
+        onItemParse: onItemParse,
+      );
     }
 
     final doc = XmlDocument.parse(content);
@@ -132,9 +150,19 @@ class UniversalFeed {
     final feed = UniversalFeed._()..meta = MetaData.rssFromXml(doc);
 
     if (feed.meta.kind == FeedKind.rss) {
-      rssXmlParser(feed, doc);
+      rssXmlParser(
+        feed,
+        doc,
+        onChannelParse: onChannelParse,
+        onItemParse: onItemParse,
+      );
     } else if (feed.meta.kind == FeedKind.atom) {
-      atomXmlParser(feed, root);
+      atomXmlParser(
+        feed,
+        root,
+        onChannelParse: onChannelParse,
+        onItemParse: onItemParse,
+      );
     }
 
     return feed;

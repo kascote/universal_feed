@@ -11,6 +11,12 @@ import 'parsers/rss_parser.dart';
 
 /// An item in a feed
 class Item {
+  /// Stable sequential identifier for this item within the feed.
+  ///
+  /// Generated during parsing as `item_0`, `item_1`, etc.
+  /// This is an opaque identifier used to uniquely identify the item within the feed.
+  final String itemId;
+
   /// A string that uniquely identifies the item
   ///
   /// Guid stands for globally unique identifier. It's a string that uniquely identifies the item.
@@ -131,25 +137,25 @@ class Item {
   /// The item's podcast extension if the extension was registered
   ItunesItem? podcast;
 
-  Item._();
+  Item._(this.itemId);
 
   /// Creates a new [Item] from a [XmlElement]
-  factory Item.rssFromXml(UniversalFeed uf, XmlElement rssItem) {
-    final item = Item._();
+  factory Item.rssFromXml(UniversalFeed uf, XmlElement rssItem, String itemId) {
+    final item = Item._(itemId);
     rssItemParser(uf, item, rssItem);
     return item;
   }
 
   /// Creates a new [Item] from a [XmlElement]
-  factory Item.atomFromXml(UniversalFeed uf, XmlElement atomItem) {
-    final item = Item._();
+  factory Item.atomFromXml(UniversalFeed uf, XmlElement atomItem, String itemId) {
+    final item = Item._(itemId);
     atomItemParser(uf, item, atomItem);
     return item;
   }
 
   /// Creates a new [Item] from a json array
-  factory Item.jsonFromJson(UniversalFeed uf, Map<String, dynamic> jsonItem) {
-    final item = Item._();
+  factory Item.jsonFromJson(UniversalFeed uf, Map<String, dynamic> jsonItem, String itemId) {
+    final item = Item._(itemId);
     jsonItemParser(uf, item, jsonItem);
     return item;
   }

@@ -8,7 +8,12 @@ import '../../shared/shared.dart';
 /// Parses a JSON feed
 ///
 /// https://www.jsonfeed.org/
-UniversalFeed jsonParser(UniversalFeed feed, String content) {
+UniversalFeed jsonParser(
+  UniversalFeed feed,
+  String content, {
+  OnChannelParse? onChannelParse,
+  OnItemParse? onItemParse,
+}) {
   final json = jsonDecode(content) as Map<String, dynamic>;
 
   final versionStr = _getRequiredElement<String>(
@@ -38,10 +43,21 @@ UniversalFeed jsonParser(UniversalFeed feed, String content) {
     );
 
   _jsonFeedParser(feed, json);
+  feed.feedId = feed.xmlLink?.href ?? generateFallbackFeedId();
+
+  onChannelParse?.call(feed, JsonRawElement(feed.feedId, json));
+
   final items = json['items'] as List<dynamic>?;
   if (items != null) {
+    var itemIndex = 0;
     for (final item in items) {
-      Item.jsonFromJson(feed, item as Map<String, dynamic>);
+      final itemId = 'item_$itemIndex';
+      final itemJson = item as Map<String, dynamic>;
+      final parsedItem = Item.jsonFromJson(feed, itemJson, itemId);
+
+      onItemParse?.call(parsedItem, JsonRawElement(parsedItem.itemId, itemJson));
+
+      itemIndex++;
     }
   }
 

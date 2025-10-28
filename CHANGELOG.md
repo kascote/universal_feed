@@ -12,6 +12,7 @@
 - fix date parser to consistently return null instead of throwing
 - fix tryParse to catch all exception types
 - improve documentation for exceptions and parsing methods
+- add support to extract custom entities from feeds
 
 ## 0.6.0
 

@@ -13,10 +13,48 @@ extension JsonMapExtensions on Map<String, dynamic> {
   }
 
   /// If the key exists and the value is of type [T], calls the provided [callback] with the value.
+  /// Handles List and Map types specially since JSON parsing returns `List<dynamic>` and internal map types.
   void ifPresent<T>(String key, void Function(T value) callback) {
-    final value = getTyped<T>(key);
-    if (value != null) callback(value);
+    final value = this[key];
+    if (value == null) return;
+
+    if (value is List<dynamic>) {
+      final casted = _castList<T>(value);
+      if (casted != null) {
+        callback(casted);
+        return;
+      }
+    }
+
+    if (value is Map<dynamic, dynamic>) {
+      final casted = _castMap<T>(value);
+      if (casted != null) {
+        callback(casted);
+        return;
+      }
+    }
+
+    if (value is T) callback(value);
   }
+
+  T? _castList<T>(List<dynamic> list) {
+    if (_isType<T, List<String>>()) return list.cast<String>() as T;
+    if (_isType<T, List<int>>()) return list.cast<int>() as T;
+    if (_isType<T, List<double>>()) return list.cast<double>() as T;
+    if (_isType<T, List<bool>>()) return list.cast<bool>() as T;
+    if (_isType<T, List<Map<String, dynamic>>>()) return list.cast<Map<String, dynamic>>() as T;
+    return null;
+  }
+
+  T? _castMap<T>(Map<dynamic, dynamic> map) {
+    if (_isType<T, Map<String, dynamic>>()) return map.cast<String, dynamic>() as T;
+    if (_isType<T, Map<String, String>>()) return map.cast<String, String>() as T;
+    if (_isType<T, Map<String, int>>()) return map.cast<String, int>() as T;
+    return null;
+  }
+
+  /// Type equality check helper
+  bool _isType<T, U>() => T == U;
 }
 
 /// Extensions for XML element parsing to provide type-safe element extraction.
