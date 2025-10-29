@@ -14,22 +14,22 @@ cover: ## Run tests with coverage and open report
 		open coverage/html/index.html
 
 test: ## Run all tests
-		dart test
+		TZ=UTC dart test
+
+testf: ## Run test on specific file (usage: make testf FILE=test/rss_cases.dart)
+		TZ=UTC dart test $(FILE)
 
 lint: ## Run static analysis
 		dart analyze
-		
-format: ## Format all Dart files
-		dart format . 
-		
-formatf: ## Format specific Dart file (usage: make formatf FILE=lib/src/universal/universal_feed.dart)
-		dart format $(FILE)
-
-testf: ## Run test on specific file (usage: make testf FILE=test/rss_cases.dart)
-		dart test $(FILE)
 
 lintf: ## Run static analysis on specific file (usage: make lintf FILE=lib/src/universal/universal_feed.dart)
 		dart analyze $(FILE)
+
+format: ## Format all Dart files
+		dart format .
+
+formatf: ## Format specific Dart file (usage: make formatf FILE=lib/src/universal/universal_feed.dart)
+		dart format $(FILE)
 
 doc: ## Generate documentation
 		dart doc

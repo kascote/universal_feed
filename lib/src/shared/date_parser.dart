@@ -54,7 +54,7 @@ DateTime? parseDate(String value) {
 
   try {
     final d = DateTime.parse(trimmedValue);
-    return DateTime.utc(d.year, d.month, d.day, d.hour, d.minute, d.second, d.millisecond);
+    return d.toUtc();
   } on FormatException {
     // noop
   }

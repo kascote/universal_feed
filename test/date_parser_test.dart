@@ -172,4 +172,40 @@ void main() {
     final d = Timestamp('-XX-99');
     expect(d.parseValue(), isNull);
   });
+
+  group('UTC conversion verification', () {
+    test('DateTime.parse formats WITH timezone return UTC', () {
+      final withZ = Timestamp('2003-12-31T10:14:55Z');
+      final withOffset = Timestamp('2003-12-31T10:14:55-05:00');
+
+      final parsedWithZ = withZ.parseValue();
+      final parsedWithOffset = withOffset.parseValue();
+
+      expect(parsedWithZ?.isUtc, isTrue, reason: 'Format with Z should be UTC');
+      expect(parsedWithOffset?.isUtc, isTrue, reason: 'Format with offset should be UTC');
+
+      expect(parsedWithZ?.toIso8601String(), '2003-12-31T10:14:55.000Z');
+      expect(parsedWithOffset?.toIso8601String(), '2003-12-31T15:14:55.000Z');
+    });
+
+    test('DateTime.parse formats WITHOUT timezone converted to UTC', () {
+      final dateOnly = Timestamp('2003-12-31');
+      final mssql = Timestamp('2004-07-08 23:56:58');
+      final isoNoTz = Timestamp('20031231');
+
+      final parsedDate = dateOnly.parseValue();
+      final parsedMssql = mssql.parseValue();
+      final parsedIso = isoNoTz.parseValue();
+
+      // All must be UTC after parseDate()
+      expect(parsedDate?.isUtc, isTrue, reason: 'Date-only format should be converted to UTC');
+      expect(parsedMssql?.isUtc, isTrue, reason: 'MSSQL format should be converted to UTC');
+      expect(parsedIso?.isUtc, isTrue, reason: 'ISO compact format should be converted to UTC');
+
+      // When TZ=UTC, these are midnight UTC
+      expect(parsedDate?.toIso8601String(), '2003-12-31T00:00:00.000Z');
+      expect(parsedMssql?.toIso8601String(), '2004-07-08T23:56:58.000Z');
+      expect(parsedIso?.toIso8601String(), '2003-12-31T00:00:00.000Z');
+    });
+  });
 }
