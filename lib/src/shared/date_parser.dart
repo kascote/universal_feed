@@ -7,9 +7,6 @@ import './tz_data.dart';
 /// Callback used by [ParseInfo] to parse custom DateTime formats
 typedef ParserCallback = DateTime Function(String value, ParseInfo pi);
 
-/// Callback used to preformat the DateTime string before send to the formatter
-typedef FormatterCallback = String Function(String value, ParseInfo pi);
-
 /// ParseInfo handles parse information for each type of date format
 /// supported
 class ParseInfo {
@@ -25,11 +22,8 @@ class ParseInfo {
   /// Callback used to parse the string if the regular expression matches
   ParserCallback? cb;
 
-  /// Callback used to preformat the date string value before send to the parser
-  FormatterCallback? fcb;
-
   /// ParseInfo constructor
-  ParseInfo(this.label, this.rgx, this.format, {this.cb, this.fcb});
+  ParseInfo(this.label, this.rgx, this.format, {this.cb});
 }
 
 /// Makes a best effort to parse different date time formats.
@@ -97,26 +91,25 @@ DateTime defaultParser(String value, ParseInfo pi) {
 ///
 /// reference: https://github.com/dart-lang/intl/issues/19
 DateTime parseWithNumericTz(String value, ParseInfo pi) {
-  final dateStr = (pi.fcb != null) ? pi.fcb!(value, pi) : value;
   try {
-    final tmp = DateFormat(pi.format).parseUtc(dateStr);
-    final matchStr = pi.rgx.matchAsPrefix(dateStr);
+    final tmp = DateFormat(pi.format).parseUtc(value);
+    final matchStr = pi.rgx.matchAsPrefix(value);
 
     if (matchStr != null && matchStr.group(2) != null) {
       final offsetStr = matchStr.group(2)!;
-      final offsetInt = int.parse(offsetStr);
+      final isNegative = offsetStr.startsWith('-');
       final duration = Duration(
         hours: int.parse(offsetStr.substring(1, 3)),
         minutes: int.parse(offsetStr.substring(3)),
       );
 
-      return (offsetInt < 0) ? tmp.add(duration) : tmp.subtract(duration);
+      return isNegative ? tmp.add(duration) : tmp.subtract(duration);
     }
 
     return tmp;
   } on FormatException catch (e) {
     assert(() {
-      stderr.writeln('Debug: parseWithNumericTz error for [$dateStr] with [${pi.format}]: $e');
+      stderr.writeln('Debug: parseWithNumericTz error for [$value] with [${pi.format}]: $e');
       return true;
     }(), 'parseWithNumericTz failed');
     rethrow;
@@ -131,10 +124,9 @@ DateTime parseWithNumericTz(String value, ParseInfo pi) {
 ///
 /// reference: https://github.com/dart-lang/intl/issues/19
 DateTime parseWithNamedTz(String value, ParseInfo pi) {
-  final dateStr = (pi.fcb != null) ? pi.fcb!(value, pi) : value;
   try {
-    final tmp = DateFormat(pi.format).parseUtc(dateStr);
-    final matchStr = pi.rgx.matchAsPrefix(dateStr);
+    final tmp = DateFormat(pi.format).parseUtc(value);
+    final matchStr = pi.rgx.matchAsPrefix(value);
 
     if (matchStr != null) {
       final tzName = matchStr.group(2);
@@ -149,7 +141,7 @@ DateTime parseWithNamedTz(String value, ParseInfo pi) {
     return tmp;
   } on FormatException catch (e) {
     assert(() {
-      stderr.writeln('Debug: parseWithNamedTz error for [$dateStr] with [${pi.format}]: $e');
+      stderr.writeln('Debug: parseWithNamedTz error for [$value] with [${pi.format}]: $e');
       return true;
     }(), 'parseWithNamedTz failed');
     rethrow;
@@ -161,9 +153,9 @@ String removeEndingZ(String value) {
   return value.endsWith('Z') ? value.substring(0, value.length - 1) : value;
 }
 
-/// ParseInfo holds the data of all date formats supported and how to parse them
-/// the order of this list important because some regular expression could match
-/// different values.
+/// ParseInfo holds the data of all date formats supported and how to parse them.
+/// The order of this list important because some regular expression could match
+/// different values but the parsing format is different.
 ///
 /// dates reference: https://en.wikipedia.org/wiki/ISO_8601
 final List<ParseInfo> parseInfo = [
@@ -199,11 +191,6 @@ final List<ParseInfo> parseInfo = [
     cb: parseWithNamedTz,
   ),
 
-  // _ParseInfo(
-  //   'ascii time',
-  //   RegExp(r'\w{3}\s\w{3}\s\d{1,2}\s\d\d:\d\d:\d\d\s\w{3}\s\d{4}'),
-  //   'EEE MMM d H:mm:s Z yyyy',
-  // ),
   ParseInfo(
     'invalid RFC 822 (no time)',
     RegExp(r'^\d{2}\s\w{3}\s\d{4}$'),
