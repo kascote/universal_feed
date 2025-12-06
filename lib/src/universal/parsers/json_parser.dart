@@ -70,7 +70,7 @@ void _jsonFeedParser(UniversalFeed uf, Map<String, dynamic> json) {
       'home_page_url',
       (value) => uf.htmlLink = Link.create(
         href: value,
-        rel: 'alternate',
+        rel: LinkRelationType.alternate,
         type: 'text/html',
       ),
     )
@@ -78,7 +78,7 @@ void _jsonFeedParser(UniversalFeed uf, Map<String, dynamic> json) {
       'feed_url',
       (value) => uf.xmlLink = Link.create(
         href: value,
-        rel: 'self',
+        rel: LinkRelationType.self,
         type: 'application/json',
       ),
     )
@@ -98,12 +98,12 @@ void jsonItemParser(UniversalFeed feed, Item item, Map<String, dynamic> json) {
     ..ifPresent<String>('summary', (value) => item.description = value)
     ..ifPresent<String>(
       'url',
-      (value) => item.link = Link.create(href: value, rel: 'self', type: 'text/html'),
+      (value) => item.link = Link.create(href: value, rel: LinkRelationType.self, type: 'text/html'),
     )
     ..ifPresent<String>(
       'external_url',
       (value) => item.links.add(
-        Link.create(href: value, rel: 'related', type: 'text/html'),
+        Link.create(href: value, rel: LinkRelationType.related, type: 'text/html'),
       ),
     )
     ..ifPresent<String>(

@@ -57,7 +57,7 @@ void rssChannelParser(UniversalFeed uf, XmlElement channel) {
       (value) {
         uf.htmlLink = Link.create(
           href: value,
-          rel: 'alternate',
+          rel: LinkRelationType.alternate,
           type: 'text/html',
         );
         uf.links.add(uf.htmlLink!);
@@ -92,7 +92,7 @@ Item rssItemParser(UniversalFeed uf, Item item, XmlElement element) {
     ..ifPresent(
       'link',
       (value) {
-        final lnk = Link.create(href: value, type: 'link', rel: 'alternate');
+        final lnk = Link.create(href: value, type: 'link', rel: LinkRelationType.alternate);
         item.link = lnk;
         item.links.add(lnk);
       },
@@ -127,7 +127,7 @@ Item rssItemParser(UniversalFeed uf, Item item, XmlElement element) {
         item.source = Link.create(
           href: value.getAttribute('url') ?? '',
           type: 'application/xml',
-          rel: 'self',
+          rel: LinkRelationType.self,
         );
         item.source!.title = value.innerText;
       },
@@ -135,7 +135,7 @@ Item rssItemParser(UniversalFeed uf, Item item, XmlElement element) {
     ..ifPresent(
       'comments',
       (value) => item.comments = Link.create(
-        rel: 'alternate',
+        rel: LinkRelationType.alternate,
         type: 'text/html',
         href: value,
       ),
@@ -150,7 +150,7 @@ Item rssItemParser(UniversalFeed uf, Item item, XmlElement element) {
           item.link = Link.create(
             href: eleGuid.innerText,
             type: 'text/html',
-            rel: 'alternate',
+            rel: LinkRelationType.alternate,
           );
         }
         item.guid = eleGuid.innerText;

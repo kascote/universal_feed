@@ -66,9 +66,9 @@ class Link {
   factory Link.create({
     required String type,
     required String href,
-    required String rel,
+    required LinkRelationType rel,
   }) {
-    return Link._(rel: _relationTypeFromString(rel), type: type, href: href);
+    return Link._(rel: rel, type: type, href: href);
   }
 
   /// Creates a [Link] from an [XmlElement]
