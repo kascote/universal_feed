@@ -112,7 +112,14 @@ class ReportFormatter {
       _writeField(buffer, 'Complete', pod.complete?.toString());
       _writeField(buffer, 'New Feed URL', pod.newFeedUrl);
       if (pod.categories.isNotEmpty) {
-        _writeField(buffer, 'Categories', pod.categories.join(', '));
+        for (final cat in pod.categories) {
+          final scheme = cat.scheme != null ? ' [${cat.scheme}]' : '';
+          _writeField(buffer, 'Category', '${cat.label}$scheme');
+          for (final child in cat.children) {
+            final childScheme = child.scheme != null ? ' [${child.scheme}]' : '';
+            _writeField(buffer, '  └─ Subcategory', '${child.label}$childScheme');
+          }
+        }
       }
       if (pod.image != null) {
         _writeField(buffer, 'Podcast Image', pod.image!.url);
