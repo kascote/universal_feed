@@ -1,0 +1,14 @@
+<!--
+Description: iTunes channel multiple nested categories
+Expect:      not bozo and two top-level categories each with one subcategory
+-->
+<rss xmlns:itunes="http://www.itunes.com/DTDs/Podcast-1.0.dtd">
+<channel>
+<itunes:category text="Society &amp; Culture">
+  <itunes:category text="Documentary"></itunes:category>
+</itunes:category>
+<itunes:category text="Health">
+  <itunes:category text="Mental Health"></itunes:category>
+</itunes:category>
+</channel>
+</rss>

@@ -26,15 +26,11 @@ class ItunesChannelParser implements ChannelExtensionParser {
         },
         ns: namespaceUrl,
       )
-      ..ifPresentXml(
+      ..forEachElementXml(
         'category',
         (value) {
-          final cat = value.getAttribute('text')?.trim();
-          if (cat == null || cat.isEmpty) return;
-
-          ic.categories.add(Category(label: cat));
-          final subCat = value.getElement('category', namespace: namespaceUrl)?.getAttribute('text')?.trim();
-          if (subCat != null && subCat.isNotEmpty) ic.categories.add(Category(label: subCat));
+          final cat = _parseItunesCategory(value, namespaceUrl, 1);
+          if (cat != null) ic.categories.add(cat);
         },
         ns: namespaceUrl,
       )
@@ -77,4 +73,20 @@ class ItunesChannelParser implements ChannelExtensionParser {
 
     feed.podcast = ic;
   }
+}
+
+const _maxItunesCategoryDepth = 10;
+
+Category? _parseItunesCategory(XmlElement node, String ns, int depth) {
+  final text = node.getAttribute('text')?.trim();
+  if (text == null || text.isEmpty) return null;
+
+  final cat = Category(label: text);
+  if (depth >= _maxItunesCategoryDepth) return cat;
+
+  for (final child in node.findElements('category', namespace: ns)) {
+    final sub = _parseItunesCategory(child, ns, depth + 1);
+    if (sub != null) cat.children.add(sub);
+  }
+  return cat;
 }

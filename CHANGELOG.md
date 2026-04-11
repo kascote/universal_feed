@@ -1,3 +1,9 @@
+## Unreleased
+
+- support multiple `itunes:category` elements on podcast channels and expose
+  nested subcategories via new `Category.children` field (previously only
+  the first top-level category was parsed and parent/child link was lost).
+
 ## 0.7.0
 
 - refactor how extensions are handled. Now each feed type has its own extension

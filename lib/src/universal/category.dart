@@ -18,13 +18,18 @@ class Category {
   /// The text inside the tag
   String? value;
 
+  /// Nested subcategories, populated only when the source format supports
+  /// hierarchy (currently `itunes:category`). Other parsers leave it empty.
+  List<Category> children;
+
   /// Creates a new [Category] object
   Category({
     required this.label,
     this.term,
     this.scheme,
     this.value,
-  });
+    List<Category>? children,
+  }) : children = children ?? <Category>[];
 
   /// Creates a new category object from an [XmlElement]
   static Category? fromXml(XmlElement node) {

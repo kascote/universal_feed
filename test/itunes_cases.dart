@@ -9,8 +9,33 @@ Map<String, TestFx> itunesTests() {
     'itunes_channel_block_no.xml': (r) => r.podcast?.block == 'no',
     'itunes_channel_block_uppercase.xml': (r) => r.podcast?.block == 'YES',
     'itunes_channel_block_whitespace.xml': (r) => r.podcast?.block == 'yes',
-    'itunes_channel_category.xml': (r) => r.podcast?.categories.first.label == 'Technology',
-    'itunes_channel_category_nested.xml': (r) => r.podcast?.categories.last.label == 'Gadgets',
+    'itunes_channel_category.xml': (r) =>
+        r.podcast?.categories.first.label == 'Technology' && r.podcast!.categories.first.children.isEmpty,
+    'itunes_channel_category_nested.xml': (r) {
+      final cats = r.podcast?.categories;
+      if (cats == null || cats.length != 1) return false;
+      return cats.first.label == 'Technology' &&
+          cats.first.children.length == 1 &&
+          cats.first.children.first.label == 'Gadgets';
+    },
+    'itunes_channel_category_multiple.xml': (r) {
+      final cats = r.podcast?.categories;
+      if (cats == null || cats.length != 2) return false;
+      return cats[0].label == 'Technology' &&
+          cats[0].children.isEmpty &&
+          cats[1].label == 'Health' &&
+          cats[1].children.isEmpty;
+    },
+    'itunes_channel_category_multiple_nested.xml': (r) {
+      final cats = r.podcast?.categories;
+      if (cats == null || cats.length != 2) return false;
+      return cats[0].label == 'Society & Culture' &&
+          cats[0].children.length == 1 &&
+          cats[0].children.first.label == 'Documentary' &&
+          cats[1].label == 'Health' &&
+          cats[1].children.length == 1 &&
+          cats[1].children.first.label == 'Mental Health';
+    },
     'itunes_channel_explicit.xml': (r) => r.podcast?.explicit == 'yes',
     'itunes_channel_explicit_clean.xml': (r) => r.podcast?.explicit == 'clean',
     'itunes_channel_explicit_whitespace.xml': (r) => r.podcast?.explicit == 'yes',

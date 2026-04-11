@@ -14,10 +14,10 @@ cover: ## Run tests with coverage and open report
 		open coverage/html/index.html
 
 test: ## Run all tests
-		TZ=UTC dart test
+		TZ=UTC dart test -r failures-only
 
 testf: ## Run test on specific file (usage: make testf FILE=test/rss_cases.dart)
-		TZ=UTC dart test $(FILE)
+		TZ=UTC dart test $(FILE) -r failures-only
 
 lint: ## Run static analysis
 		dart analyze

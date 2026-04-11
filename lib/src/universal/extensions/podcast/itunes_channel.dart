@@ -32,9 +32,10 @@ class ItunesChannel {
   /// Little description about the channel
   String? summary;
 
-  /// The show category information.
-  /// if exists, category and subcategory will be the first and second elements on the list
-  /// if the entry has 'keywords', they will be added here to with the scheme 'keyword'
+  /// Holds category information. Top-level `itunes:category` elements.
+  /// Subcategories, when present, are available via [Category.children].
+  /// If the entry has `itunes:keywords`, they are also appended here with
+  /// `scheme: 'keyword'`.
   List<Category> categories = [];
 
   /// Creates a new empty [ItunesChannel]

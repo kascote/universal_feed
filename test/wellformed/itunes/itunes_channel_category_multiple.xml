@@ -1,0 +1,10 @@
+<!--
+Description: iTunes channel multiple top-level categories
+Expect:      not bozo and len(feed['tags']) == 2
+-->
+<rss xmlns:itunes="http://www.itunes.com/DTDs/Podcast-1.0.dtd">
+<channel>
+<itunes:category text="Technology"></itunes:category>
+<itunes:category text="Health"></itunes:category>
+</channel>
+</rss>
