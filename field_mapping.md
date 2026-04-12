@@ -70,7 +70,12 @@ parsers target the same unified model. Precedence is configurable via
 overlap field is collapsed yet, so the knob exists as scaffolding for
 future follow-up specs.
 
-| Unified field | Podcast Index   |
-| ------------- | --------------- |
-| txts          | `podcast:txt`   |
-
+| UniversalFeed | Itunes  | PodcastIndex      |
+| ------------- | ------- | ----------------- |
+| FEED          |         |                   |
+| ============= | ======= | ================= |
+| txts          |         | podcast:txt       |
+| ============= | ======= | ================= |
+| ITEM          |         |                   |
+| ------------- | ------- | ----------------- |
+| chapters      |         | podcast:chapters  |

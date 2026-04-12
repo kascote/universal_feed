@@ -40,5 +40,20 @@ Map<String, TestFx> podcastIndexTests() {
       final pc = r.podcast;
       return pc != null && pc.txts.length == 1 && pc.txts.first.purpose == 'verify' && pc.txts.first.value == 'abc123';
     },
+    'item_chapters.xml': (r) {
+      final ch = r.items.first.podcast?.chapters;
+      return ch != null && ch.url == 'https://example.com/ep1/chapters.json' && ch.type == 'application/json+chapters';
+    },
+    'item_chapters_missing_attrs.xml': (r) {
+      final ch = r.items.first.podcast?.chapters;
+      return ch != null && ch.url == null && ch.type == null;
+    },
+    'item_chapters_duplicate.xml': (r) {
+      final ch = r.items.first.podcast?.chapters;
+      return ch != null && ch.url == 'https://example.com/second.json';
+    },
+    'item_no_chapters.xml': (r) {
+      return r.items.first.podcast?.chapters == null;
+    },
   };
 }

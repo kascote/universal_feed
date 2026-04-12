@@ -7,6 +7,8 @@
   `<podcast:txt>` tag parsing at channel and item level. Namespace
   precedence is configurable via `PodcastPrecedence` (default:
   `podcastIndex`).
+- add `<podcast:chapters>` parsing (Podcast Index namespace, item-level).
+  Exposed as `item.podcast.chapters` with `url` and `type` fields.
 - support multiple `itunes:category` elements on podcast channels and expose
   nested subcategories via new `Category.children` field (previously only
   the first top-level category was parsed and parent/child link was lost).

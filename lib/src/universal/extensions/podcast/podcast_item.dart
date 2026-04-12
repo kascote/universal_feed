@@ -37,6 +37,10 @@ class PodcastItem {
   /// Preserves source order.
   List<PodcastTxt> txts = [];
 
+  /// Link to an external chapters file from `<podcast:chapters>`.
+  /// Null when absent.
+  PodcastChapters? chapters;
+
   /// Creates a new empty [PodcastItem]
   PodcastItem();
 }

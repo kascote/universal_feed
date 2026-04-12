@@ -1,0 +1,13 @@
+<!--
+Description: two podcast:chapters in one item, last-wins
+Expect:      chapters.url is the second url
+-->
+<rss xmlns:podcast="https://podcastindex.org/namespace/1.0">
+<channel>
+<item>
+<title>Episode 1</title>
+<podcast:chapters url="https://example.com/first.json" type="application/json+chapters" />
+<podcast:chapters url="https://example.com/second.json" type="application/json+chapters" />
+</item>
+</channel>
+</rss>

@@ -1,0 +1,12 @@
+<!--
+Description: podcast:chapters with no attributes
+Expect:      chapters non-null, url and type both null
+-->
+<rss xmlns:podcast="https://podcastindex.org/namespace/1.0">
+<channel>
+<item>
+<title>Episode 1</title>
+<podcast:chapters />
+</item>
+</channel>
+</rss>
