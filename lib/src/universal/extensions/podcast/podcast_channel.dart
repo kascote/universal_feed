@@ -13,12 +13,6 @@ class PodcastChannel {
   /// The podcast parental advisory information.
   String? explicit;
 
-  /// The group responsible for creating the show.
-  String? author;
-
-  /// The podcast owner contact information.
-  Author? owner;
-
   /// The show title specific for Apple Podcasts.
   String? title;
 

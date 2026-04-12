@@ -42,9 +42,12 @@ Map<String, TestFx> itunesTests() {
     'itunes_channel_image.xml': (r) => r.podcast?.image?.url == 'http://example.com/logo.jpg',
     'itunes_channel_image_no_href.xml': (r) => r.podcast?.image == null,
     'itunes_channel_image_url.xml': (r) => r.podcast?.image?.url == 'http://a.b/i.png',
-    'itunes_channel_owner_email.xml': (r) => r.podcast?.owner?.email == 'mark@example.com',
-    'itunes_channel_owner_name.xml': (r) => r.podcast?.owner?.name == 'Mark Pilgrim',
-    'itunes_channel_author.xml': (r) => r.podcast?.author == 'Mark Pilgrim',
+    'itunes_channel_owner_email.xml': (r) =>
+        r.authors.any((a) => a.type == AuthorType.creator && a.email == 'mark@example.com'),
+    'itunes_channel_owner_name.xml': (r) =>
+        r.authors.any((a) => a.type == AuthorType.creator && a.name == 'Mark Pilgrim'),
+    'itunes_channel_author.xml': (r) =>
+        r.authors.any((a) => a.type == AuthorType.author && a.name == 'Mark Pilgrim'),
     'itunes_channel_title.xml': (r) => r.podcast?.title == 'Example Title',
     'itunes_channel_type.xml': (r) => r.podcast?.type == 'serial',
     'itunes_channel_newfeedurl.xml': (r) => r.podcast?.newFeedUrl == 'http://a.b/i.png',

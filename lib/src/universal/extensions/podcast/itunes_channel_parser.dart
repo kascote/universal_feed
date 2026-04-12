@@ -37,17 +37,23 @@ class ItunesChannelParser implements ChannelExtensionParser {
       ..ifPresentXml(
         'owner',
         (value) {
-          ic.owner = Author(
-            name: value.getElement('name', namespace: namespaceUrl)?.innerText ?? '',
-            email: value.getElement('email', namespace: namespaceUrl)?.innerText ?? '',
+          feed.authors.add(
+            Author(
+              name: value.getElement('name', namespace: namespaceUrl)?.innerText ?? '',
+              email: value.getElement('email', namespace: namespaceUrl)?.innerText ?? '',
+            )..type = AuthorType.creator,
           );
         },
+        ns: namespaceUrl,
+      )
+      ..ifPresent(
+        'author',
+        (value) => feed.authors.add(Author.fromString(value)..type = AuthorType.author),
         ns: namespaceUrl,
       );
 
     ic
       ..explicit = channel.getElement('explicit', namespace: namespaceUrl)?.innerText.trim()
-      ..author = channel.getElement('author', namespace: namespaceUrl)?.innerText.trim()
       ..title = channel.getElement('title', namespace: namespaceUrl)?.innerText.trim()
       ..type = channel.getElement('type', namespace: namespaceUrl)?.innerText.trim()
       ..newFeedUrl = channel.getElement('new-feed-url', namespace: namespaceUrl)?.innerText.trim()

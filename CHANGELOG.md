@@ -10,6 +10,9 @@
 - support multiple `itunes:category` elements on podcast channels and expose
   nested subcategories via new `Category.children` field (previously only
   the first top-level category was parsed and parent/child link was lost).
+- BREAKING: drop `PodcastChannel.author` (String) and `PodcastChannel.owner`
+  (Author). `itunes:author` and `itunes:owner` now append to `feed.authors`
+  with `AuthorType.author` and `AuthorType.creator` respectively.
 
 ## 0.7.0
 

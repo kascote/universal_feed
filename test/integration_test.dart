@@ -131,7 +131,10 @@ void main() {
 
       // Verify podcast extension was parsed
       expect(feed.podcast, isNotNull);
-      expect(feed.podcast!.author, 'Tech Podcasters Inc');
+      expect(
+        feed.authors.any((a) => a.type == AuthorType.author && a.name == 'Tech Podcasters Inc'),
+        isTrue,
+      );
       expect(feed.podcast!.explicit, 'no');
 
       // Verify custom channel metadata

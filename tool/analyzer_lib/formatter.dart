@@ -63,7 +63,8 @@ class ReportFormatter {
       for (final author in feed.authors) {
         final email = author.email.isNotEmpty ? ' <${author.email}>' : '';
         final url = author.url != null ? ' [${author.url}]' : '';
-        _writeField(buffer, 'Author', author.name + email + url);
+        final type = author.type != null ? ' {${author.type!.name}}' : '';
+        _writeField(buffer, 'Author', author.name + email + url + type);
       }
     }
 
@@ -104,8 +105,6 @@ class ReportFormatter {
       buffer.writeln();
       _writeSection(buffer, 'PODCAST/ITUNES EXTENSION');
       final pod = feed.podcast!;
-      _writeField(buffer, 'Author', pod.author);
-      _writeField(buffer, 'Owner', pod.owner != null ? '${pod.owner!.name} <${pod.owner!.email}>' : null);
       _writeField(buffer, 'Summary', pod.summary);
       _writeField(buffer, 'Explicit', pod.explicit?.toString());
       _writeField(buffer, 'Type', pod.type);
@@ -185,9 +184,10 @@ class ReportFormatter {
     // Authors
     if (item.authors.isNotEmpty) {
       for (final author in item.authors) {
+        final type = author.type != null ? ' {${author.type!.name}}' : '';
         final email = author.email.isNotEmpty ? ' <${author.email}>' : '';
         final url = author.url != null ? ' [${author.url}]' : '';
-        _writeField(buffer, 'Author', author.name + email + url, indent: '  ├─ ');
+        _writeField(buffer, 'Author', author.name + email + url + type, indent: '  ├─ ');
       }
     }
 
