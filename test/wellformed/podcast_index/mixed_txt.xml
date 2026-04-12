@@ -1,0 +1,13 @@
+<!--
+Description: Both channel- and item-level podcast:txt entries
+Expect:      channel and item txts are independent
+-->
+<rss xmlns:podcast="https://podcastindex.org/namespace/1.0">
+<channel>
+<podcast:txt purpose="verify">channel-token</podcast:txt>
+<item>
+<title>Episode 1</title>
+<podcast:txt purpose="ai-content">true</podcast:txt>
+</item>
+</channel>
+</rss>

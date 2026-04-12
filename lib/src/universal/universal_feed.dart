@@ -1,11 +1,10 @@
 import 'package:xml/xml.dart';
 
 import '../../universal_feed.dart';
-import './parsers/atom_parser.dart';
-import './parsers/rss_parser.dart';
-import 'extensions/podcast/itunes_channel.dart';
 import 'extensions/syndication/syndication.dart';
+import 'parsers/atom_parser.dart';
 import 'parsers/json_parser.dart';
+import 'parsers/rss_parser.dart';
 
 /// Feed is the root element of the UniversalFeed.
 ///
@@ -101,8 +100,10 @@ class UniversalFeed {
   /// If the feed defines a Syndication namespace, this object will be populated.
   Syndication? syndication;
 
-  /// If the feed defines an Itunes namespace, this object will be populated.
-  ItunesChannel? podcast;
+  /// Unified podcast metadata, populated when the feed declares the
+  /// iTunes namespace (`xmlns:itunes`) and/or the Podcast Index namespace
+  /// (`xmlns:podcast`).
+  PodcastChannel? podcast;
 
   UniversalFeed._();
 
@@ -128,23 +129,24 @@ class UniversalFeed {
     String content, {
     OnChannelParse? onChannelParse,
     OnItemParse? onItemParse,
+    PodcastPrecedence podcastPrecedence = PodcastPrecedence.podcastIndex,
   }) {
-    content = content.trim();
+    final trimmed = content.trim();
 
-    if (content.isEmpty) {
+    if (trimmed.isEmpty) {
       throw ArgumentError.value(content, 'content', 'Content cannot be empty');
     }
 
-    if (content.startsWith('{')) {
+    if (trimmed.startsWith('{')) {
       return jsonParser(
         UniversalFeed._(),
-        content,
+        trimmed,
         onChannelParse: onChannelParse,
         onItemParse: onItemParse,
       );
     }
 
-    final doc = XmlDocument.parse(content);
+    final doc = XmlDocument.parse(trimmed);
     final root = doc.rootElement;
 
     final feed = UniversalFeed._()..meta = MetaData.rssFromXml(doc);
@@ -155,6 +157,7 @@ class UniversalFeed {
         doc,
         onChannelParse: onChannelParse,
         onItemParse: onItemParse,
+        podcastPrecedence: podcastPrecedence,
       );
     } else if (feed.meta.kind == FeedKind.atom) {
       atomXmlParser(

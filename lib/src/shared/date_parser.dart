@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:intl/intl.dart';
 
 import './tz_data.dart';
@@ -57,11 +55,7 @@ DateTime? parseDate(String value) {
     if (p.rgx.hasMatch(trimmedValue)) {
       try {
         return (p.cb != null) ? p.cb!(trimmedValue, p) : defaultParser(trimmedValue, p);
-      } on FormatException catch (e) {
-        assert(() {
-          stderr.writeln('Debug: Error parsing date [$value] with [${p.format}]: $e');
-          return true;
-        }(), 'Date parsing failed, trying next pattern');
+      } on FormatException {
         continue;
       }
     }
@@ -72,15 +66,7 @@ DateTime? parseDate(String value) {
 
 /// The default parser will use DateFormat and with a know to parse format
 DateTime defaultParser(String value, ParseInfo pi) {
-  try {
-    return DateFormat(pi.format).parseUtc(removeEndingZ(value));
-  } on FormatException catch (e) {
-    assert(() {
-      stderr.writeln('Debug: defaultParser error for [$value] with [${pi.format}]: $e');
-      return true;
-    }(), 'defaultParser failed');
-    rethrow;
-  }
+  return DateFormat(pi.format).parseUtc(removeEndingZ(value));
 }
 
 /// Parse a dateTime string with a numeric TZ like +300
@@ -91,29 +77,21 @@ DateTime defaultParser(String value, ParseInfo pi) {
 ///
 /// reference: https://github.com/dart-lang/intl/issues/19
 DateTime parseWithNumericTz(String value, ParseInfo pi) {
-  try {
-    final tmp = DateFormat(pi.format).parseUtc(value);
-    final matchStr = pi.rgx.matchAsPrefix(value);
+  final tmp = DateFormat(pi.format).parseUtc(value);
+  final matchStr = pi.rgx.matchAsPrefix(value);
 
-    if (matchStr != null && matchStr.group(2) != null) {
-      final offsetStr = matchStr.group(2)!;
-      final isNegative = offsetStr.startsWith('-');
-      final duration = Duration(
-        hours: int.parse(offsetStr.substring(1, 3)),
-        minutes: int.parse(offsetStr.substring(3)),
-      );
+  if (matchStr != null && matchStr.group(2) != null) {
+    final offsetStr = matchStr.group(2)!;
+    final isNegative = offsetStr.startsWith('-');
+    final duration = Duration(
+      hours: int.parse(offsetStr.substring(1, 3)),
+      minutes: int.parse(offsetStr.substring(3)),
+    );
 
-      return isNegative ? tmp.add(duration) : tmp.subtract(duration);
-    }
-
-    return tmp;
-  } on FormatException catch (e) {
-    assert(() {
-      stderr.writeln('Debug: parseWithNumericTz error for [$value] with [${pi.format}]: $e');
-      return true;
-    }(), 'parseWithNumericTz failed');
-    rethrow;
+    return isNegative ? tmp.add(duration) : tmp.subtract(duration);
   }
+
+  return tmp;
 }
 
 /// Parse a DateTime string with a named TZ like PDT
@@ -124,28 +102,20 @@ DateTime parseWithNumericTz(String value, ParseInfo pi) {
 ///
 /// reference: https://github.com/dart-lang/intl/issues/19
 DateTime parseWithNamedTz(String value, ParseInfo pi) {
-  try {
-    final tmp = DateFormat(pi.format).parseUtc(value);
-    final matchStr = pi.rgx.matchAsPrefix(value);
+  final tmp = DateFormat(pi.format).parseUtc(value);
+  final matchStr = pi.rgx.matchAsPrefix(value);
 
-    if (matchStr != null) {
-      final tzName = matchStr.group(2);
-      final data = tzInfoDb[tzName];
+  if (matchStr != null) {
+    final tzName = matchStr.group(2);
+    final data = tzInfoDb[tzName];
 
-      if (data != null) {
-        final duration = Duration(minutes: data.offset.abs());
-        return (data.offset < 0) ? tmp.add(duration) : tmp.subtract(duration);
-      }
+    if (data != null) {
+      final duration = Duration(minutes: data.offset.abs());
+      return (data.offset < 0) ? tmp.add(duration) : tmp.subtract(duration);
     }
-
-    return tmp;
-  } on FormatException catch (e) {
-    assert(() {
-      stderr.writeln('Debug: parseWithNamedTz error for [$value] with [${pi.format}]: $e');
-      return true;
-    }(), 'parseWithNamedTz failed');
-    rethrow;
   }
+
+  return tmp;
 }
 
 /// Removes the last character if it is Z

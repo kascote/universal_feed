@@ -1,0 +1,11 @@
+<!--
+Description: Multiple podcast:txt entries at channel level
+Expect:      three PodcastTxt entries in source order
+-->
+<rss xmlns:podcast="https://podcastindex.org/namespace/1.0">
+<channel>
+<podcast:txt purpose="verify">abc123</podcast:txt>
+<podcast:txt purpose="applepodcastsverify">xyz789</podcast:txt>
+<podcast:txt purpose="ai-content">true</podcast:txt>
+</channel>
+</rss>

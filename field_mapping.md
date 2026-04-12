@@ -59,3 +59,18 @@
 | Geo            |                 |               |                |
 | DcTerms        |                 |               |                |
 | Podcast        |                 |               |                |
+
+## Podcast extension (unified iTunes + Podcast Index)
+
+The `PodcastChannel` / `PodcastItem` model is fed by two vocabularies:
+the iTunes namespace (`xmlns:itunes`) and the Podcast Index namespace
+(`xmlns:podcast`, `https://podcastindex.org/namespace/1.0`). Both
+parsers target the same unified model. Precedence is configurable via
+`PodcastPrecedence` when calling `UniversalFeed.parseFromString` — no
+overlap field is collapsed yet, so the knob exists as scaffolding for
+future follow-up specs.
+
+| Unified field | Podcast Index   |
+| ------------- | --------------- |
+| txts          | `podcast:txt`   |
+

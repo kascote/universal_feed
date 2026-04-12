@@ -1,0 +1,9 @@
+<!--
+Description: podcast:txt entry with no purpose attribute
+Expect:      purpose is null, value is "plain text"
+-->
+<rss xmlns:podcast="https://podcastindex.org/namespace/1.0">
+<channel>
+<podcast:txt>plain text</podcast:txt>
+</channel>
+</rss>

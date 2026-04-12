@@ -1,0 +1,12 @@
+<!--
+Description: podcast:txt at item level
+Expect:      items.first.podcast.txts has one entry with purpose=ai-content
+-->
+<rss xmlns:podcast="https://podcastindex.org/namespace/1.0">
+<channel>
+<item>
+<title>Episode 1</title>
+<podcast:txt purpose="ai-content">true</podcast:txt>
+</item>
+</channel>
+</rss>

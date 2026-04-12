@@ -3,9 +3,9 @@ import 'package:xml/xml.dart';
 import '../../../../universal_feed.dart';
 import '../../../shared/extensions.dart';
 import '../extension_parser.dart';
-import 'itunes_channel.dart';
 
-/// iTunes/Podcast channel extension parser - only works at channel level
+/// Parses the iTunes vocabulary (`<itunes:*>`) into the unified
+/// [PodcastChannel] model.
 class ItunesChannelParser implements ChannelExtensionParser {
   /// Creates a new [ItunesChannelParser] with the given namespace URL
   ItunesChannelParser(this.namespaceUrl);
@@ -15,7 +15,7 @@ class ItunesChannelParser implements ChannelExtensionParser {
 
   @override
   void parseChannel(UniversalFeed feed, XmlElement channel) {
-    final ic = ItunesChannel();
+    final ic = feed.podcast ?? PodcastChannel();
 
     channel
       ..ifPresentXml(

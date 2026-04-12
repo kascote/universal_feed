@@ -30,6 +30,11 @@ const nsSyndicationNs = 'xmlns:sy';
 /// ITunes Namespace
 const nsItunesNs = 'xmlns:itunes';
 
+/// Podcast Index namespace (`https://podcastindex.org/namespace/1.0`).
+/// Distinct from the older iTunes namespace (see [nsItunesNs]).
+/// Both feed the unified `PodcastChannel` / `PodcastItem` model.
+const nsPodcastNs = 'xmlns:podcast';
+
 /// Namespaces keeps track of the namespaces defined on the feed
 class Namespaces {
   final Map<String, String> _extensions = {};
@@ -69,6 +74,11 @@ class Namespaces {
 
   /// Returns true if the feed has the Itunes namespace
   bool get hasItunes => _extensions.containsKey(nsItunesNs);
+
+  /// Returns true if the feed has the Podcast Index namespace
+  /// (`xmlns:podcast`). Named `hasPodcastIndex` (not `hasPodcast`) to
+  /// avoid ambiguity with the unified podcast concept.
+  bool get hasPodcastIndex => _extensions.containsKey(nsPodcastNs);
 
   /// Returns true if the feed has the Syndication namespace
   bool get hasSyndication => _extensions.containsKey(nsSyndicationNs);

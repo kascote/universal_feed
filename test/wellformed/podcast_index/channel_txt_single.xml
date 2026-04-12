@@ -1,0 +1,9 @@
+<!--
+Description: Single podcast:txt at channel level
+Expect:      one PodcastTxt with purpose=ai-content, value=true
+-->
+<rss xmlns:podcast="https://podcastindex.org/namespace/1.0">
+<channel>
+<podcast:txt purpose="ai-content">true</podcast:txt>
+</channel>
+</rss>

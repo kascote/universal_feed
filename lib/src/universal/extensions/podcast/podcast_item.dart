@@ -1,7 +1,11 @@
 import '../../../../universal_feed.dart';
 
-/// Singe Itunes item
-class ItunesItem {
+/// Unified item-level podcast metadata.
+///
+/// Populated from the iTunes vocabulary (`xmlns:itunes`) and/or the
+/// Podcast Index vocabulary (`xmlns:podcast`). Both namespaces feed this
+/// single model.
+class PodcastItem {
   /// The duration of an episode.
   String? duration;
 
@@ -29,6 +33,10 @@ class ItunesItem {
   /// Short episode's description
   String? summary;
 
-  /// Creates a new empty [ItunesItem]
-  ItunesItem();
+  /// Free-form `<podcast:txt>` entries from the Podcast Index namespace.
+  /// Preserves source order.
+  List<PodcastTxt> txts = [];
+
+  /// Creates a new empty [PodcastItem]
+  PodcastItem();
 }

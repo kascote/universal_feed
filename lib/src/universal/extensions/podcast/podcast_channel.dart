@@ -1,7 +1,12 @@
 import '../../../../universal_feed.dart';
 
-/// Itunes Channel information
-class ItunesChannel {
+/// Unified channel-level podcast metadata.
+///
+/// Populated from the iTunes vocabulary (`xmlns:itunes`) and/or the
+/// Podcast Index vocabulary (`xmlns:podcast`,
+/// `https://podcastindex.org/namespace/1.0`). The two namespaces describe
+/// the same concept and both feed this single model.
+class PodcastChannel {
   /// The artwork for the show. **Only**  the url field will be valid.
   Image? image;
 
@@ -38,6 +43,11 @@ class ItunesChannel {
   /// `scheme: 'keyword'`.
   List<Category> categories = [];
 
-  /// Creates a new empty [ItunesChannel]
-  ItunesChannel();
+  /// Free-form `<podcast:txt>` entries from the Podcast Index namespace.
+  /// Preserves source order. Known purposes include `verify`,
+  /// `applepodcastsverify`, `ai-content` — see the spec.
+  List<PodcastTxt> txts = [];
+
+  /// Creates a new empty [PodcastChannel]
+  PodcastChannel();
 }

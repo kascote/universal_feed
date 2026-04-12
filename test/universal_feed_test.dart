@@ -11,6 +11,7 @@ import 'itunes_cases.dart';
 import 'json10_cases.dart';
 import 'json11_cases.dart';
 import 'media_rss_cases.dart';
+import 'podcast_index_cases.dart';
 import 'rss_cases.dart';
 import 'syndication_cases.dart';
 
@@ -65,6 +66,15 @@ void main() {
     () => itunesTests().forEach(
       runner<UniversalFeed>(
         './test/wellformed/itunes',
+        UniversalFeed.parseFromString,
+      ),
+    ),
+  );
+  test(
+    'Podcast Index',
+    () => podcastIndexTests().forEach(
+      runner<UniversalFeed>(
+        './test/wellformed/podcast_index',
         UniversalFeed.parseFromString,
       ),
     ),

@@ -4,7 +4,6 @@ import '../../universal_feed.dart';
 import 'extensions/dcterms/dcterms.dart';
 import 'extensions/geo/geo.dart';
 import 'extensions/media/media.dart';
-import 'extensions/podcast/itunes_item.dart';
 import 'parsers/atom_parser.dart';
 import 'parsers/json_parser.dart';
 import 'parsers/rss_parser.dart';
@@ -135,7 +134,7 @@ class Item {
   DcTerms? dcterms;
 
   /// The item's podcast extension if the extension was registered
-  ItunesItem? podcast;
+  PodcastItem? podcast;
 
   Item._(this.itemId);
 

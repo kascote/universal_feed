@@ -55,6 +55,16 @@ void main() {
     expect(meta.version, '0.90');
   });
 
+  test('hasPodcastIndex is true when xmlns:podcast is declared', () {
+    final xml = XmlDocument.parse(
+      '<rss version="2.0" xmlns:podcast="https://podcastindex.org/namespace/1.0"></rss>',
+    );
+    final meta = MetaData.rssFromXml(xml);
+
+    expect(meta.extensions.hasPodcastIndex, true);
+    expect(meta.extensions.hasItunes, false);
+  });
+
   test('must throw exception if format unknown', () {
     final xml = XmlDocument.parse('<some-element></some-element>');
     expect(() => MetaData.rssFromXml(xml), throwsException);

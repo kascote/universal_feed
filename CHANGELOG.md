@@ -1,5 +1,12 @@
 ## Unreleased
 
+- BREAKING: rename `ItunesChannel`/`ItunesItem` → `PodcastChannel`/
+  `PodcastItem`. `feed.podcast` / `item.podcast` property names unchanged;
+  only the returned type names change.
+- add support for the Podcast Index namespace (`xmlns:podcast`) with
+  `<podcast:txt>` tag parsing at channel and item level. Namespace
+  precedence is configurable via `PodcastPrecedence` (default:
+  `podcastIndex`).
 - support multiple `itunes:category` elements on podcast channels and expose
   nested subcategories via new `Category.children` field (previously only
   the first top-level category was parsed and parent/child link was lost).

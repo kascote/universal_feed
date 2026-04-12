@@ -12,6 +12,8 @@ import '../extensions/links/links_parser.dart';
 import '../extensions/media/media_parser.dart';
 import '../extensions/podcast/itunes_channel_parser.dart';
 import '../extensions/podcast/itunes_item_parser.dart';
+import '../extensions/podcast/podcast_channel_parser.dart';
+import '../extensions/podcast/podcast_item_parser.dart';
 import '../extensions/syndication/syndication_parser.dart';
 
 /// Parse an RSS feed
@@ -20,12 +22,13 @@ void rssXmlParser(
   XmlDocument doc, {
   OnChannelParse? onChannelParse,
   OnItemParse? onItemParse,
+  PodcastPrecedence podcastPrecedence = PodcastPrecedence.podcastIndex,
 }) {
   final root = doc.rootElement;
   final channel = root.getElement('channel');
   if (channel == null) return;
 
-  final parsers = _getExtensionParsers(uf);
+  final parsers = _getExtensionParsers(uf, podcastPrecedence);
 
   rssChannelParser(uf, channel);
   _parseChannelExtensions(uf, channel, parsers.channel);
@@ -183,7 +186,10 @@ void _parseItemExtensions(
 
 /// Returns both channel and item extension parsers.
 /// Parsers that implement both interfaces are created once and added to both lists.
-({List<ChannelExtensionParser> channel, List<ItemExtensionParser> item}) _getExtensionParsers(UniversalFeed uf) {
+({List<ChannelExtensionParser> channel, List<ItemExtensionParser> item}) _getExtensionParsers(
+  UniversalFeed uf,
+  PodcastPrecedence podcastPrecedence,
+) {
   final channelParsers = <ChannelExtensionParser>[];
   final itemParsers = <ItemExtensionParser>[];
 
@@ -194,10 +200,31 @@ void _parseItemExtensions(
     itemParsers.add(dcParser);
   }
 
-  // Extensions that need separate parsers for channel vs item
-  if (uf.meta.extensions.hasItunes) {
-    channelParsers.add(ItunesChannelParser(uf.meta.extensions.nsUrl(nsItunesNs)!));
-    itemParsers.add(ItunesItemParser(uf.meta.extensions.nsUrl(nsItunesNs)!));
+  // Podcast extensions: iTunes and Podcast Index both feed PodcastChannel
+  // / PodcastItem. Registration order encodes precedence — the winner
+  // runs last so it overwrites.
+  final itunesDeclared = uf.meta.extensions.hasItunes;
+  final indexDeclared = uf.meta.extensions.hasPodcastIndex;
+
+  void registerItunes() {
+    final ns = uf.meta.extensions.nsUrl(nsItunesNs)!;
+    channelParsers.add(ItunesChannelParser(ns));
+    itemParsers.add(ItunesItemParser(ns));
+  }
+
+  void registerIndex() {
+    final ns = uf.meta.extensions.nsUrl(nsPodcastNs)!;
+    channelParsers.add(PodcastChannelParser(ns));
+    itemParsers.add(PodcastItemParser(ns));
+  }
+
+  switch (podcastPrecedence) {
+    case PodcastPrecedence.podcastIndex:
+      if (itunesDeclared) registerItunes();
+      if (indexDeclared) registerIndex();
+    case PodcastPrecedence.itunes:
+      if (indexDeclared) registerIndex();
+      if (itunesDeclared) registerItunes();
   }
 
   // Channel-only extensions

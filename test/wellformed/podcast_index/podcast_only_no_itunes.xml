@@ -1,0 +1,10 @@
+<!--
+Description: podcast-index namespace declared without itunes
+Expect:      feed.podcast non-null, carries the txt entry
+-->
+<rss xmlns:podcast="https://podcastindex.org/namespace/1.0">
+<channel>
+<title>Example</title>
+<podcast:txt purpose="verify">abc123</podcast:txt>
+</channel>
+</rss>
