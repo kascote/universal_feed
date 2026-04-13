@@ -46,8 +46,7 @@ Map<String, TestFx> itunesTests() {
         r.authors.any((a) => a.type == AuthorType.creator && a.email == 'mark@example.com'),
     'itunes_channel_owner_name.xml': (r) =>
         r.authors.any((a) => a.type == AuthorType.creator && a.name == 'Mark Pilgrim'),
-    'itunes_channel_author.xml': (r) =>
-        r.authors.any((a) => a.type == AuthorType.author && a.name == 'Mark Pilgrim'),
+    'itunes_channel_author.xml': (r) => r.authors.any((a) => a.type == AuthorType.author && a.name == 'Mark Pilgrim'),
     'itunes_channel_title.xml': (r) => r.podcast?.title == 'Example Title',
     'itunes_channel_type.xml': (r) => r.podcast?.type == 'serial',
     'itunes_channel_newfeedurl.xml': (r) => r.podcast?.newFeedUrl == 'http://a.b/i.png',
