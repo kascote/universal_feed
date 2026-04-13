@@ -41,8 +41,47 @@ class PodcastItemParser implements ItemExtensionParser {
           );
         },
         ns: namespaceUrl,
+      )
+      ..forEachElementXml(
+        'transcript',
+        (value) {
+          final url = value.getAttribute('url')?.trim();
+          final type = value.getAttribute('type')?.trim();
+          final language = value.getAttribute('language')?.trim();
+          final rel = value.getAttribute('rel')?.trim();
+          pi.transcripts.add(
+            PodcastTranscript(
+              url: (url == null || url.isEmpty) ? null : url,
+              type: (type == null || type.isEmpty) ? null : type,
+              knownType: _parseTranscriptType(type),
+              language: (language == null || language.isEmpty) ? null : language,
+              rel: (rel == null || rel.isEmpty) ? null : rel,
+            ),
+          );
+        },
+        ns: namespaceUrl,
       );
 
     item.podcast = pi;
+  }
+
+  PodcastTranscriptType _parseTranscriptType(String? raw) {
+    if (raw == null || raw.isEmpty) return PodcastTranscriptType.absent;
+    switch (raw.toLowerCase()) {
+      case 'text/vtt':
+        return PodcastTranscriptType.vtt;
+      case 'text/plain':
+        return PodcastTranscriptType.plain;
+      case 'text/html':
+        return PodcastTranscriptType.html;
+      case 'application/json':
+        return PodcastTranscriptType.json;
+      case 'application/srt':
+        return PodcastTranscriptType.srt;
+      case 'application/x-subrip':
+        return PodcastTranscriptType.subrip;
+      default:
+        return PodcastTranscriptType.other;
+    }
   }
 }

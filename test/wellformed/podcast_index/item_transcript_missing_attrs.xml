@@ -1,0 +1,12 @@
+<!--
+Description: podcast:transcript with no attributes
+Expect:      entry present, all fields null, knownType == absent
+-->
+<rss xmlns:podcast="https://podcastindex.org/namespace/1.0">
+<channel>
+<item>
+<title>Episode 1</title>
+<podcast:transcript />
+</item>
+</channel>
+</rss>

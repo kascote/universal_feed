@@ -1,0 +1,12 @@
+<!--
+Description: podcast:transcript with rel="captions" and language="es"
+Expect:      rel and language captured
+-->
+<rss xmlns:podcast="https://podcastindex.org/namespace/1.0">
+<channel>
+<item>
+<title>Episode 1</title>
+<podcast:transcript url="https://example.com/ep1/captions.vtt" type="text/vtt" language="es" rel="captions" />
+</item>
+</channel>
+</rss>

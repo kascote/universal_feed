@@ -1,0 +1,12 @@
+<!--
+Description: podcast:transcript at item level with url and type
+Expect:      items.first.podcast.transcripts has one VTT entry
+-->
+<rss xmlns:podcast="https://podcastindex.org/namespace/1.0">
+<channel>
+<item>
+<title>Episode 1</title>
+<podcast:transcript url="https://example.com/ep1/transcript.vtt" type="text/vtt" />
+</item>
+</channel>
+</rss>

@@ -41,6 +41,11 @@ class PodcastItem {
   /// Null when absent.
   PodcastChapters? chapters;
 
+  /// Transcript/closed-caption files from `<podcast:transcript>`.
+  /// Source order preserved. Empty when absent. See
+  /// [PodcastTranscript] for attribute details.
+  List<PodcastTranscript> transcripts = [];
+
   /// Creates a new empty [PodcastItem]
   PodcastItem();
 }

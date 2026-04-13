@@ -27,6 +27,7 @@ export 'src/universal/enclosure.dart';
 export 'src/universal/extensions/podcast/podcast_channel.dart';
 export 'src/universal/extensions/podcast/podcast_chapters.dart';
 export 'src/universal/extensions/podcast/podcast_item.dart';
+export 'src/universal/extensions/podcast/podcast_transcript.dart';
 export 'src/universal/extensions/podcast/podcast_txt.dart';
 export 'src/universal/generator.dart';
 export 'src/universal/image.dart';

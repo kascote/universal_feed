@@ -1,0 +1,12 @@
+<!--
+Description: item without podcast:transcript
+Expect:      transcripts is empty
+-->
+<rss xmlns:podcast="https://podcastindex.org/namespace/1.0">
+<channel>
+<item>
+<title>Episode 1</title>
+<podcast:txt purpose="ai-content">true</podcast:txt>
+</item>
+</channel>
+</rss>

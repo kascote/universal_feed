@@ -1,0 +1,12 @@
+<!--
+Description: podcast:transcript with unrecognized mime type
+Expect:      raw type preserved, knownType == other
+-->
+<rss xmlns:podcast="https://podcastindex.org/namespace/1.0">
+<channel>
+<item>
+<title>Episode 1</title>
+<podcast:transcript url="https://example.com/ep1/transcript.fut" type="application/x-futureformat" />
+</item>
+</channel>
+</rss>

@@ -1,0 +1,14 @@
+<!--
+Description: multiple podcast:transcript entries (VTT, SRT, JSON)
+Expect:      three transcripts in source order, attributes preserved
+-->
+<rss xmlns:podcast="https://podcastindex.org/namespace/1.0">
+<channel>
+<item>
+<title>Episode 1</title>
+<podcast:transcript url="https://example.com/ep1/transcript.vtt" type="text/vtt" language="en" />
+<podcast:transcript url="https://example.com/ep1/transcript.srt" type="application/srt" language="en" />
+<podcast:transcript url="https://example.com/ep1/transcript.json" type="application/json" language="es" rel="captions" />
+</item>
+</channel>
+</rss>
