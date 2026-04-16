@@ -1,0 +1,9 @@
+<!--
+Description: Empty podcast:guid body
+Expect:      feed.podcast.guid is null (liberal parsing)
+-->
+<rss xmlns:podcast="https://podcastindex.org/namespace/1.0">
+<channel>
+<podcast:guid></podcast:guid>
+</channel>
+</rss>

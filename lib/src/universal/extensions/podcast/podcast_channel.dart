@@ -42,6 +42,12 @@ class PodcastChannel {
   /// `applepodcastsverify`, `ai-content` — see the spec.
   List<PodcastTxt> txts = [];
 
+  /// Globally unique feed identifier from `<podcast:guid>` (Podcast Index
+  /// namespace). UUIDv5 per spec but parsed liberally as a raw string.
+  /// Null when absent. See
+  /// https://github.com/Podcastindex-org/podcast-namespace/blob/main/docs/1.0.md#guid
+  String? guid;
+
   /// Creates a new empty [PodcastChannel]
   PodcastChannel();
 }

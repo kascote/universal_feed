@@ -110,5 +110,17 @@ Map<String, TestFx> podcastIndexTests() {
       final ts = r.items.first.podcast?.transcripts;
       return ts != null && ts.isEmpty;
     },
+    'channel_guid.xml': (r) {
+      return r.podcast?.guid == '917393e3-1b1e-5cef-ace4-edaa54e1f810';
+    },
+    'channel_guid_empty.xml': (r) {
+      return r.podcast != null && r.podcast?.guid == null;
+    },
+    'channel_guid_duplicate.xml': (r) {
+      return r.podcast?.guid == '22222222-2222-5222-a222-222222222222';
+    },
+    'channel_no_guid.xml': (r) {
+      return r.podcast != null && r.podcast?.guid == null;
+    },
   };
 }

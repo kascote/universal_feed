@@ -19,18 +19,27 @@ class PodcastChannelParser implements ChannelExtensionParser {
   void parseChannel(UniversalFeed feed, XmlElement channel) {
     final pc = feed.podcast ?? PodcastChannel();
 
-    channel.forEachElementXml(
-      'txt',
-      (value) {
-        pc.txts.add(
-          PodcastTxt(
-            purpose: value.getAttribute('purpose'),
-            value: value.innerText.trim(),
-          ),
-        );
-      },
-      ns: namespaceUrl,
-    );
+    channel
+      ..forEachElementXml(
+        'txt',
+        (value) {
+          pc.txts.add(
+            PodcastTxt(
+              purpose: value.getAttribute('purpose'),
+              value: value.innerText.trim(),
+            ),
+          );
+        },
+        ns: namespaceUrl,
+      )
+      ..forEachElementXml(
+        'guid',
+        (value) {
+          final body = value.innerText.trim();
+          pc.guid = body.isEmpty ? null : body;
+        },
+        ns: namespaceUrl,
+      );
 
     feed.podcast = pc;
   }

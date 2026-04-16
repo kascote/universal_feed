@@ -12,6 +12,8 @@
 - add `<podcast:transcript>` parsing (Podcast Index namespace, item-level,
   multi-valued). Exposed as `item.podcast.transcripts` with `url`, `type`,
   `language`, `rel` fields.
+- add `<podcast:guid>` parsing (Podcast Index namespace, channel-level).
+  Exposed as `feed.podcast.guid`.
 - support multiple `itunes:category` elements on podcast channels and expose
   nested subcategories via new `Category.children` field (previously only
   the first top-level category was parsed and parent/child link was lost).

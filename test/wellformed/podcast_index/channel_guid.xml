@@ -1,0 +1,9 @@
+<!--
+Description: Single podcast:guid at channel level
+Expect:      feed.podcast.guid == 917393e3-1b1e-5cef-ace4-edaa54e1f810
+-->
+<rss xmlns:podcast="https://podcastindex.org/namespace/1.0">
+<channel>
+<podcast:guid>917393e3-1b1e-5cef-ace4-edaa54e1f810</podcast:guid>
+</channel>
+</rss>
