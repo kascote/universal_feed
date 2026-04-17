@@ -154,5 +154,44 @@ Map<String, TestFx> podcastIndexTests() {
       final pc = r.podcast;
       return pc != null && pc.medium == null && pc.knownMedium == PodcastMedium.absent && !pc.mediumIsList;
     },
+    'channel_podping_true.xml': (r) {
+      return r.podcast?.podpingUsesPodping ?? false;
+    },
+    'channel_podping_false.xml': (r) {
+      final pc = r.podcast;
+      return pc != null && !(pc.podpingUsesPodping ?? true);
+    },
+    'channel_podping_no_attr.xml': (r) {
+      final pc = r.podcast;
+      return pc != null && pc.podpingUsesPodping == null;
+    },
+    'channel_no_podping.xml': (r) {
+      final pc = r.podcast;
+      return pc != null && pc.podpingUsesPodping == null;
+    },
+    'channel_podping_duplicate.xml': (r) {
+      final pc = r.podcast;
+      return pc != null && !(pc.podpingUsesPodping ?? true);
+    },
+    'channel_locked_yes.xml': (r) {
+      final pc = r.podcast;
+      return pc != null && (pc.locked ?? false) && pc.lockedOwner == 'owner@example.com';
+    },
+    'channel_locked_no.xml': (r) {
+      final pc = r.podcast;
+      return pc != null && !(pc.locked ?? true) && pc.lockedOwner == null;
+    },
+    'channel_locked_empty.xml': (r) {
+      final pc = r.podcast;
+      return pc != null && pc.locked == null;
+    },
+    'channel_no_locked.xml': (r) {
+      final pc = r.podcast;
+      return pc != null && pc.locked == null && pc.lockedOwner == null;
+    },
+    'channel_locked_duplicate.xml': (r) {
+      final pc = r.podcast;
+      return pc != null && !(pc.locked ?? true) && pc.lockedOwner == null;
+    },
   };
 }

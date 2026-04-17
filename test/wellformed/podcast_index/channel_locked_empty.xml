@@ -1,0 +1,9 @@
+<!--
+Description: podcast:locked with empty body
+Expect:      feed.podcast.locked == null
+-->
+<rss xmlns:podcast="https://podcastindex.org/namespace/1.0">
+<channel>
+<podcast:locked></podcast:locked>
+</channel>
+</rss>

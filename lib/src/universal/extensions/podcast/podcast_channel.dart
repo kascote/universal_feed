@@ -121,6 +121,22 @@ class PodcastChannel {
   /// `<item>`s. Only set when the base token was recognized.
   bool mediumIsList = false;
 
+  /// Whether this feed publishes via Podping for real-time update notifications.
+  /// Derived from the `usesPodping` attribute of `<podcast:podping>`.
+  /// Null when the tag is absent or the attribute is not a recognized boolean.
+  /// See https://github.com/Podcastindex-org/podcast-namespace/blob/main/docs/1.0.md#podping
+  bool? podpingUsesPodping;
+
+  /// Whether this feed is locked against import by other directories.
+  /// `true` = `yes`, `false` = `no`. Null when the tag is absent or the body
+  /// is not a recognized `yes`/`no` value.
+  /// See https://github.com/Podcastindex-org/podcast-namespace/blob/main/docs/1.0.md#locked
+  bool? locked;
+
+  /// Optional contact email of the feed owner from the `owner` attribute of
+  /// `<podcast:locked>`. Null when the attribute is absent.
+  String? lockedOwner;
+
   /// Creates a new empty [PodcastChannel]
   PodcastChannel();
 }

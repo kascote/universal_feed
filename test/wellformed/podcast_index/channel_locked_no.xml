@@ -1,0 +1,9 @@
+<!--
+Description: podcast:locked with no, no owner attribute
+Expect:      feed.podcast.locked == false, feed.podcast.lockedOwner == null
+-->
+<rss xmlns:podcast="https://podcastindex.org/namespace/1.0">
+<channel>
+<podcast:locked>no</podcast:locked>
+</channel>
+</rss>

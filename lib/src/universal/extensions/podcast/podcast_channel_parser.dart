@@ -52,6 +52,32 @@ class PodcastChannelParser implements ChannelExtensionParser {
             ..mediumIsList = isList;
         },
         ns: namespaceUrl,
+      )
+      ..forEachElementXml(
+        'podping',
+        (value) {
+          final attr = value.getAttribute('usesPodping')?.trim().toLowerCase();
+          pc.podpingUsesPodping = switch (attr) {
+            'true' || 'yes' => true,
+            'false' || 'no' => false,
+            _ => null,
+          };
+        },
+        ns: namespaceUrl,
+      )
+      ..forEachElementXml(
+        'locked',
+        (value) {
+          final body = value.innerText.trim().toLowerCase();
+          pc
+            ..locked = switch (body) {
+              'yes' => true,
+              'no' => false,
+              _ => null,
+            }
+            ..lockedOwner = value.getAttribute('owner');
+        },
+        ns: namespaceUrl,
       );
 
     feed.podcast = pc;

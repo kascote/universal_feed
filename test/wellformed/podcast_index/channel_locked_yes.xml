@@ -1,0 +1,9 @@
+<!--
+Description: podcast:locked with yes and owner attribute
+Expect:      feed.podcast.locked == true, feed.podcast.lockedOwner == 'owner@example.com'
+-->
+<rss xmlns:podcast="https://podcastindex.org/namespace/1.0">
+<channel>
+<podcast:locked owner="owner@example.com">yes</podcast:locked>
+</channel>
+</rss>

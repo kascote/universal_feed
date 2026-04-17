@@ -1,0 +1,10 @@
+<!--
+Description: podcast:locked appears twice — last value wins
+Expect:      feed.podcast.locked == false
+-->
+<rss xmlns:podcast="https://podcastindex.org/namespace/1.0">
+<channel>
+<podcast:locked owner="first@example.com">yes</podcast:locked>
+<podcast:locked>no</podcast:locked>
+</channel>
+</rss>

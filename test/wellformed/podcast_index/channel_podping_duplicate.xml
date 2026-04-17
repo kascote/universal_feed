@@ -1,0 +1,10 @@
+<!--
+Description: podcast:podping appears twice — last value wins
+Expect:      feed.podcast.podpingUsesPodping == false
+-->
+<rss xmlns:podcast="https://podcastindex.org/namespace/1.0">
+<channel>
+<podcast:podping usesPodping="true"/>
+<podcast:podping usesPodping="false"/>
+</channel>
+</rss>
