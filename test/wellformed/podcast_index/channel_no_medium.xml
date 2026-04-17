@@ -1,0 +1,9 @@
+<!--
+Description: Channel without podcast:medium tag
+Expect:      medium == null, knownMedium == absent, mediumIsList == false
+-->
+<rss xmlns:podcast="https://podcastindex.org/namespace/1.0">
+<channel>
+<podcast:txt purpose="verify">abc123</podcast:txt>
+</channel>
+</rss>

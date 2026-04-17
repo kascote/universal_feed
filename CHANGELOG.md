@@ -14,6 +14,10 @@
   `language`, `rel` fields.
 - add `<podcast:guid>` parsing (Podcast Index namespace, channel-level).
   Exposed as `feed.podcast.guid`.
+- add `<podcast:medium>` parsing (Podcast Index namespace, channel-level).
+  Exposed as `feed.podcast.medium` (raw), `feed.podcast.knownMedium`
+  (enum with `other`/`absent` escape hatches), and `feed.podcast.mediumIsList`
+  (true for `L`-suffix variants).
 - support multiple `itunes:category` elements on podcast channels and expose
   nested subcategories via new `Category.children` field (previously only
   the first top-level category was parsed and parent/child link was lost).

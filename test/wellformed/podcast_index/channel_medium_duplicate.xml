@@ -1,0 +1,10 @@
+<!--
+Description: Two podcast:medium in one channel (last-wins)
+Expect:      medium == "music", knownMedium == music, mediumIsList == false
+-->
+<rss xmlns:podcast="https://podcastindex.org/namespace/1.0">
+<channel>
+<podcast:medium>podcast</podcast:medium>
+<podcast:medium>music</podcast:medium>
+</channel>
+</rss>

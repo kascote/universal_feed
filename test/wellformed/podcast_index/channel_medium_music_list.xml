@@ -1,0 +1,9 @@
+<!--
+Description: podcast:medium with list variant "musicL"
+Expect:      medium == "musicL", knownMedium == music, mediumIsList == true
+-->
+<rss xmlns:podcast="https://podcastindex.org/namespace/1.0">
+<channel>
+<podcast:medium>musicL</podcast:medium>
+</channel>
+</rss>

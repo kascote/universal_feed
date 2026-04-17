@@ -1,0 +1,9 @@
+<!--
+Description: podcast:medium with mixed-case base token "Podcast"
+Expect:      medium == "Podcast", knownMedium == podcast, mediumIsList == false
+-->
+<rss xmlns:podcast="https://podcastindex.org/namespace/1.0">
+<channel>
+<podcast:medium>Podcast</podcast:medium>
+</channel>
+</rss>

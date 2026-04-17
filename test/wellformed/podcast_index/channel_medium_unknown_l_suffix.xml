@@ -1,0 +1,9 @@
+<!--
+Description: podcast:medium with unrecognized token ending in L "hologramL"
+Expect:      medium == "hologramL", knownMedium == other, mediumIsList == true
+-->
+<rss xmlns:podcast="https://podcastindex.org/namespace/1.0">
+<channel>
+<podcast:medium>hologramL</podcast:medium>
+</channel>
+</rss>

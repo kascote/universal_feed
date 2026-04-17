@@ -122,5 +122,37 @@ Map<String, TestFx> podcastIndexTests() {
     'channel_no_guid.xml': (r) {
       return r.podcast != null && r.podcast?.guid == null;
     },
+    'channel_medium_podcast.xml': (r) {
+      final pc = r.podcast;
+      return pc != null && pc.medium == 'podcast' && pc.knownMedium == PodcastMedium.podcast && !pc.mediumIsList;
+    },
+    'channel_medium_music_list.xml': (r) {
+      final pc = r.podcast;
+      return pc != null && pc.medium == 'musicL' && pc.knownMedium == PodcastMedium.music && pc.mediumIsList;
+    },
+    'channel_medium_mixed_case.xml': (r) {
+      final pc = r.podcast;
+      return pc != null && pc.medium == 'Podcast' && pc.knownMedium == PodcastMedium.podcast && !pc.mediumIsList;
+    },
+    'channel_medium_unknown.xml': (r) {
+      final pc = r.podcast;
+      return pc != null && pc.medium == 'hologram' && pc.knownMedium == PodcastMedium.other && !pc.mediumIsList;
+    },
+    'channel_medium_unknown_l_suffix.xml': (r) {
+      final pc = r.podcast;
+      return pc != null && pc.medium == 'hologramL' && pc.knownMedium == PodcastMedium.other && pc.mediumIsList;
+    },
+    'channel_medium_empty.xml': (r) {
+      final pc = r.podcast;
+      return pc != null && pc.medium == null && pc.knownMedium == PodcastMedium.absent && !pc.mediumIsList;
+    },
+    'channel_medium_duplicate.xml': (r) {
+      final pc = r.podcast;
+      return pc != null && pc.medium == 'music' && pc.knownMedium == PodcastMedium.music && !pc.mediumIsList;
+    },
+    'channel_no_medium.xml': (r) {
+      final pc = r.podcast;
+      return pc != null && pc.medium == null && pc.knownMedium == PodcastMedium.absent && !pc.mediumIsList;
+    },
   };
 }

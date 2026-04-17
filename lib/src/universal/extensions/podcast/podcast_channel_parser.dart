@@ -39,8 +39,40 @@ class PodcastChannelParser implements ChannelExtensionParser {
           pc.guid = body.isEmpty ? null : body;
         },
         ns: namespaceUrl,
+      )
+      ..forEachElementXml(
+        'medium',
+        (value) {
+          final body = value.innerText.trim();
+          if (body.isEmpty) return;
+          final (known, isList) = _parseMedium(body);
+          pc
+            ..medium = body
+            ..knownMedium = known
+            ..mediumIsList = isList;
+        },
+        ns: namespaceUrl,
       );
 
     feed.podcast = pc;
+  }
+
+  (PodcastMedium, bool) _parseMedium(String raw) {
+    final hasListSuffix = raw.endsWith('L');
+    final base = hasListSuffix ? raw.substring(0, raw.length - 1).toLowerCase() : raw.toLowerCase();
+    final known = switch (base) {
+      'podcast' => PodcastMedium.podcast,
+      'music' => PodcastMedium.music,
+      'video' => PodcastMedium.video,
+      'film' => PodcastMedium.film,
+      'audiobook' => PodcastMedium.audiobook,
+      'newsletter' => PodcastMedium.newsletter,
+      'blog' => PodcastMedium.blog,
+      'publisher' => PodcastMedium.publisher,
+      'course' => PodcastMedium.course,
+      'mixed' => PodcastMedium.mixed,
+      _ => PodcastMedium.other,
+    };
+    return (known, hasListSuffix);
   }
 }
