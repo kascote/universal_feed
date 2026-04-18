@@ -1,0 +1,9 @@
+<!--
+Description: podcast:block with unrecognized body
+Expect:      value=="maybe", blocked==null
+-->
+<rss xmlns:podcast="https://podcastindex.org/namespace/1.0">
+<channel>
+<podcast:block>maybe</podcast:block>
+</channel>
+</rss>

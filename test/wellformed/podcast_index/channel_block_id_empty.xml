@@ -1,0 +1,9 @@
+<!--
+Description: podcast:block with empty id attribute
+Expect:      blocks[0].id==null (empty id treated as absent)
+-->
+<rss xmlns:podcast="https://podcastindex.org/namespace/1.0">
+<channel>
+<podcast:block id="">yes</podcast:block>
+</channel>
+</rss>

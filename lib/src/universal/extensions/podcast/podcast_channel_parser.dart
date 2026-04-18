@@ -79,6 +79,18 @@ class PodcastChannelParser implements ChannelExtensionParser {
         },
         ns: namespaceUrl,
       )
+      ..forEachElementXml(
+        'block',
+        (el) {
+          final body = el.innerText.trim();
+          if (body.isEmpty) return;
+          final rawId = el.getAttribute('id')?.trim();
+          final id = (rawId == null || rawId.isEmpty) ? null : rawId;
+          final blocked = _parseBlockedValue(body);
+          pc.blocks.add(PodcastBlock(id: id, value: body, blocked: blocked));
+        },
+        ns: namespaceUrl,
+      )
       ..ifPresentXml(
         'updateFrequency',
         (el) {
@@ -103,6 +115,12 @@ class PodcastChannelParser implements ChannelExtensionParser {
 
     feed.podcast = pc;
   }
+
+  bool? _parseBlockedValue(String raw) => switch (raw.toLowerCase()) {
+        'yes' => true,
+        'no' => false,
+        _ => null,
+      };
 
   (PodcastMedium, bool) _parseMedium(String raw) {
     final hasListSuffix = raw.endsWith('L');

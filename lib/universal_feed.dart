@@ -24,6 +24,7 @@ export 'src/universal/callbacks.dart';
 export 'src/universal/category.dart';
 export 'src/universal/content.dart';
 export 'src/universal/enclosure.dart';
+export 'src/universal/extensions/podcast/podcast_block.dart';
 export 'src/universal/extensions/podcast/podcast_channel.dart';
 export 'src/universal/extensions/podcast/podcast_chapters.dart';
 export 'src/universal/extensions/podcast/podcast_item.dart';

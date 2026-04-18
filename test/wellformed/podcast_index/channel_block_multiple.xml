@@ -1,0 +1,11 @@
+<!--
+Description: podcast:block multiple entries (global + two platforms)
+Expect:      blocks.length==3, entries in order
+-->
+<rss xmlns:podcast="https://podcastindex.org/namespace/1.0">
+<channel>
+<podcast:block>yes</podcast:block>
+<podcast:block id="google">yes</podcast:block>
+<podcast:block id="spotify">no</podcast:block>
+</channel>
+</rss>

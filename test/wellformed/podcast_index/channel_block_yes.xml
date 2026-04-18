@@ -1,0 +1,9 @@
+<!--
+Description: podcast:block global yes
+Expect:      blocks.length==1, id==null, value=="yes", blocked==true
+-->
+<rss xmlns:podcast="https://podcastindex.org/namespace/1.0">
+<channel>
+<podcast:block>yes</podcast:block>
+</channel>
+</rss>

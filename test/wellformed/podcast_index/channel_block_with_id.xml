@@ -1,0 +1,9 @@
+<!--
+Description: podcast:block with platform id
+Expect:      blocks[0].id=="google", blocked==true
+-->
+<rss xmlns:podcast="https://podcastindex.org/namespace/1.0">
+<channel>
+<podcast:block id="google">yes</podcast:block>
+</channel>
+</rss>

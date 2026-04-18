@@ -1,0 +1,9 @@
+<!--
+Description: podcast:block uppercase body
+Expect:      value=="YES", blocked==true
+-->
+<rss xmlns:podcast="https://podcastindex.org/namespace/1.0">
+<channel>
+<podcast:block>YES</podcast:block>
+</channel>
+</rss>

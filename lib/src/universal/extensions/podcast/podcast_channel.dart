@@ -137,6 +137,12 @@ class PodcastChannel {
   /// `<podcast:locked>`. Null when the attribute is absent.
   String? lockedOwner;
 
+  /// Per-platform block list from `<podcast:block>` (Podcast Index namespace).
+  /// Each entry targets one platform ([PodcastBlock.id] non-null) or all
+  /// directories ([PodcastBlock.id] null). Preserves document order.
+  /// Distinct from [block] (iTunes scalar `itunes:block`). See [PodcastBlock].
+  List<PodcastBlock> blocks = [];
+
   /// Update schedule from `<podcast:updateFrequency>` (Podcast Index namespace).
   /// Carries the human-readable description, optional `rrule`, `dtstart`, and
   /// `complete` flag. Null when the tag is absent or all fields were empty.

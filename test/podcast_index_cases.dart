@@ -193,6 +193,60 @@ Map<String, TestFx> podcastIndexTests() {
       final pc = r.podcast;
       return pc != null && !(pc.locked ?? true) && pc.lockedOwner == null;
     },
+    'channel_block_yes.xml': (r) {
+      final blocks = r.podcast?.blocks;
+      return blocks != null &&
+          blocks.length == 1 &&
+          blocks[0].id == null &&
+          blocks[0].value == 'yes' &&
+          (blocks[0].blocked ?? false);
+    },
+    'channel_block_no.xml': (r) {
+      final blocks = r.podcast?.blocks;
+      return blocks != null && blocks.length == 1 && blocks[0].blocked == false;
+    },
+    'channel_block_with_id.xml': (r) {
+      final blocks = r.podcast?.blocks;
+      return blocks != null &&
+          blocks.length == 1 &&
+          blocks[0].id == 'google' &&
+          (blocks[0].blocked ?? false);
+    },
+    'channel_block_multiple.xml': (r) {
+      final blocks = r.podcast?.blocks;
+      return blocks != null &&
+          blocks.length == 3 &&
+          blocks[0].id == null &&
+          (blocks[0].blocked ?? false) &&
+          blocks[1].id == 'google' &&
+          (blocks[1].blocked ?? false) &&
+          blocks[2].id == 'spotify' &&
+          blocks[2].blocked == false;
+    },
+    'channel_block_uppercase.xml': (r) {
+      final blocks = r.podcast?.blocks;
+      return blocks != null &&
+          blocks.length == 1 &&
+          blocks[0].value == 'YES' &&
+          (blocks[0].blocked ?? false);
+    },
+    'channel_block_unknown_value.xml': (r) {
+      final blocks = r.podcast?.blocks;
+      return blocks != null &&
+          blocks.length == 1 &&
+          blocks[0].value == 'maybe' &&
+          blocks[0].blocked == null;
+    },
+    'channel_block_empty_body.xml': (r) => r.podcast?.blocks.isEmpty ?? false,
+    'channel_block_whitespace_body.xml': (r) => r.podcast?.blocks.isEmpty ?? false,
+    'channel_block_id_whitespace.xml': (r) {
+      final blocks = r.podcast?.blocks;
+      return blocks != null && blocks.length == 1 && blocks[0].id == 'google';
+    },
+    'channel_block_id_empty.xml': (r) {
+      final blocks = r.podcast?.blocks;
+      return blocks != null && blocks.length == 1 && blocks[0].id == null;
+    },
     'channel_update_frequency_full.xml': (r) {
       final uf = r.podcast?.updateFrequency;
       return uf != null &&

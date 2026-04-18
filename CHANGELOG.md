@@ -1,5 +1,10 @@
 ## Unreleased
 
+- add `<podcast:block>` parsing (Podcast Index namespace, channel-level,
+  multi-valued). Exposed as `feed.podcast.blocks` (`List<PodcastBlock>`),
+  each with `id` (platform slug or null for global), `value` (raw body),
+  and `blocked` (`bool?`). Distinct from the iTunes scalar
+  `feed.podcast.block`.
 - BREAKING: rename `ItunesChannel`/`ItunesItem` → `PodcastChannel`/
   `PodcastItem`. `feed.podcast` / `item.podcast` property names unchanged;
   only the returned type names change.

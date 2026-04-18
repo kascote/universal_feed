@@ -1,0 +1,9 @@
+<!--
+Description: podcast:block with whitespace-only body
+Expect:      blocks.isEmpty (whitespace body skipped)
+-->
+<rss xmlns:podcast="https://podcastindex.org/namespace/1.0">
+<channel>
+<podcast:block>   </podcast:block>
+</channel>
+</rss>
