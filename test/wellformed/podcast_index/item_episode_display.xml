@@ -1,0 +1,11 @@
+<!--
+Description: podcast:episode with display attribute
+Expect:      item.podcast.episode == '42' and item.podcast.episodeDisplay == 'Episode 42'
+-->
+<rss xmlns:podcast="https://podcastindex.org/namespace/1.0">
+<channel>
+<item>
+  <podcast:episode display="Episode 42">42</podcast:episode>
+</item>
+</channel>
+</rss>

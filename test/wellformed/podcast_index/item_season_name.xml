@@ -1,0 +1,11 @@
+<!--
+Description: podcast:season with name attribute
+Expect:      item.podcast.season == '3' and item.podcast.seasonName == 'Summer'
+-->
+<rss xmlns:podcast="https://podcastindex.org/namespace/1.0">
+<channel>
+<item>
+  <podcast:season name="Summer">3</podcast:season>
+</item>
+</channel>
+</rss>

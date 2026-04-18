@@ -273,5 +273,29 @@ Map<String, TestFx> podcastIndexTests() {
     'channel_no_update_frequency.xml': (r) {
       return r.podcast != null && r.podcast?.updateFrequency == null;
     },
+    'item_season_name.xml': (r) {
+      final pi = r.items.first.podcast;
+      return pi != null && pi.season == '3' && pi.seasonName == 'Summer';
+    },
+    'item_season_no_name.xml': (r) {
+      final pi = r.items.first.podcast;
+      return pi != null && pi.season == '2' && pi.seasonName == null;
+    },
+    'item_season_itunes_override.xml': (r) {
+      final pi = r.items.first.podcast;
+      return pi != null && pi.season == '5' && pi.seasonName == 'Final';
+    },
+    'item_episode_display.xml': (r) {
+      final pi = r.items.first.podcast;
+      return pi != null && pi.episode == '42' && pi.episodeDisplay == 'Episode 42';
+    },
+    'item_episode_no_display.xml': (r) {
+      final pi = r.items.first.podcast;
+      return pi != null && pi.episode == '7' && pi.episodeDisplay == null;
+    },
+    'item_episode_itunes_override.xml': (r) {
+      final pi = r.items.first.podcast;
+      return pi != null && pi.episode == '99' && pi.episodeDisplay == 'Finale';
+    },
   };
 }

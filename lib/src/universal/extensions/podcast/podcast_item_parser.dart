@@ -18,6 +18,26 @@ class PodcastItemParser implements ItemExtensionParser {
     final pi = item.podcast ?? PodcastItem();
 
     element
+      ..ifPresentXml(
+        'season',
+        (value) {
+          final body = value.innerText.trim();
+          if (body.isNotEmpty) pi.season = body;
+          final name = value.getAttribute('name')?.trim();
+          if (name != null && name.isNotEmpty) pi.seasonName = name;
+        },
+        ns: namespaceUrl,
+      )
+      ..ifPresentXml(
+        'episode',
+        (value) {
+          final body = value.innerText.trim();
+          if (body.isNotEmpty) pi.episode = body;
+          final display = value.getAttribute('display')?.trim();
+          if (display != null && display.isNotEmpty) pi.episodeDisplay = display;
+        },
+        ns: namespaceUrl,
+      )
       ..forEachElementXml(
         'txt',
         (value) {

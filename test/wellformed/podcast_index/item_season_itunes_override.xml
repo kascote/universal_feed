@@ -1,0 +1,13 @@
+<!--
+Description: both itunes:season and podcast:season present; podcast wins
+Expect:      item.podcast.season == '5' and item.podcast.seasonName == 'Final'
+-->
+<rss xmlns:itunes="http://www.itunes.com/DTDs/Podcast-1.0.dtd"
+     xmlns:podcast="https://podcastindex.org/namespace/1.0">
+<channel>
+<item>
+  <itunes:season>1</itunes:season>
+  <podcast:season name="Final">5</podcast:season>
+</item>
+</channel>
+</rss>

@@ -1,0 +1,11 @@
+<!--
+Description: podcast:season without name attribute
+Expect:      item.podcast.season == '2' and item.podcast.seasonName == null
+-->
+<rss xmlns:podcast="https://podcastindex.org/namespace/1.0">
+<channel>
+<item>
+  <podcast:season>2</podcast:season>
+</item>
+</channel>
+</rss>

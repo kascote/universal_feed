@@ -21,8 +21,14 @@ class PodcastItem {
   /// An episode number.
   String? episode;
 
+  /// Display string for the episode number (from `podcast:episode display` attr).
+  String? episodeDisplay;
+
   /// The episode's season number.
   String? season;
+
+  /// Display name for the season (from `podcast:season name` attr).
+  String? seasonName;
 
   /// The episode's type.
   String? episodeType;

@@ -1,5 +1,11 @@
 ## Unreleased
 
+- add `podcast:season name` and `podcast:episode display` attribute parsing
+  (Podcast Index namespace, item-level). Exposed as `item.podcast.seasonName`
+  (`String?`) and `item.podcast.episodeDisplay` (`String?`). When both
+  `itunes:season`/`itunes:episode` and `podcast:season`/`podcast:episode` are
+  present, the Podcast Index values take precedence.
+
 - add `<podcast:block>` parsing (Podcast Index namespace, channel-level,
   multi-valued). Exposed as `feed.podcast.blocks` (`List<PodcastBlock>`),
   each with `id` (platform slug or null for global), `value` (raw body),
