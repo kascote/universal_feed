@@ -1,0 +1,12 @@
+<!--
+Description: podcast:updateFrequency with all four fields
+Expect:      feed.podcast.updateFrequency.description == 'Weekly on Thursdays',
+             feed.podcast.updateFrequency.complete == false,
+             feed.podcast.updateFrequency.dtstart == '2021-10-07T00:00:00.000Z',
+             feed.podcast.updateFrequency.rrule == 'FREQ=WEEKLY;BYDAY=TH'
+-->
+<rss xmlns:podcast="https://podcastindex.org/namespace/1.0">
+<channel>
+<podcast:updateFrequency complete="false" dtstart="2021-10-07T00:00:00.000Z" rrule="FREQ=WEEKLY;BYDAY=TH">Weekly on Thursdays</podcast:updateFrequency>
+</channel>
+</rss>

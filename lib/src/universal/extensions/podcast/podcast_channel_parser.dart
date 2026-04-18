@@ -78,6 +78,27 @@ class PodcastChannelParser implements ChannelExtensionParser {
             ..lockedOwner = value.getAttribute('owner');
         },
         ns: namespaceUrl,
+      )
+      ..ifPresentXml(
+        'updateFrequency',
+        (el) {
+          final description = el.innerText.trim();
+          final complete = switch (el.getAttribute('complete')?.toLowerCase()) {
+            'true' => true,
+            'false' => false,
+            _ => null,
+          };
+          final dtstart = el.getAttribute('dtstart');
+          final rrule = el.getAttribute('rrule');
+          if (description.isEmpty && complete == null && dtstart == null && rrule == null) return;
+          pc.updateFrequency = PodcastUpdateFrequency(
+            description: description.isEmpty ? null : description,
+            complete: complete,
+            dtstart: dtstart,
+            rrule: rrule,
+          );
+        },
+        ns: namespaceUrl,
       );
 
     feed.podcast = pc;

@@ -1,0 +1,11 @@
+<!--
+Description: podcast:updateFrequency with complete=true, no rrule or dtstart
+Expect:      feed.podcast.updateFrequency.complete == true,
+             feed.podcast.updateFrequency.rrule == null,
+             feed.podcast.updateFrequency.dtstart == null
+-->
+<rss xmlns:podcast="https://podcastindex.org/namespace/1.0">
+<channel>
+<podcast:updateFrequency complete="true">No more episodes</podcast:updateFrequency>
+</channel>
+</rss>

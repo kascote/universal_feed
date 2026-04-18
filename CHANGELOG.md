@@ -24,6 +24,11 @@
 - add `<podcast:podping>` parsing (Podcast Index namespace, channel-level).
   Exposed as `feed.podcast.podpingUsesPodping` (`bool?`) from the
   `usesPodping` attribute. Accepts `true`/`yes` and `false`/`no`.
+- add `<podcast:updateFrequency>` parsing (Podcast Index namespace,
+  channel-level). Exposed as `feed.podcast.updateFrequency`
+  (`PodcastUpdateFrequency?`) with `description` (text body), `complete`
+  (`bool?`), `dtstart` (`String?`), and `rrule` (`String?`) fields. Raw
+  strings for `dtstart`/`rrule`; callers parse as needed.
 - support multiple `itunes:category` elements on podcast channels and expose
   nested subcategories via new `Category.children` field (previously only
   the first top-level category was parsed and parent/child link was lost).

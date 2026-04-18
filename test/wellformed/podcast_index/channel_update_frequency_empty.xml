@@ -1,0 +1,9 @@
+<!--
+Description: podcast:updateFrequency tag present but completely empty (no body, no attrs)
+Expect:      feed.podcast.updateFrequency == null
+-->
+<rss xmlns:podcast="https://podcastindex.org/namespace/1.0">
+<channel>
+<podcast:updateFrequency></podcast:updateFrequency>
+</channel>
+</rss>

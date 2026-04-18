@@ -193,5 +193,31 @@ Map<String, TestFx> podcastIndexTests() {
       final pc = r.podcast;
       return pc != null && !(pc.locked ?? true) && pc.lockedOwner == null;
     },
+    'channel_update_frequency_full.xml': (r) {
+      final uf = r.podcast?.updateFrequency;
+      return uf != null &&
+          uf.description == 'Weekly on Thursdays' &&
+          uf.complete == false &&
+          uf.dtstart == '2021-10-07T00:00:00.000Z' &&
+          uf.rrule == 'FREQ=WEEKLY;BYDAY=TH';
+    },
+    'channel_update_frequency_minimal.xml': (r) {
+      final uf = r.podcast?.updateFrequency;
+      return uf != null &&
+          uf.description == 'Daily' &&
+          uf.complete == null &&
+          uf.dtstart == null &&
+          uf.rrule == null;
+    },
+    'channel_update_frequency_complete.xml': (r) {
+      final uf = r.podcast?.updateFrequency;
+      return uf != null && (uf.complete ?? false) && uf.rrule == null && uf.dtstart == null;
+    },
+    'channel_update_frequency_empty.xml': (r) {
+      return r.podcast != null && r.podcast?.updateFrequency == null;
+    },
+    'channel_no_update_frequency.xml': (r) {
+      return r.podcast != null && r.podcast?.updateFrequency == null;
+    },
   };
 }

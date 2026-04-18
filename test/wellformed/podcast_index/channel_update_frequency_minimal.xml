@@ -1,0 +1,12 @@
+<!--
+Description: podcast:updateFrequency with body only, no attributes
+Expect:      feed.podcast.updateFrequency.description == 'Daily',
+             feed.podcast.updateFrequency.complete == null,
+             feed.podcast.updateFrequency.dtstart == null,
+             feed.podcast.updateFrequency.rrule == null
+-->
+<rss xmlns:podcast="https://podcastindex.org/namespace/1.0">
+<channel>
+<podcast:updateFrequency>Daily</podcast:updateFrequency>
+</channel>
+</rss>

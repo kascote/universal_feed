@@ -137,6 +137,13 @@ class PodcastChannel {
   /// `<podcast:locked>`. Null when the attribute is absent.
   String? lockedOwner;
 
+  /// Update schedule from `<podcast:updateFrequency>` (Podcast Index namespace).
+  /// Carries the human-readable description, optional `rrule`, `dtstart`, and
+  /// `complete` flag. Null when the tag is absent or all fields were empty.
+  /// Distinct from the Syndication extension — not merged.
+  /// See https://github.com/Podcastindex-org/podcast-namespace/blob/main/docs/1.0.md#update-frequency
+  PodcastUpdateFrequency? updateFrequency;
+
   /// Creates a new empty [PodcastChannel]
   PodcastChannel();
 }
