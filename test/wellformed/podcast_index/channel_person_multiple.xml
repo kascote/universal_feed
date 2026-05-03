@@ -1,0 +1,10 @@
+<!--
+Description: two channel-level podcast:person entries
+Expect:      persons.length==2, order preserved
+-->
+<rss xmlns:podcast="https://podcastindex.org/namespace/1.0">
+<channel>
+<podcast:person role="Host">Alice Example</podcast:person>
+<podcast:person role="Producer" group="Crew">Bob Example</podcast:person>
+</channel>
+</rss>

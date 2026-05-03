@@ -30,6 +30,7 @@ export 'src/universal/extensions/podcast/podcast_chapters.dart';
 export 'src/universal/extensions/podcast/podcast_funding.dart';
 export 'src/universal/extensions/podcast/podcast_item.dart';
 export 'src/universal/extensions/podcast/podcast_license.dart';
+export 'src/universal/extensions/podcast/podcast_person.dart';
 export 'src/universal/extensions/podcast/podcast_trailer.dart';
 export 'src/universal/extensions/podcast/podcast_transcript.dart';
 export 'src/universal/extensions/podcast/podcast_txt.dart';

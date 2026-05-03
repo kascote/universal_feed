@@ -57,6 +57,14 @@ class PodcastItem {
   /// See https://github.com/Podcastindex-org/podcast-namespace/blob/main/docs/1.0.md#license
   PodcastLicense? license;
 
+  /// Persons associated with this episode from `<podcast:person>` (Podcast
+  /// Index namespace). Preserves source order. Empty when absent. Each
+  /// entry has a non-empty [PodcastPerson.name]; elements without a body
+  /// are skipped at parse time. Per spec, these override channel-level
+  /// persons (see [PodcastChannel.persons]) for this episode.
+  /// See https://github.com/Podcastindex-org/podcast-namespace/blob/main/docs/1.0.md#person
+  List<PodcastPerson> persons = [];
+
   /// Creates a new empty [PodcastItem]
   PodcastItem();
 }

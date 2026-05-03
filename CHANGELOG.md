@@ -1,5 +1,13 @@
 ## Unreleased
 
+- add `<podcast:person>` parsing (Podcast Index namespace, channel- and
+  item-level, multi-valued). Exposed as `feed.podcast.persons` and
+  `item.podcast.persons` (`List<PodcastPerson>`), each with `name` (body),
+  `role`, `group`, `img`, `href`. Convenience getters `effectiveRole` and
+  `effectiveGroup` apply the spec defaults (`host` / `cast`) without
+  losing the raw `null`. Elements without a body are skipped.
+- internal: factor shared `<podcast:license>` parsing into
+  `podcast_parsing.dart` (library-internal). No public API change.
 - add `<podcast:trailer>` parsing (Podcast Index namespace, channel-level,
   multi-valued). Exposed as `feed.podcast.trailers` (`List<PodcastTrailer>`),
   each with `url`, `title` (body), `pubdate` (`Timestamp?`), `length`,

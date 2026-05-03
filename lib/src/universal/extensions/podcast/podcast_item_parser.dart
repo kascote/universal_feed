@@ -3,6 +3,7 @@ import 'package:xml/xml.dart';
 import '../../../../universal_feed.dart';
 import '../../../shared/extensions.dart';
 import '../extension_parser.dart';
+import 'podcast_parsing.dart';
 
 /// Parses the Podcast Index vocabulary (`<podcast:*>`) into the unified
 /// [PodcastItem] model at item level.
@@ -64,7 +65,15 @@ class PodcastItemParser implements ItemExtensionParser {
       )
       ..forEachElementXml(
         'license',
-        (el) => pi.license = _licenseFromXml(el),
+        (el) => pi.license = licenseFromXml(el),
+        ns: namespaceUrl,
+      )
+      ..forEachElementXml(
+        'person',
+        (el) {
+          final p = personFromXml(el);
+          if (p != null) pi.persons.add(p);
+        },
         ns: namespaceUrl,
       )
       ..forEachElementXml(
@@ -88,17 +97,6 @@ class PodcastItemParser implements ItemExtensionParser {
       );
 
     item.podcast = pi;
-  }
-
-  PodcastLicense _licenseFromXml(XmlElement el) {
-    final spdx = el.getAttribute('spdx')?.trim();
-    final url = el.getAttribute('url')?.trim();
-    final text = el.innerText.trim();
-    return PodcastLicense(
-      spdx: (spdx == null || spdx.isEmpty) ? null : spdx,
-      url: (url == null || url.isEmpty) ? null : url,
-      text: text.isEmpty ? null : text,
-    );
   }
 
   PodcastTranscriptType _parseTranscriptType(String? raw) {

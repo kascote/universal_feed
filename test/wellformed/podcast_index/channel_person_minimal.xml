@@ -1,0 +1,10 @@
+<!--
+Description: podcast:person body only, no attributes
+Expect:      persons.length==1, name set, all attrs null,
+             effectiveRole=="host", effectiveGroup=="cast"
+-->
+<rss xmlns:podcast="https://podcastindex.org/namespace/1.0">
+<channel>
+<podcast:person>Alice Example</podcast:person>
+</channel>
+</rss>

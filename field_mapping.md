@@ -77,8 +77,10 @@ future follow-up specs.
 | txts          |         | podcast:txt        |
 | guid          |         | podcast:guid       |
 | trailers      |         | podcast:trailer    |
+| persons       |         | podcast:person     |
 | ============= | ======= | =================  |
 | ITEM          |         |                    |
 | ------------- | ------- | -----------------  |
 | chapters      |         | podcast:chapters   |
 | transcripts   |         | podcast:transcript |
+| persons       |         | podcast:person     |

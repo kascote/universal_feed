@@ -166,6 +166,15 @@ class PodcastChannel {
   /// See https://github.com/Podcastindex-org/podcast-namespace/blob/main/docs/1.0.md#trailer
   List<PodcastTrailer> trailers = [];
 
+  /// Persons associated with the show from `<podcast:person>` (Podcast
+  /// Index namespace). Preserves source order. Empty when absent. Each
+  /// entry has a non-empty [PodcastPerson.name]; elements without a body
+  /// are skipped at parse time. Item-level persons (`PodcastItem.persons`)
+  /// override these for a given episode per spec — override semantics are
+  /// left to the consumer.
+  /// See https://github.com/Podcastindex-org/podcast-namespace/blob/main/docs/1.0.md#person
+  List<PodcastPerson> persons = [];
+
   /// Creates a new empty [PodcastChannel]
   PodcastChannel();
 }

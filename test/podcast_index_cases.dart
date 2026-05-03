@@ -372,5 +372,67 @@ Map<String, TestFx> podcastIndexTests() {
       final t = r.podcast?.trailers;
       return t != null && t.length == 1 && t.first.season == '2' && t.first.title == null;
     },
+    // person
+    'channel_person_full.xml': (r) {
+      final ps = r.podcast?.persons;
+      if (ps == null || ps.length != 1) return false;
+      final p = ps.first;
+      return p.name == 'Alice Example' &&
+          p.role == 'Host' &&
+          p.group == 'Cast' &&
+          p.img == 'https://example.org/avatars/alice.jpg' &&
+          p.href == 'https://example.org/about/alice';
+    },
+    'channel_person_minimal.xml': (r) {
+      final ps = r.podcast?.persons;
+      if (ps == null || ps.length != 1) return false;
+      final p = ps.first;
+      return p.name == 'Alice Example' &&
+          p.role == null &&
+          p.group == null &&
+          p.img == null &&
+          p.href == null &&
+          p.effectiveRole == 'host' &&
+          p.effectiveGroup == 'cast';
+    },
+    'channel_person_multiple.xml': (r) {
+      final ps = r.podcast?.persons ?? const [];
+      return ps.length == 2 &&
+          ps[0].name == 'Alice Example' &&
+          ps[0].role == 'Host' &&
+          ps[1].name == 'Bob Example' &&
+          ps[1].role == 'Producer' &&
+          ps[1].group == 'Crew';
+    },
+    'channel_person_empty_body.xml': (r) => (r.podcast?.persons ?? const []).isEmpty,
+    'channel_person_whitespace.xml': (r) => (r.podcast?.persons ?? const []).isEmpty,
+    'item_person_full.xml': (r) {
+      final ps = r.items.first.podcast?.persons;
+      if (ps == null || ps.length != 1) return false;
+      final p = ps.first;
+      return p.name == 'Alice Example' &&
+          p.role == 'Guest' &&
+          p.group == 'Cast' &&
+          p.img == 'https://example.org/avatars/alice.jpg' &&
+          p.href == 'https://example.org/about/alice';
+    },
+    'item_person_multiple.xml': (r) {
+      final ps = r.items.first.podcast?.persons ?? const [];
+      return ps.length == 2 &&
+          ps[0].name == 'Alice Example' &&
+          ps[0].role == 'Host' &&
+          ps[1].name == 'Bob Example' &&
+          ps[1].role == 'Guest';
+    },
+    'channel_and_item_person.xml': (r) {
+      final cp = r.podcast?.persons ?? const [];
+      final ip = r.items.first.podcast?.persons ?? const [];
+      return cp.length == 1 &&
+          ip.length == 1 &&
+          cp.first.name == 'Alice Example' &&
+          cp.first.role == 'Host' &&
+          ip.first.name == 'Bob Example' &&
+          ip.first.role == 'Guest';
+    },
   };
 }

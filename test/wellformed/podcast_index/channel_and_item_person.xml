@@ -1,0 +1,12 @@
+<!--
+Description: podcast:person at both channel and item level
+Expect:      both lists populated independently, no merge
+-->
+<rss xmlns:podcast="https://podcastindex.org/namespace/1.0">
+<channel>
+<podcast:person role="Host">Alice Example</podcast:person>
+<item>
+<podcast:person role="Guest">Bob Example</podcast:person>
+</item>
+</channel>
+</rss>

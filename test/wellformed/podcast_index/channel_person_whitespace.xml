@@ -1,0 +1,9 @@
+<!--
+Description: podcast:person with whitespace-only body
+Expect:      element skipped, persons.isEmpty
+-->
+<rss xmlns:podcast="https://podcastindex.org/namespace/1.0">
+<channel>
+<podcast:person role="Host">   </podcast:person>
+</channel>
+</rss>

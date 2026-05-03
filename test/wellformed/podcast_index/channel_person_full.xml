@@ -1,0 +1,13 @@
+<!--
+Description: podcast:person at channel level with all attributes + body
+Expect:      persons.length==1, all fields populated
+-->
+<rss xmlns:podcast="https://podcastindex.org/namespace/1.0">
+<channel>
+<podcast:person
+  role="Host"
+  group="Cast"
+  img="https://example.org/avatars/alice.jpg"
+  href="https://example.org/about/alice">Alice Example</podcast:person>
+</channel>
+</rss>
