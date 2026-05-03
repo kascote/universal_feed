@@ -1,0 +1,9 @@
+<!--
+Description: podcast:funding single entry
+Expect:      fundings.length==1, url=="https://ko-fi.com/example", text=="Support the show"
+-->
+<rss xmlns:podcast="https://podcastindex.org/namespace/1.0">
+<channel>
+<podcast:funding url="https://ko-fi.com/example">Support the show</podcast:funding>
+</channel>
+</rss>

@@ -1,0 +1,11 @@
+<!--
+Description: podcast:license on item
+Expect:      items.first.podcast.license.spdx=="CC-BY-4.0"
+-->
+<rss xmlns:podcast="https://podcastindex.org/namespace/1.0">
+<channel>
+<item>
+<podcast:license spdx="CC-BY-4.0" url="https://creativecommons.org/licenses/by/4.0/">Creative Commons</podcast:license>
+</item>
+</channel>
+</rss>

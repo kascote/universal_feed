@@ -1,5 +1,12 @@
 ## Unreleased
 
+- add `<podcast:funding>` parsing (Podcast Index namespace, channel-level,
+  multi-valued). Exposed as `feed.podcast.fundings` (`List<PodcastFunding>`),
+  each with `url` and `text` (element body). Source order preserved.
+- add `<podcast:license>` parsing (Podcast Index namespace, channel- and
+  item-level). Exposed as `feed.podcast.license` and `item.podcast.license`
+  (`PodcastLicense?`) with `spdx`, `url`, and `text` fields. Last tag wins
+  on duplicates.
 - add `podcast:season name` and `podcast:episode display` attribute parsing
   (Podcast Index namespace, item-level). Exposed as `item.podcast.seasonName`
   (`String?`) and `item.podcast.episodeDisplay` (`String?`). When both

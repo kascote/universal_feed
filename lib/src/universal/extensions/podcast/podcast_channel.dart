@@ -150,6 +150,16 @@ class PodcastChannel {
   /// See https://github.com/Podcastindex-org/podcast-namespace/blob/main/docs/1.0.md#update-frequency
   PodcastUpdateFrequency? updateFrequency;
 
+  /// Funding links from `<podcast:funding>` (Podcast Index namespace).
+  /// Preserves source order. Empty when absent.
+  /// See https://github.com/Podcastindex-org/podcast-namespace/blob/main/docs/1.0.md#funding
+  List<PodcastFunding> fundings = [];
+
+  /// License from `<podcast:license>` (Podcast Index namespace).
+  /// Null when absent. Last tag wins on duplicate.
+  /// See https://github.com/Podcastindex-org/podcast-namespace/blob/main/docs/1.0.md#license
+  PodcastLicense? license;
+
   /// Creates a new empty [PodcastChannel]
   PodcastChannel();
 }

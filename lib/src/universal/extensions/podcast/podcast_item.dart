@@ -52,6 +52,11 @@ class PodcastItem {
   /// [PodcastTranscript] for attribute details.
   List<PodcastTranscript> transcripts = [];
 
+  /// License from `<podcast:license>` (Podcast Index namespace).
+  /// Null when absent. Last tag wins on duplicate.
+  /// See https://github.com/Podcastindex-org/podcast-namespace/blob/main/docs/1.0.md#license
+  PodcastLicense? license;
+
   /// Creates a new empty [PodcastItem]
   PodcastItem();
 }

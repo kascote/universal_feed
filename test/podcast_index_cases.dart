@@ -297,5 +297,42 @@ Map<String, TestFx> podcastIndexTests() {
       final pi = r.items.first.podcast;
       return pi != null && pi.episode == '99' && pi.episodeDisplay == 'Finale';
     },
+    // funding
+    'channel_funding_single.xml': (r) {
+      final f = r.podcast?.fundings;
+      return f != null && f.length == 1 && f[0].url == 'https://ko-fi.com/example' && f[0].text == 'Support the show';
+    },
+    'channel_funding_multiple.xml': (r) {
+      final f = r.podcast?.fundings;
+      if (f == null || f.length != 2) return false;
+      return f[0].url == 'https://ko-fi.com/example' && f[0].text == 'Ko-fi' && f[1].url == 'https://patreon.com/example' && f[1].text == 'Patreon';
+    },
+    'channel_funding_no_url.xml': (r) {
+      final f = r.podcast?.fundings;
+      return f != null && f.length == 1 && f[0].url == null && f[0].text == 'Donate';
+    },
+    'channel_funding_empty_text.xml': (r) {
+      final f = r.podcast?.fundings;
+      return f != null && f.length == 1 && f[0].url == 'https://example.com' && f[0].text == null;
+    },
+    // license (channel)
+    'channel_license_full.xml': (r) {
+      final l = r.podcast?.license;
+      return l != null && l.spdx == 'CC-BY-4.0' && l.url == 'https://creativecommons.org/licenses/by/4.0/' && l.text == 'Creative Commons';
+    },
+    'channel_license_spdx_only.xml': (r) {
+      final l = r.podcast?.license;
+      return l != null && l.spdx == 'MIT' && l.url == null && l.text == null;
+    },
+    'channel_license_no_spdx.xml': (r) {
+      final l = r.podcast?.license;
+      return l != null && l.spdx == null && l.url == 'https://example.com/license' && l.text == 'Custom License';
+    },
+    'channel_license_duplicate.xml': (r) => r.podcast?.license?.spdx == 'Apache-2.0',
+    // license (item)
+    'item_license.xml': (r) {
+      final l = r.items.first.podcast?.license;
+      return l != null && l.spdx == 'CC-BY-4.0' && l.url == 'https://creativecommons.org/licenses/by/4.0/' && l.text == 'Creative Commons';
+    },
   };
 }

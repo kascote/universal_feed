@@ -1,0 +1,9 @@
+<!--
+Description: podcast:license with url but no spdx
+Expect:      license.spdx==null, license.url=="https://example.com/license", license.text=="Custom License"
+-->
+<rss xmlns:podcast="https://podcastindex.org/namespace/1.0">
+<channel>
+<podcast:license url="https://example.com/license">Custom License</podcast:license>
+</channel>
+</rss>

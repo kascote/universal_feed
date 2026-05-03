@@ -1,0 +1,10 @@
+<!--
+Description: podcast:funding multiple entries, order preserved
+Expect:      fundings.length==2, [0].url=="https://ko-fi.com/example", [1].url=="https://patreon.com/example"
+-->
+<rss xmlns:podcast="https://podcastindex.org/namespace/1.0">
+<channel>
+<podcast:funding url="https://ko-fi.com/example">Ko-fi</podcast:funding>
+<podcast:funding url="https://patreon.com/example">Patreon</podcast:funding>
+</channel>
+</rss>

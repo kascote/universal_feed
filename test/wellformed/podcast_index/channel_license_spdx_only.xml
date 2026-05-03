@@ -1,0 +1,9 @@
+<!--
+Description: podcast:license with spdx only
+Expect:      license.spdx=="MIT", license.url==null, license.text==null
+-->
+<rss xmlns:podcast="https://podcastindex.org/namespace/1.0">
+<channel>
+<podcast:license spdx="MIT"></podcast:license>
+</channel>
+</rss>

@@ -63,6 +63,11 @@ class PodcastItemParser implements ItemExtensionParser {
         ns: namespaceUrl,
       )
       ..forEachElementXml(
+        'license',
+        (el) => pi.license = _licenseFromXml(el),
+        ns: namespaceUrl,
+      )
+      ..forEachElementXml(
         'transcript',
         (value) {
           final url = value.getAttribute('url')?.trim();
@@ -83,6 +88,17 @@ class PodcastItemParser implements ItemExtensionParser {
       );
 
     item.podcast = pi;
+  }
+
+  PodcastLicense _licenseFromXml(XmlElement el) {
+    final spdx = el.getAttribute('spdx')?.trim();
+    final url = el.getAttribute('url')?.trim();
+    final text = el.innerText.trim();
+    return PodcastLicense(
+      spdx: (spdx == null || spdx.isEmpty) ? null : spdx,
+      url: (url == null || url.isEmpty) ? null : url,
+      text: text.isEmpty ? null : text,
+    );
   }
 
   PodcastTranscriptType _parseTranscriptType(String? raw) {

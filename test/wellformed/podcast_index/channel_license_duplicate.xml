@@ -1,0 +1,10 @@
+<!--
+Description: podcast:license duplicate — last wins
+Expect:      license.spdx=="Apache-2.0"
+-->
+<rss xmlns:podcast="https://podcastindex.org/namespace/1.0">
+<channel>
+<podcast:license spdx="MIT">MIT</podcast:license>
+<podcast:license spdx="Apache-2.0">Apache</podcast:license>
+</channel>
+</rss>

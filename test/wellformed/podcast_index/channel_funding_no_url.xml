@@ -1,0 +1,9 @@
+<!--
+Description: podcast:funding without url attribute
+Expect:      fundings.length==1, url==null, text=="Donate"
+-->
+<rss xmlns:podcast="https://podcastindex.org/namespace/1.0">
+<channel>
+<podcast:funding>Donate</podcast:funding>
+</channel>
+</rss>

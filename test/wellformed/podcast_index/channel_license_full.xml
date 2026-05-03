@@ -1,0 +1,9 @@
+<!--
+Description: podcast:license with all fields
+Expect:      license.spdx=="CC-BY-4.0", license.url=="https://creativecommons.org/licenses/by/4.0/", license.text=="Creative Commons"
+-->
+<rss xmlns:podcast="https://podcastindex.org/namespace/1.0">
+<channel>
+<podcast:license spdx="CC-BY-4.0" url="https://creativecommons.org/licenses/by/4.0/">Creative Commons</podcast:license>
+</channel>
+</rss>

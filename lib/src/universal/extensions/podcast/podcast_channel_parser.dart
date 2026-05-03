@@ -91,6 +91,23 @@ class PodcastChannelParser implements ChannelExtensionParser {
         },
         ns: namespaceUrl,
       )
+      ..forEachElementXml(
+        'funding',
+        (el) {
+          final url = el.getAttribute('url')?.trim();
+          final text = el.innerText.trim();
+          pc.fundings.add(PodcastFunding(
+            url: (url == null || url.isEmpty) ? null : url,
+            text: text.isEmpty ? null : text,
+          ));
+        },
+        ns: namespaceUrl,
+      )
+      ..forEachElementXml(
+        'license',
+        (el) => pc.license = _licenseFromXml(el),
+        ns: namespaceUrl,
+      )
       ..ifPresentXml(
         'updateFrequency',
         (el) {
@@ -114,6 +131,17 @@ class PodcastChannelParser implements ChannelExtensionParser {
       );
 
     feed.podcast = pc;
+  }
+
+  PodcastLicense _licenseFromXml(XmlElement el) {
+    final spdx = el.getAttribute('spdx')?.trim();
+    final url = el.getAttribute('url')?.trim();
+    final text = el.innerText.trim();
+    return PodcastLicense(
+      spdx: (spdx == null || spdx.isEmpty) ? null : spdx,
+      url: (url == null || url.isEmpty) ? null : url,
+      text: text.isEmpty ? null : text,
+    );
   }
 
   bool? _parseBlockedValue(String raw) => switch (raw.toLowerCase()) {
