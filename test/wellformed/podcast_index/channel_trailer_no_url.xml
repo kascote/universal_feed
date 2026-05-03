@@ -1,0 +1,9 @@
+<!--
+Description: podcast:trailer missing url attribute
+Expect:      trailers.isEmpty (skipped)
+-->
+<rss xmlns:podcast="https://podcastindex.org/namespace/1.0">
+<channel>
+<podcast:trailer pubdate="Thu, 01 Apr 2021 08:00:00 EST" season="1">Bad trailer</podcast:trailer>
+</channel>
+</rss>

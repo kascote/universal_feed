@@ -1,0 +1,9 @@
+<!--
+Description: podcast:trailer with empty url=""
+Expect:      trailers.isEmpty (skipped, same as missing url)
+-->
+<rss xmlns:podcast="https://podcastindex.org/namespace/1.0">
+<channel>
+<podcast:trailer url="" pubdate="Thu, 01 Apr 2021 08:00:00 EST">Empty url</podcast:trailer>
+</channel>
+</rss>

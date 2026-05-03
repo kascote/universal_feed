@@ -207,10 +207,7 @@ Map<String, TestFx> podcastIndexTests() {
     },
     'channel_block_with_id.xml': (r) {
       final blocks = r.podcast?.blocks;
-      return blocks != null &&
-          blocks.length == 1 &&
-          blocks[0].id == 'google' &&
-          (blocks[0].blocked ?? false);
+      return blocks != null && blocks.length == 1 && blocks[0].id == 'google' && (blocks[0].blocked ?? false);
     },
     'channel_block_multiple.xml': (r) {
       final blocks = r.podcast?.blocks;
@@ -225,17 +222,11 @@ Map<String, TestFx> podcastIndexTests() {
     },
     'channel_block_uppercase.xml': (r) {
       final blocks = r.podcast?.blocks;
-      return blocks != null &&
-          blocks.length == 1 &&
-          blocks[0].value == 'YES' &&
-          (blocks[0].blocked ?? false);
+      return blocks != null && blocks.length == 1 && blocks[0].value == 'YES' && (blocks[0].blocked ?? false);
     },
     'channel_block_unknown_value.xml': (r) {
       final blocks = r.podcast?.blocks;
-      return blocks != null &&
-          blocks.length == 1 &&
-          blocks[0].value == 'maybe' &&
-          blocks[0].blocked == null;
+      return blocks != null && blocks.length == 1 && blocks[0].value == 'maybe' && blocks[0].blocked == null;
     },
     'channel_block_empty_body.xml': (r) => r.podcast?.blocks.isEmpty ?? false,
     'channel_block_whitespace_body.xml': (r) => r.podcast?.blocks.isEmpty ?? false,
@@ -257,11 +248,7 @@ Map<String, TestFx> podcastIndexTests() {
     },
     'channel_update_frequency_minimal.xml': (r) {
       final uf = r.podcast?.updateFrequency;
-      return uf != null &&
-          uf.description == 'Daily' &&
-          uf.complete == null &&
-          uf.dtstart == null &&
-          uf.rrule == null;
+      return uf != null && uf.description == 'Daily' && uf.complete == null && uf.dtstart == null && uf.rrule == null;
     },
     'channel_update_frequency_complete.xml': (r) {
       final uf = r.podcast?.updateFrequency;
@@ -305,7 +292,10 @@ Map<String, TestFx> podcastIndexTests() {
     'channel_funding_multiple.xml': (r) {
       final f = r.podcast?.fundings;
       if (f == null || f.length != 2) return false;
-      return f[0].url == 'https://ko-fi.com/example' && f[0].text == 'Ko-fi' && f[1].url == 'https://patreon.com/example' && f[1].text == 'Patreon';
+      return f[0].url == 'https://ko-fi.com/example' &&
+          f[0].text == 'Ko-fi' &&
+          f[1].url == 'https://patreon.com/example' &&
+          f[1].text == 'Patreon';
     },
     'channel_funding_no_url.xml': (r) {
       final f = r.podcast?.fundings;
@@ -318,7 +308,10 @@ Map<String, TestFx> podcastIndexTests() {
     // license (channel)
     'channel_license_full.xml': (r) {
       final l = r.podcast?.license;
-      return l != null && l.spdx == 'CC-BY-4.0' && l.url == 'https://creativecommons.org/licenses/by/4.0/' && l.text == 'Creative Commons';
+      return l != null &&
+          l.spdx == 'CC-BY-4.0' &&
+          l.url == 'https://creativecommons.org/licenses/by/4.0/' &&
+          l.text == 'Creative Commons';
     },
     'channel_license_spdx_only.xml': (r) {
       final l = r.podcast?.license;
@@ -332,7 +325,52 @@ Map<String, TestFx> podcastIndexTests() {
     // license (item)
     'item_license.xml': (r) {
       final l = r.items.first.podcast?.license;
-      return l != null && l.spdx == 'CC-BY-4.0' && l.url == 'https://creativecommons.org/licenses/by/4.0/' && l.text == 'Creative Commons';
+      return l != null &&
+          l.spdx == 'CC-BY-4.0' &&
+          l.url == 'https://creativecommons.org/licenses/by/4.0/' &&
+          l.text == 'Creative Commons';
+    },
+    // trailer
+    'channel_trailer_full.xml': (r) {
+      final t = r.podcast?.trailers;
+      if (t == null || t.length != 1) return false;
+      final tr = t.first;
+      return tr.url == 'https://example.org/trailers/teaser.mp3' &&
+          tr.title == 'Coming April 1st, 2021' &&
+          tr.pubdate?.value == 'Thu, 01 Apr 2021 08:00:00 EST' &&
+          tr.pubdate?.parseValue() != null &&
+          tr.length == '12345678' &&
+          tr.type == 'audio/mp3' &&
+          tr.season == '1';
+    },
+    'channel_trailer_minimal.xml': (r) {
+      final t = r.podcast?.trailers;
+      if (t == null || t.length != 1) return false;
+      final tr = t.first;
+      return tr.url == 'https://example.org/teaser.mp3' &&
+          tr.title == 'Teaser' &&
+          tr.pubdate == null &&
+          tr.length == null &&
+          tr.type == null &&
+          tr.season == null;
+    },
+    'channel_trailer_multiple.xml': (r) {
+      final t = r.podcast?.trailers ?? const [];
+      return t.length == 2 &&
+          t[0].season == '1' &&
+          t[1].season == '2' &&
+          t[0].title == 'Season 1 trailer' &&
+          t[1].title == 'Season 2 trailer';
+    },
+    'channel_trailer_no_url.xml': (r) => (r.podcast?.trailers ?? const []).isEmpty,
+    'channel_trailer_empty_url.xml': (r) => (r.podcast?.trailers ?? const []).isEmpty,
+    'channel_trailer_empty_body.xml': (r) {
+      final t = r.podcast?.trailers;
+      return t != null && t.length == 1 && t.first.title == null && t.first.url == 'https://example.org/teaser.mp3';
+    },
+    'channel_trailer_season_only.xml': (r) {
+      final t = r.podcast?.trailers;
+      return t != null && t.length == 1 && t.first.season == '2' && t.first.title == null;
     },
   };
 }

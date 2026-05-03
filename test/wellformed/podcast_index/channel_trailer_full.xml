@@ -1,0 +1,14 @@
+<!--
+Description: podcast:trailer with all attributes + body
+Expect:      trailers.length==1, all fields populated, pubdate parses
+-->
+<rss xmlns:podcast="https://podcastindex.org/namespace/1.0">
+<channel>
+<podcast:trailer
+  pubdate="Thu, 01 Apr 2021 08:00:00 EST"
+  url="https://example.org/trailers/teaser.mp3"
+  length="12345678"
+  type="audio/mp3"
+  season="1">Coming April 1st, 2021</podcast:trailer>
+</channel>
+</rss>

@@ -160,6 +160,12 @@ class PodcastChannel {
   /// See https://github.com/Podcastindex-org/podcast-namespace/blob/main/docs/1.0.md#license
   PodcastLicense? license;
 
+  /// Trailers from `<podcast:trailer>` (Podcast Index namespace).
+  /// Preserves source order. Empty when absent. Each entry has at least
+  /// a [PodcastTrailer.url]; elements without one are skipped at parse time.
+  /// See https://github.com/Podcastindex-org/podcast-namespace/blob/main/docs/1.0.md#trailer
+  List<PodcastTrailer> trailers = [];
+
   /// Creates a new empty [PodcastChannel]
   PodcastChannel();
 }

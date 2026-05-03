@@ -1,0 +1,16 @@
+<!--
+Description: two podcast:trailer entries, different seasons
+Expect:      trailers.length==2, order preserved, season "1" then "2"
+-->
+<rss xmlns:podcast="https://podcastindex.org/namespace/1.0">
+<channel>
+<podcast:trailer
+  pubdate="Thu, 01 Apr 2021 08:00:00 EST"
+  url="https://example.org/s1-teaser.mp3"
+  season="1">Season 1 trailer</podcast:trailer>
+<podcast:trailer
+  pubdate="Thu, 01 Apr 2022 08:00:00 EST"
+  url="https://example.org/s2-teaser.mp3"
+  season="2">Season 2 trailer</podcast:trailer>
+</channel>
+</rss>

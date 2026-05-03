@@ -1,0 +1,9 @@
+<!--
+Description: podcast:trailer with only url + body
+Expect:      trailers.length==1, optional attrs == null, title set
+-->
+<rss xmlns:podcast="https://podcastindex.org/namespace/1.0">
+<channel>
+<podcast:trailer url="https://example.org/teaser.mp3">Teaser</podcast:trailer>
+</channel>
+</rss>

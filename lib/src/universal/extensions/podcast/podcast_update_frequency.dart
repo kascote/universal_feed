@@ -18,6 +18,7 @@ class PodcastUpdateFrequency {
   /// Stored raw; callers parse as needed.
   final String? rrule;
 
+  /// Creates a new [PodcastUpdateFrequency] instance.
   const PodcastUpdateFrequency({
     this.description,
     this.complete,

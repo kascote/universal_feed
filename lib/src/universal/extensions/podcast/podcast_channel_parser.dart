@@ -96,16 +96,41 @@ class PodcastChannelParser implements ChannelExtensionParser {
         (el) {
           final url = el.getAttribute('url')?.trim();
           final text = el.innerText.trim();
-          pc.fundings.add(PodcastFunding(
-            url: (url == null || url.isEmpty) ? null : url,
-            text: text.isEmpty ? null : text,
-          ));
+          pc.fundings.add(
+            PodcastFunding(
+              url: (url == null || url.isEmpty) ? null : url,
+              text: text.isEmpty ? null : text,
+            ),
+          );
         },
         ns: namespaceUrl,
       )
       ..forEachElementXml(
         'license',
         (el) => pc.license = _licenseFromXml(el),
+        ns: namespaceUrl,
+      )
+      ..forEachElementXml(
+        'trailer',
+        (el) {
+          final url = el.getAttribute('url')?.trim();
+          if (url == null || url.isEmpty) return;
+          final title = el.innerText.trim();
+          final pubdate = el.getAttribute('pubdate')?.trim();
+          final length = el.getAttribute('length')?.trim();
+          final type = el.getAttribute('type')?.trim();
+          final season = el.getAttribute('season')?.trim();
+          pc.trailers.add(
+            PodcastTrailer(
+              url: url,
+              title: title.isEmpty ? null : title,
+              pubdate: (pubdate == null || pubdate.isEmpty) ? null : Timestamp(pubdate),
+              length: (length == null || length.isEmpty) ? null : length,
+              type: (type == null || type.isEmpty) ? null : type,
+              season: (season == null || season.isEmpty) ? null : season,
+            ),
+          );
+        },
         ns: namespaceUrl,
       )
       ..ifPresentXml(
@@ -145,10 +170,10 @@ class PodcastChannelParser implements ChannelExtensionParser {
   }
 
   bool? _parseBlockedValue(String raw) => switch (raw.toLowerCase()) {
-        'yes' => true,
-        'no' => false,
-        _ => null,
-      };
+    'yes' => true,
+    'no' => false,
+    _ => null,
+  };
 
   (PodcastMedium, bool) _parseMedium(String raw) {
     final hasListSuffix = raw.endsWith('L');

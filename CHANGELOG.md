@@ -1,5 +1,9 @@
 ## Unreleased
 
+- add `<podcast:trailer>` parsing (Podcast Index namespace, channel-level,
+  multi-valued). Exposed as `feed.podcast.trailers` (`List<PodcastTrailer>`),
+  each with `url`, `title` (body), `pubdate` (`Timestamp?`), `length`,
+  `type`, and `season`. Elements without a `url` attribute are skipped.
 - add `<podcast:funding>` parsing (Podcast Index namespace, channel-level,
   multi-valued). Exposed as `feed.podcast.fundings` (`List<PodcastFunding>`),
   each with `url` and `text` (element body). Source order preserved.

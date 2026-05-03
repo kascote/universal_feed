@@ -1,3 +1,5 @@
+import 'podcast_channel.dart';
+
 /// Represents a `<podcast:license>` tag from the Podcast Index namespace.
 ///
 /// One per channel or item (last wins on duplicate). All fields are nullable —
