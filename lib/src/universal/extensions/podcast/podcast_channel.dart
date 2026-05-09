@@ -175,6 +175,16 @@ class PodcastChannel {
   /// See https://github.com/Podcastindex-org/podcast-namespace/blob/main/docs/1.0.md#person
   List<PodcastPerson> persons = [];
 
+  /// Locations associated with the show from `<podcast:location>` (Podcast
+  /// Index namespace). Preserves source order. Empty when absent. Each
+  /// entry has a non-blank [PodcastLocation.text]; elements with empty
+  /// bodies are skipped at parse time. Multiple entries are valid
+  /// (e.g. one `rel="creator"` + one `rel="subject"`). Overlaps with
+  /// the GeoRSS extension (`Geo`) — kept separate; `geo:` URIs are
+  /// **not** back-populated into the GeoRSS surface.
+  /// See https://github.com/Podcastindex-org/podcast-namespace/blob/main/docs/tags/location.md
+  List<PodcastLocation> locations = [];
+
   /// Creates a new empty [PodcastChannel]
   PodcastChannel();
 }

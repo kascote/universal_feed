@@ -77,6 +77,14 @@ class PodcastItemParser implements ItemExtensionParser {
         ns: namespaceUrl,
       )
       ..forEachElementXml(
+        'location',
+        (el) {
+          final loc = locationFromXml(el);
+          if (loc != null) pi.locations.add(loc);
+        },
+        ns: namespaceUrl,
+      )
+      ..forEachElementXml(
         'transcript',
         (value) {
           final url = value.getAttribute('url')?.trim();

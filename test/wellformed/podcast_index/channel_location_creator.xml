@@ -1,0 +1,9 @@
+<!--
+Description: podcast:location with rel="creator"
+Expect:      locations.length==1, rel=="creator"
+-->
+<rss xmlns:podcast="https://podcastindex.org/namespace/1.0">
+<channel>
+<podcast:location rel="creator">Austin</podcast:location>
+</channel>
+</rss>

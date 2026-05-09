@@ -1,0 +1,9 @@
+<!--
+Description: podcast:location with empty body
+Expect:      element skipped, locations.isEmpty
+-->
+<rss xmlns:podcast="https://podcastindex.org/namespace/1.0">
+<channel>
+<podcast:location rel="creator" osm="R113314"></podcast:location>
+</channel>
+</rss>

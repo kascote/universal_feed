@@ -1,0 +1,18 @@
+<!--
+Description: two channel-level podcast:location entries (creator + subject pair)
+Expect:      locations.length==2, order preserved, both rels captured
+-->
+<rss xmlns:podcast="https://podcastindex.org/namespace/1.0">
+<channel>
+<podcast:location
+  rel="creator"
+  geo="geo:51.5718706,-0.7769654"
+  osm="R3727240"
+  country="GB">Marlow</podcast:location>
+<podcast:location
+  rel="subject"
+  geo="geo:-27.8611449,153.3162701"
+  osm="R16317988"
+  country="AU">Dreamworld</podcast:location>
+</channel>
+</rss>

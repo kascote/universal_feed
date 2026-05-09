@@ -1,0 +1,12 @@
+<!--
+Description: two item-level podcast:location entries
+Expect:      item.locations.length==2, order preserved
+-->
+<rss xmlns:podcast="https://podcastindex.org/namespace/1.0">
+<channel>
+<item>
+<podcast:location rel="creator">Marlow</podcast:location>
+<podcast:location rel="subject">Dreamworld</podcast:location>
+</item>
+</channel>
+</rss>

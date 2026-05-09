@@ -434,5 +434,61 @@ Map<String, TestFx> podcastIndexTests() {
           ip.first.name == 'Bob Example' &&
           ip.first.role == 'Guest';
     },
+    // location
+    'channel_location_full.xml': (r) {
+      final ls = r.podcast?.locations;
+      if (ls == null || ls.length != 1) return false;
+      final l = ls.first;
+      return l.text == 'Austin' &&
+          l.rel == 'creator' &&
+          l.geo == 'geo:30.2711286,-97.7436995' &&
+          l.osm == 'R113314' &&
+          l.country == 'US';
+    },
+    'channel_location_minimal.xml': (r) {
+      final ls = r.podcast?.locations;
+      if (ls == null || ls.length != 1) return false;
+      final l = ls.first;
+      return l.text == 'Austin' && l.rel == null && l.geo == null && l.osm == null && l.country == null;
+    },
+    'channel_location_creator.xml': (r) {
+      final ls = r.podcast?.locations ?? const [];
+      return ls.length == 1 && ls.first.rel == 'creator';
+    },
+    'channel_location_no_rel.xml': (r) {
+      final ls = r.podcast?.locations ?? const [];
+      return ls.length == 1 && ls.first.rel == null;
+    },
+    'channel_location_pair.xml': (r) {
+      final ls = r.podcast?.locations ?? const [];
+      return ls.length == 2 &&
+          ls[0].rel == 'creator' &&
+          ls[0].text == 'Marlow' &&
+          ls[1].rel == 'subject' &&
+          ls[1].text == 'Dreamworld';
+    },
+    'channel_location_empty_body.xml': (r) => (r.podcast?.locations ?? const []).isEmpty,
+    'channel_location_whitespace.xml': (r) => (r.podcast?.locations ?? const []).isEmpty,
+    'channel_location_country_only.xml': (r) {
+      final ls = r.podcast?.locations ?? const [];
+      return ls.length == 1 && ls.first.country == 'US' && ls.first.geo == null && ls.first.osm == null;
+    },
+    'item_location_full.xml': (r) {
+      final ls = r.items.first.podcast?.locations ?? const [];
+      return ls.length == 1 &&
+          ls.first.text == 'Austin' &&
+          ls.first.rel == 'subject' &&
+          ls.first.osm == 'R113314' &&
+          ls.first.country == 'US';
+    },
+    'item_location_pair.xml': (r) {
+      final ls = r.items.first.podcast?.locations ?? const [];
+      return ls.length == 2 && ls[0].text == 'Marlow' && ls[1].text == 'Dreamworld';
+    },
+    'channel_and_item_location.xml': (r) {
+      final cl = r.podcast?.locations ?? const [];
+      final il = r.items.first.podcast?.locations ?? const [];
+      return cl.length == 1 && il.length == 1 && cl.first.text == 'Austin' && il.first.text == 'Birmingham';
+    },
   };
 }

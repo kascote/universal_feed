@@ -65,6 +65,15 @@ class PodcastItem {
   /// See https://github.com/Podcastindex-org/podcast-namespace/blob/main/docs/1.0.md#person
   List<PodcastPerson> persons = [];
 
+  /// Locations associated with this episode from `<podcast:location>`
+  /// (Podcast Index namespace). Preserves source order. Empty when
+  /// absent. Multiple entries are valid (e.g. `rel="creator"` +
+  /// `rel="subject"`). Per spec, item-level locations override
+  /// channel-level for this episode — override semantics are left to
+  /// the consumer (the two lists stay independent).
+  /// See https://github.com/Podcastindex-org/podcast-namespace/blob/main/docs/tags/location.md
+  List<PodcastLocation> locations = [];
+
   /// Creates a new empty [PodcastItem]
   PodcastItem();
 }

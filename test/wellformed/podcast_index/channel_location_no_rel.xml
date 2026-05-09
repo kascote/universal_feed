@@ -1,0 +1,9 @@
+<!--
+Description: podcast:location without rel attribute
+Expect:      locations.length==1, rel==null (no default back-fill)
+-->
+<rss xmlns:podcast="https://podcastindex.org/namespace/1.0">
+<channel>
+<podcast:location>Austin</podcast:location>
+</channel>
+</rss>

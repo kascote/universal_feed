@@ -1,0 +1,12 @@
+<!--
+Description: podcast:location at both channel and item level
+Expect:      both lists populated independently, no merge
+-->
+<rss xmlns:podcast="https://podcastindex.org/namespace/1.0">
+<channel>
+<podcast:location rel="creator">Austin</podcast:location>
+<item>
+<podcast:location rel="subject">Birmingham</podcast:location>
+</item>
+</channel>
+</rss>

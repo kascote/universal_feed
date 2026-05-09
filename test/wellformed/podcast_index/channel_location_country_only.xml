@@ -1,0 +1,9 @@
+<!--
+Description: podcast:location with body + country attr only
+Expect:      locations.length==1, country set, geo/osm null
+-->
+<rss xmlns:podcast="https://podcastindex.org/namespace/1.0">
+<channel>
+<podcast:location country="US">Somewhere</podcast:location>
+</channel>
+</rss>

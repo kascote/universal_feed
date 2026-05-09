@@ -31,6 +31,25 @@ PodcastPerson? personFromXml(XmlElement el) {
   );
 }
 
+/// Parses a `<podcast:location>` element into a [PodcastLocation].
+/// Returns `null` when the body is blank — caller skips such entries
+/// (spec: "This value cannot be blank").
+PodcastLocation? locationFromXml(XmlElement el) {
+  final text = el.innerText.trim();
+  if (text.isEmpty) return null;
+  final rel = el.getAttribute('rel')?.trim();
+  final geo = el.getAttribute('geo')?.trim();
+  final osm = el.getAttribute('osm')?.trim();
+  final country = el.getAttribute('country')?.trim();
+  return PodcastLocation(
+    text: text,
+    rel: (rel == null || rel.isEmpty) ? null : rel,
+    geo: (geo == null || geo.isEmpty) ? null : geo,
+    osm: (osm == null || osm.isEmpty) ? null : osm,
+    country: (country == null || country.isEmpty) ? null : country,
+  );
+}
+
 /// Parses a `<podcast:license>` element into a [PodcastLicense].
 /// Always returns a non-null instance; absent attributes / empty body
 /// surface as `null` fields on the result.
