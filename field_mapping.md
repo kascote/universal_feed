@@ -86,3 +86,4 @@ future follow-up specs.
 | transcripts   |         | podcast:transcript |
 | persons       |         | podcast:person     |
 | locations     |         | podcast:location   |
+| soundbites    |         | podcast:soundbite  |

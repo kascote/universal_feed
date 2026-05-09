@@ -1,0 +1,11 @@
+<!--
+Description: podcast:soundbite missing duration attribute
+Expect:      items.first.podcast.soundbites is empty (element skipped)
+-->
+<rss xmlns:podcast="https://podcastindex.org/namespace/1.0">
+<channel>
+<item>
+<podcast:soundbite startTime="73.0">Missing duration</podcast:soundbite>
+</item>
+</channel>
+</rss>

@@ -490,5 +490,32 @@ Map<String, TestFx> podcastIndexTests() {
       final il = r.items.first.podcast?.locations ?? const [];
       return cl.length == 1 && il.length == 1 && cl.first.text == 'Austin' && il.first.text == 'Birmingham';
     },
+    // soundbite
+    'item_soundbite_full.xml': (r) {
+      final s = r.items.first.podcast?.soundbites;
+      if (s == null || s.length != 1) return false;
+      final sb = s.first;
+      return sb.startTime == '73.0' && sb.duration == '60.0' && sb.title == 'Why the egg drop song?';
+    },
+    'item_soundbite_self_closing.xml': (r) {
+      final s = r.items.first.podcast?.soundbites;
+      return s != null &&
+          s.length == 1 &&
+          s.first.title == null &&
+          s.first.startTime == '73.0' &&
+          s.first.duration == '60.0';
+    },
+    'item_soundbite_empty_body.xml': (r) {
+      final s = r.items.first.podcast?.soundbites;
+      return s != null && s.length == 1 && s.first.title == null;
+    },
+    'item_soundbite_multiple.xml': (r) {
+      final s = r.items.first.podcast?.soundbites ?? const [];
+      return s.length == 2 && s[0].startTime == '10.5' && s[1].startTime == '120.0';
+    },
+    'item_soundbite_no_start_time.xml': (r) => (r.items.first.podcast?.soundbites ?? const []).isEmpty,
+    'item_soundbite_empty_start_time.xml': (r) => (r.items.first.podcast?.soundbites ?? const []).isEmpty,
+    'item_soundbite_no_duration.xml': (r) => (r.items.first.podcast?.soundbites ?? const []).isEmpty,
+    'item_soundbite_empty_duration.xml': (r) => (r.items.first.podcast?.soundbites ?? const []).isEmpty,
   };
 }

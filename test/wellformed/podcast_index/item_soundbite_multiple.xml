@@ -1,0 +1,12 @@
+<!--
+Description: two item-level podcast:soundbite entries
+Expect:      items.first.podcast.soundbites.length==2, order preserved
+-->
+<rss xmlns:podcast="https://podcastindex.org/namespace/1.0">
+<channel>
+<item>
+<podcast:soundbite startTime="10.5" duration="30.0">Intro hook</podcast:soundbite>
+<podcast:soundbite startTime="120.0" duration="45.0">Main quote</podcast:soundbite>
+</item>
+</channel>
+</rss>

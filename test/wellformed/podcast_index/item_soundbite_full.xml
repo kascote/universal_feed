@@ -1,0 +1,11 @@
+<!--
+Description: podcast:soundbite at item level with body title (matches 2nd spec example)
+Expect:      items.first.podcast.soundbites.length==1, all fields populated
+-->
+<rss xmlns:podcast="https://podcastindex.org/namespace/1.0">
+<channel>
+<item>
+<podcast:soundbite startTime="73.0" duration="60.0">Why the egg drop song?</podcast:soundbite>
+</item>
+</channel>
+</rss>

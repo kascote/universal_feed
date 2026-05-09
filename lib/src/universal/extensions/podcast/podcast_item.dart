@@ -74,6 +74,13 @@ class PodcastItem {
   /// See https://github.com/Podcastindex-org/podcast-namespace/blob/main/docs/tags/location.md
   List<PodcastLocation> locations = [];
 
+  /// Soundbites from `<podcast:soundbite>` (Podcast Index namespace).
+  /// Preserves source order. Empty when absent. Each entry has non-empty
+  /// [PodcastSoundbite.startTime] and [PodcastSoundbite.duration];
+  /// elements missing either are skipped at parse time.
+  /// See https://github.com/Podcastindex-org/podcast-namespace/blob/main/docs/tags/soundbite.md
+  List<PodcastSoundbite> soundbites = [];
+
   /// Creates a new empty [PodcastItem]
   PodcastItem();
 }

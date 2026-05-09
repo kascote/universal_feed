@@ -85,6 +85,24 @@ class PodcastItemParser implements ItemExtensionParser {
         ns: namespaceUrl,
       )
       ..forEachElementXml(
+        'soundbite',
+        (el) {
+          final startTime = el.getAttribute('startTime')?.trim();
+          if (startTime == null || startTime.isEmpty) return;
+          final duration = el.getAttribute('duration')?.trim();
+          if (duration == null || duration.isEmpty) return;
+          final title = el.innerText.trim();
+          pi.soundbites.add(
+            PodcastSoundbite(
+              startTime: startTime,
+              duration: duration,
+              title: title.isEmpty ? null : title,
+            ),
+          );
+        },
+        ns: namespaceUrl,
+      )
+      ..forEachElementXml(
         'transcript',
         (value) {
           final url = value.getAttribute('url')?.trim();

@@ -1,5 +1,16 @@
 ## Unreleased
 
+- add `<podcast:soundbite>` parsing (Podcast Index namespace, item-level,
+  multi-valued). Exposed as `item.podcast.soundbites`
+  (`List<PodcastSoundbite>`), each with `startTime`, `duration` (raw
+  strings, seconds), and optional `title` (body, null when empty per
+  spec). Elements missing either required attribute are skipped.
+- add `<podcast:location>` parsing (Podcast Index namespace, channel- and
+  item-level, multi-valued). Exposed as `feed.podcast.locations` and
+  `item.podcast.locations` (`List<PodcastLocation>`), each with `text`
+  (body), `rel`, `geo`, `osm`, `country`. Spec defaults are not
+  back-filled (raw `null` preserved). Elements with a blank body are
+  skipped. `<liveItem>` parent deferred until liveItem lands.
 - add `<podcast:person>` parsing (Podcast Index namespace, channel- and
   item-level, multi-valued). Exposed as `feed.podcast.persons` and
   `item.podcast.persons` (`List<PodcastPerson>`), each with `name` (body),

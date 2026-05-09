@@ -1,0 +1,11 @@
+<!--
+Description: self-closing podcast:soundbite (matches 1st spec example)
+Expect:      items.first.podcast.soundbites.length==1, title==null
+-->
+<rss xmlns:podcast="https://podcastindex.org/namespace/1.0">
+<channel>
+<item>
+<podcast:soundbite startTime="73.0" duration="60.0" />
+</item>
+</channel>
+</rss>
