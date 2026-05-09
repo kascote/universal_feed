@@ -1,5 +1,12 @@
 ## Unreleased
 
+- add `<podcast:chat>` parsing (Podcast Index namespace, channel and
+  item level, single per parent). Exposed as `feed.podcast.chat` and
+  `item.podcast.chat` (`PodcastChat?`) with `server`, `protocol`, and
+  optional `accountId`, `space` (raw strings). Entries missing
+  `server` or `protocol` are skipped; last tag wins on duplicate.
+  Item-level overrides channel-level per spec — resolution left to
+  the consumer.
 - add `<podcast:socialInteract>` parsing (Podcast Index namespace,
   item-level, multi-valued). Exposed as `item.podcast.socialInteracts`
   (`List<PodcastSocialInteract>`), each with `protocol`, optional `uri`,

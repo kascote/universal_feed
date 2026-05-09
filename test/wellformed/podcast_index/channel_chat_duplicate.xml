@@ -1,0 +1,10 @@
+<!--
+Description: two podcast:chat tags at channel level — last wins
+Expect:      chat!=null, server=="second.example.org"
+-->
+<rss xmlns:podcast="https://podcastindex.org/namespace/1.0">
+<channel>
+<podcast:chat server="first.example.org" protocol="irc" />
+<podcast:chat server="second.example.org" protocol="matrix" />
+</channel>
+</rss>

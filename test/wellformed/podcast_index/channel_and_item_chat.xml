@@ -1,0 +1,13 @@
+<!--
+Description: podcast:chat at both channel and item level
+Expect:      both fields populated independently, no merge
+             channel.chat.protocol=="irc", item.chat.protocol=="matrix"
+-->
+<rss xmlns:podcast="https://podcastindex.org/namespace/1.0">
+<channel>
+<podcast:chat server="irc.libera.chat" protocol="irc" accountId="@dave" />
+<item>
+<podcast:chat server="matrix.example.org" protocol="matrix" accountId="@dave:example.org" space="#show" />
+</item>
+</channel>
+</rss>

@@ -63,3 +63,21 @@ PodcastLicense licenseFromXml(XmlElement el) {
     text: text.isEmpty ? null : text,
   );
 }
+
+/// Parses a `<podcast:chat>` element into a [PodcastChat].
+/// Returns `null` when either required attribute (`server`,
+/// `protocol`) is absent or empty — caller drops such entries.
+PodcastChat? chatFromXml(XmlElement el) {
+  final server = el.getAttribute('server')?.trim();
+  if (server == null || server.isEmpty) return null;
+  final protocol = el.getAttribute('protocol')?.trim();
+  if (protocol == null || protocol.isEmpty) return null;
+  final accountId = el.getAttribute('accountId')?.trim();
+  final space = el.getAttribute('space')?.trim();
+  return PodcastChat(
+    server: server,
+    protocol: protocol,
+    accountId: (accountId == null || accountId.isEmpty) ? null : accountId,
+    space: (space == null || space.isEmpty) ? null : space,
+  );
+}

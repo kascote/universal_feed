@@ -1,0 +1,9 @@
+<!--
+Description: podcast:chat with missing protocol attribute
+Expect:      chat==null (element skipped)
+-->
+<rss xmlns:podcast="https://podcastindex.org/namespace/1.0">
+<channel>
+<podcast:chat server="irc.libera.chat" accountId="@dave" />
+</channel>
+</rss>

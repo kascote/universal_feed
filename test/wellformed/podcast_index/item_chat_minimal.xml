@@ -1,0 +1,12 @@
+<!--
+Description: podcast:chat at item level, only required attributes
+Expect:      item.podcast.chat!=null, server set, protocol set,
+             accountId==null, space==null
+-->
+<rss xmlns:podcast="https://podcastindex.org/namespace/1.0">
+<channel>
+<item>
+<podcast:chat server="matrix.example.org" protocol="matrix" />
+</item>
+</channel>
+</rss>

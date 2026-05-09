@@ -558,5 +558,51 @@ Map<String, TestFx> podcastIndexTests() {
       final s = r.items.first.podcast?.socialInteracts;
       return s != null && s.length == 1 && s.first.protocol == 'activitypub';
     },
+
+    // chat
+    'channel_chat_full.xml': (r) {
+      final c = r.podcast?.chat;
+      return c != null &&
+          c.server == 'irc.libera.chat' &&
+          c.protocol == 'irc' &&
+          c.accountId == '@dave' &&
+          c.space == '#noagendashow';
+    },
+    'channel_chat_minimal.xml': (r) {
+      final c = r.podcast?.chat;
+      return c != null &&
+          c.server == 'irc.libera.chat' &&
+          c.protocol == 'irc' &&
+          c.accountId == null &&
+          c.space == null;
+    },
+    'channel_chat_no_server.xml': (r) => r.podcast?.chat == null,
+    'channel_chat_empty_server.xml': (r) => r.podcast?.chat == null,
+    'channel_chat_no_protocol.xml': (r) => r.podcast?.chat == null,
+    'channel_chat_duplicate.xml': (r) {
+      final c = r.podcast?.chat;
+      return c != null && c.server == 'second.example.org' && c.protocol == 'matrix';
+    },
+    'item_chat_full.xml': (r) {
+      final c = r.items.first.podcast?.chat;
+      return c != null &&
+          c.server == 'matrix.example.org' &&
+          c.protocol == 'matrix' &&
+          c.accountId == '@dave:example.org' &&
+          c.space == '#show';
+    },
+    'item_chat_minimal.xml': (r) {
+      final c = r.items.first.podcast?.chat;
+      return c != null &&
+          c.server == 'matrix.example.org' &&
+          c.protocol == 'matrix' &&
+          c.accountId == null &&
+          c.space == null;
+    },
+    'channel_and_item_chat.xml': (r) {
+      final cc = r.podcast?.chat;
+      final ic = r.items.first.podcast?.chat;
+      return cc != null && ic != null && cc.protocol == 'irc' && ic.protocol == 'matrix' && cc.server != ic.server;
+    },
   };
 }

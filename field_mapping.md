@@ -79,6 +79,7 @@ future follow-up specs.
 | trailers      |         | podcast:trailer    |
 | persons       |         | podcast:person     |
 | locations     |         | podcast:location   |
+| chat          |         | podcast:chat       |
 | ============= | ======= | =================  |
 | ITEM          |         |                    |
 | ------------- | ------- | -----------------  |
@@ -88,3 +89,4 @@ future follow-up specs.
 | locations     |         | podcast:location   |
 | soundbites    |         | podcast:soundbite  |
 | socialInteracts |       | podcast:socialInteract |
+| chat          |         | podcast:chat       |

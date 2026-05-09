@@ -112,6 +112,14 @@ class PodcastChannelParser implements ChannelExtensionParser {
         ns: namespaceUrl,
       )
       ..forEachElementXml(
+        'chat',
+        (el) {
+          final c = chatFromXml(el);
+          if (c != null) pc.chat = c;
+        },
+        ns: namespaceUrl,
+      )
+      ..forEachElementXml(
         'person',
         (el) {
           final p = personFromXml(el);

@@ -185,6 +185,14 @@ class PodcastChannel {
   /// See https://github.com/Podcastindex-org/podcast-namespace/blob/main/docs/tags/location.md
   List<PodcastLocation> locations = [];
 
+  /// Chat server from `<podcast:chat>` (Podcast Index namespace) at
+  /// channel level. Null when absent. Last tag wins on duplicate. Per
+  /// spec, an item-level [PodcastItem.chat] overrides this for that
+  /// episode — the two fields stay independent; resolution is left to
+  /// the consumer.
+  /// See https://github.com/Podcastindex-org/podcast-namespace/blob/main/docs/tags/chat.md
+  PodcastChat? chat;
+
   /// Creates a new empty [PodcastChannel]
   PodcastChannel();
 }

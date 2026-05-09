@@ -69,6 +69,14 @@ class PodcastItemParser implements ItemExtensionParser {
         ns: namespaceUrl,
       )
       ..forEachElementXml(
+        'chat',
+        (el) {
+          final c = chatFromXml(el);
+          if (c != null) pi.chat = c;
+        },
+        ns: namespaceUrl,
+      )
+      ..forEachElementXml(
         'person',
         (el) {
           final p = personFromXml(el);

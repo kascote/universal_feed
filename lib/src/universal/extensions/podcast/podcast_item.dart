@@ -89,6 +89,13 @@ class PodcastItem {
   /// See https://github.com/Podcastindex-org/podcast-namespace/blob/main/docs/tags/socialInteract.md
   List<PodcastSocialInteract> socialInteracts = [];
 
+  /// Chat server from `<podcast:chat>` (Podcast Index namespace) at
+  /// item level. Null when absent. Last tag wins on duplicate. Per
+  /// spec, this overrides [PodcastChannel.chat] for this episode —
+  /// override resolution is the consumer's call.
+  /// See https://github.com/Podcastindex-org/podcast-namespace/blob/main/docs/tags/chat.md
+  PodcastChat? chat;
+
   /// Creates a new empty [PodcastItem]
   PodcastItem();
 }

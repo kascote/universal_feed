@@ -1,0 +1,10 @@
+<!--
+Description: podcast:chat at channel level with all four attributes
+Expect:      chat!=null, server=="irc.libera.chat", protocol=="irc",
+             accountId=="@dave", space=="#noagendashow"
+-->
+<rss xmlns:podcast="https://podcastindex.org/namespace/1.0">
+<channel>
+<podcast:chat server="irc.libera.chat" protocol="irc" accountId="@dave" space="#noagendashow" />
+</channel>
+</rss>
