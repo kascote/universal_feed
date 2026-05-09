@@ -96,6 +96,17 @@ class PodcastItem {
   /// See https://github.com/Podcastindex-org/podcast-namespace/blob/main/docs/tags/chat.md
   PodcastChat? chat;
 
+  /// Rich image variants from `<podcast:image>` (Podcast Index namespace)
+  /// scoped to this episode. Preserves source order. Empty when absent.
+  /// Each entry has a non-empty [PodcastImage.href]; elements without
+  /// one are skipped at parse time. Distinct from [image] (singular,
+  /// populated from `itunes:image`) — kept separate, no back-fill. Per
+  /// spec, item-level entries override channel-level for this episode;
+  /// override resolution is the consumer's call. The deprecated
+  /// `<podcast:images>` / srcset form is not parsed.
+  /// See https://github.com/Podcastindex-org/podcast-namespace/blob/main/docs/tags/image.md
+  List<PodcastImage> images = [];
+
   /// Creates a new empty [PodcastItem]
   PodcastItem();
 }

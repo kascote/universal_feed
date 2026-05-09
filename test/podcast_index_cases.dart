@@ -604,5 +604,69 @@ Map<String, TestFx> podcastIndexTests() {
       final ic = r.items.first.podcast?.chat;
       return cc != null && ic != null && cc.protocol == 'irc' && ic.protocol == 'matrix' && cc.server != ic.server;
     },
+    'channel_image_full.xml': (r) {
+      final imgs = r.podcast?.images;
+      if (imgs == null || imgs.length != 1) return false;
+      final i = imgs.first;
+      return i.href == 'https://example.com/images/ep1/pci_landscape-massive.jpg' &&
+          i.alt == 'An antenna emanating signal waves' &&
+          i.aspectRatio == '16/9' &&
+          i.width == '1200' &&
+          i.height == '675' &&
+          i.type == 'image/jpeg' &&
+          i.purpose == 'artwork social' &&
+          i.purposeTokens.length == 2 &&
+          i.purposeTokens[0] == 'artwork' &&
+          i.purposeTokens[1] == 'social';
+    },
+    'channel_image_minimal.xml': (r) {
+      final imgs = r.podcast?.images;
+      if (imgs == null || imgs.length != 1) return false;
+      final i = imgs.first;
+      return i.href.isNotEmpty &&
+          i.alt == null &&
+          i.aspectRatio == null &&
+          i.width == null &&
+          i.height == null &&
+          i.type == null &&
+          i.purpose == null &&
+          i.purposeTokens.isEmpty;
+    },
+    'channel_image_multiple.xml': (r) {
+      final imgs = r.podcast?.images ?? const [];
+      return imgs.length == 3 &&
+          imgs[0].aspectRatio == '1/1' &&
+          imgs[1].aspectRatio == '16/9' &&
+          imgs[2].aspectRatio == '9/16';
+    },
+    'channel_image_no_href.xml': (r) => (r.podcast?.images ?? const []).isEmpty,
+    'channel_image_empty_href.xml': (r) => (r.podcast?.images ?? const []).isEmpty,
+    'channel_image_purpose_tokens.xml': (r) {
+      final imgs = r.podcast?.images;
+      if (imgs == null || imgs.length != 1) return false;
+      final t = imgs.first.purposeTokens;
+      return t.length == 3 && t[0] == 'artwork' && t[1] == 'social' && t[2] == 'canvas';
+    },
+    'channel_image_video_type.xml': (r) {
+      final imgs = r.podcast?.images;
+      return imgs != null && imgs.length == 1 && imgs.first.type == 'video/mp4';
+    },
+    'channel_image_alongside_itunes.xml': (r) {
+      return (r.podcast?.image?.url.isNotEmpty ?? false) &&
+          (r.podcast?.images.length ?? 0) == 1 &&
+          r.podcast!.image!.url != r.podcast!.images.first.href;
+    },
+    'item_image_full.xml': (r) {
+      final imgs = r.items.first.podcast?.images;
+      return imgs != null && imgs.length == 1 && imgs.first.purposeTokens.contains('artwork');
+    },
+    'item_image_multiple.xml': (r) {
+      final imgs = r.items.first.podcast?.images ?? const [];
+      return imgs.length == 2;
+    },
+    'item_image_no_href.xml': (r) {
+      final imgs = r.items.first.podcast?.images ?? const [];
+      return imgs.isEmpty;
+    },
   };
 }

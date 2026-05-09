@@ -1,0 +1,23 @@
+<!--
+Description: three podcast:image entries with different aspect-ratios + purposes
+Expect:      images.length==3, source order preserved (1/1, 16/9, 9/16)
+-->
+<rss xmlns:podcast="https://podcastindex.org/namespace/1.0">
+<channel>
+<podcast:image
+  purpose="artwork"
+  aspect-ratio="1/1"
+  href="https://example.com/images/ep1/pci_square-massive.jpg"
+/>
+<podcast:image
+  purpose="artwork social"
+  aspect-ratio="16/9"
+  href="https://example.com/images/ep1/pci_landscape-massive.jpg"
+/>
+<podcast:image
+  purpose="artwork canvas"
+  aspect-ratio="9/16"
+  href="https://example.com/images/ep1/pci_portrait-massive.jpg"
+/>
+</channel>
+</rss>

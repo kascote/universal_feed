@@ -1,5 +1,12 @@
 ## Unreleased
 
+- add `<podcast:image>` parsing (Podcast Index namespace, channel- and
+  item-level, multi-valued). Exposed as `feed.podcast.images` and
+  `item.podcast.images` (`List<PodcastImage>`), each with `href`,
+  optional `alt`, `aspectRatio`, `width`, `height`, `type`, `purpose`
+  (raw) plus a derived lowercased `purposeTokens` list. Elements
+  missing `href` are skipped. The deprecated `<podcast:images srcset>`
+  form is intentionally not parsed. `<liveItem>` parent deferred.
 - add `<podcast:chat>` parsing (Podcast Index namespace, channel and
   item level, single per parent). Exposed as `feed.podcast.chat` and
   `item.podcast.chat` (`PodcastChat?`) with `server`, `protocol`, and

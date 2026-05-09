@@ -1,0 +1,19 @@
+<!--
+Description: podcast:image at item level with all attributes
+Expect:      item.podcast.images.length==1, purposeTokens contains "artwork"
+-->
+<rss xmlns:podcast="https://podcastindex.org/namespace/1.0">
+<channel>
+<item>
+<podcast:image
+  alt="Episode 1 cover"
+  purpose="artwork"
+  type="image/jpeg"
+  aspect-ratio="1/1"
+  width="1500"
+  height="1500"
+  href="https://example.com/images/ep1/cover.jpg"
+/>
+</item>
+</channel>
+</rss>

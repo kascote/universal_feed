@@ -1,0 +1,20 @@
+<!--
+Description: two podcast:image entries at item level
+Expect:      item.podcast.images.length==2, source order preserved
+-->
+<rss xmlns:podcast="https://podcastindex.org/namespace/1.0">
+<channel>
+<item>
+<podcast:image
+  purpose="artwork"
+  aspect-ratio="1/1"
+  href="https://example.com/images/ep1/square.jpg"
+/>
+<podcast:image
+  purpose="poster"
+  aspect-ratio="16/9"
+  href="https://example.com/images/ep1/poster.jpg"
+/>
+</item>
+</channel>
+</rss>

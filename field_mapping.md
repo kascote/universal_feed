@@ -80,6 +80,7 @@ future follow-up specs.
 | persons       |         | podcast:person     |
 | locations     |         | podcast:location   |
 | chat          |         | podcast:chat       |
+| images        |         | podcast:image      |
 | ============= | ======= | =================  |
 | ITEM          |         |                    |
 | ------------- | ------- | -----------------  |
@@ -90,3 +91,4 @@ future follow-up specs.
 | soundbites    |         | podcast:soundbite  |
 | socialInteracts |       | podcast:socialInteract |
 | chat          |         | podcast:chat       |
+| images        |         | podcast:image      |

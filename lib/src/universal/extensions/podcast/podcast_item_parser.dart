@@ -93,6 +93,14 @@ class PodcastItemParser implements ItemExtensionParser {
         ns: namespaceUrl,
       )
       ..forEachElementXml(
+        'image',
+        (el) {
+          final img = imageFromXml(el);
+          if (img != null) pi.images.add(img);
+        },
+        ns: namespaceUrl,
+      )
+      ..forEachElementXml(
         'soundbite',
         (el) {
           final startTime = el.getAttribute('startTime')?.trim();

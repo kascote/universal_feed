@@ -64,6 +64,33 @@ PodcastLicense licenseFromXml(XmlElement el) {
   );
 }
 
+/// Parses a `<podcast:image>` element into a [PodcastImage].
+/// Returns `null` when the required `href` attribute is absent or empty
+/// — caller skips such entries.
+PodcastImage? imageFromXml(XmlElement el) {
+  final href = el.getAttribute('href')?.trim();
+  if (href == null || href.isEmpty) return null;
+  final alt = el.getAttribute('alt')?.trim();
+  final aspectRatio = el.getAttribute('aspect-ratio')?.trim();
+  final width = el.getAttribute('width')?.trim();
+  final height = el.getAttribute('height')?.trim();
+  final type = el.getAttribute('type')?.trim();
+  final purpose = el.getAttribute('purpose')?.trim();
+  final tokens = (purpose == null || purpose.isEmpty)
+      ? const <String>[]
+      : purpose.split(RegExp(r'\s+')).where((t) => t.isNotEmpty).map((t) => t.toLowerCase()).toList(growable: false);
+  return PodcastImage(
+    href: href,
+    alt: (alt == null || alt.isEmpty) ? null : alt,
+    aspectRatio: (aspectRatio == null || aspectRatio.isEmpty) ? null : aspectRatio,
+    width: (width == null || width.isEmpty) ? null : width,
+    height: (height == null || height.isEmpty) ? null : height,
+    type: (type == null || type.isEmpty) ? null : type,
+    purpose: (purpose == null || purpose.isEmpty) ? null : purpose,
+    purposeTokens: tokens,
+  );
+}
+
 /// Parses a `<podcast:chat>` element into a [PodcastChat].
 /// Returns `null` when either required attribute (`server`,
 /// `protocol`) is absent or empty — caller drops such entries.

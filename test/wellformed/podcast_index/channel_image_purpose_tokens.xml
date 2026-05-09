@@ -1,0 +1,12 @@
+<!--
+Description: podcast:image with mixed-case purpose attribute and extra spaces
+Expect:      purposeTokens=[artwork, social, canvas] (lowercased, empties dropped, order kept)
+-->
+<rss xmlns:podcast="https://podcastindex.org/namespace/1.0">
+<channel>
+<podcast:image
+  purpose="Artwork  Social  CANVAS"
+  href="https://example.com/images/x.jpg"
+/>
+</channel>
+</rss>

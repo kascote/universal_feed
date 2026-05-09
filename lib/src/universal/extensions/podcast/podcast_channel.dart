@@ -193,6 +193,15 @@ class PodcastChannel {
   /// See https://github.com/Podcastindex-org/podcast-namespace/blob/main/docs/tags/chat.md
   PodcastChat? chat;
 
+  /// Rich image variants from `<podcast:image>` (Podcast Index namespace).
+  /// Preserves source order. Empty when absent. Each entry has a non-empty
+  /// [PodcastImage.href]; elements without one are skipped at parse time.
+  /// Distinct from [image] (singular, populated from `itunes:image`) —
+  /// kept separate, no back-fill. The deprecated `<podcast:images>` /
+  /// srcset form is not parsed.
+  /// See https://github.com/Podcastindex-org/podcast-namespace/blob/main/docs/tags/image.md
+  List<PodcastImage> images = [];
+
   /// Creates a new empty [PodcastChannel]
   PodcastChannel();
 }

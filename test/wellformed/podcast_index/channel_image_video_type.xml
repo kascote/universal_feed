@@ -1,0 +1,13 @@
+<!--
+Description: podcast:image carrying a video MIME type (canvas / poster usage)
+Expect:      type=="video/mp4"
+-->
+<rss xmlns:podcast="https://podcastindex.org/namespace/1.0">
+<channel>
+<podcast:image
+  type="video/mp4"
+  aspect-ratio="9/16"
+  href="https://example.com/images/ep1/pci_portrait.mp4"
+/>
+</channel>
+</rss>

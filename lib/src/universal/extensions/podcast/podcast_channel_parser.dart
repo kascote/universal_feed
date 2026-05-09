@@ -136,6 +136,14 @@ class PodcastChannelParser implements ChannelExtensionParser {
         ns: namespaceUrl,
       )
       ..forEachElementXml(
+        'image',
+        (el) {
+          final img = imageFromXml(el);
+          if (img != null) pc.images.add(img);
+        },
+        ns: namespaceUrl,
+      )
+      ..forEachElementXml(
         'trailer',
         (el) {
           final url = el.getAttribute('url')?.trim();

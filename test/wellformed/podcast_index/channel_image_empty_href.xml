@@ -1,0 +1,9 @@
+<!--
+Description: podcast:image with href="" (whitespace-only)
+Expect:      element skipped, images list empty
+-->
+<rss xmlns:podcast="https://podcastindex.org/namespace/1.0">
+<channel>
+<podcast:image href="   " alt="empty href" />
+</channel>
+</rss>

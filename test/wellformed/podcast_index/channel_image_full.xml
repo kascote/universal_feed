@@ -1,0 +1,18 @@
+<!--
+Description: podcast:image at channel level with all attributes set
+Expect:      images.length==1, all fields populated, purpose split into
+             two lowercase tokens
+-->
+<rss xmlns:podcast="https://podcastindex.org/namespace/1.0">
+<channel>
+<podcast:image
+  alt="An antenna emanating signal waves"
+  purpose="artwork social"
+  type="image/jpeg"
+  aspect-ratio="16/9"
+  width="1200"
+  height="675"
+  href="https://example.com/images/ep1/pci_landscape-massive.jpg"
+/>
+</channel>
+</rss>

@@ -29,6 +29,7 @@ export 'src/universal/extensions/podcast/podcast_channel.dart';
 export 'src/universal/extensions/podcast/podcast_chapters.dart';
 export 'src/universal/extensions/podcast/podcast_chat.dart';
 export 'src/universal/extensions/podcast/podcast_funding.dart';
+export 'src/universal/extensions/podcast/podcast_image.dart';
 export 'src/universal/extensions/podcast/podcast_item.dart';
 export 'src/universal/extensions/podcast/podcast_license.dart';
 export 'src/universal/extensions/podcast/podcast_location.dart';

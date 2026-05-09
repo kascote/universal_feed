@@ -1,0 +1,9 @@
+<!--
+Description: podcast:image with only the required href attribute
+Expect:      images.length==1, all optional fields null, purposeTokens empty
+-->
+<rss xmlns:podcast="https://podcastindex.org/namespace/1.0">
+<channel>
+<podcast:image href="https://example.com/images/pci_square-massive.jpg" />
+</channel>
+</rss>

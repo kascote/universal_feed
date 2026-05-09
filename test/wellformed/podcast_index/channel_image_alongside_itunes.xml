@@ -1,0 +1,17 @@
+<!--
+Description: both itunes:image and podcast:image at channel level
+Expect:      podcast.image (singular) populated from itunes:image,
+             podcast.images (list) populated from podcast:image,
+             distinct URLs, no cross-contamination
+-->
+<rss xmlns:itunes="http://www.itunes.com/dtds/podcast-1.0.dtd"
+     xmlns:podcast="https://podcastindex.org/namespace/1.0">
+<channel>
+<itunes:image href="https://example.com/itunes_artwork.jpg" />
+<podcast:image
+  purpose="banner"
+  aspect-ratio="16/9"
+  href="https://example.com/podcast_banner.jpg"
+/>
+</channel>
+</rss>

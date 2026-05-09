@@ -1,0 +1,11 @@
+<!--
+Description: podcast:image at item level without href
+Expect:      element skipped, item.podcast.images empty
+-->
+<rss xmlns:podcast="https://podcastindex.org/namespace/1.0">
+<channel>
+<item>
+<podcast:image alt="orphan" purpose="artwork" />
+</item>
+</channel>
+</rss>
