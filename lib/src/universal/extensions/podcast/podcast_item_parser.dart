@@ -103,6 +103,29 @@ class PodcastItemParser implements ItemExtensionParser {
         ns: namespaceUrl,
       )
       ..forEachElementXml(
+        'socialInteract',
+        (el) {
+          final protocol = el.getAttribute('protocol')?.trim();
+          if (protocol == null || protocol.isEmpty) return;
+          final uri = el.getAttribute('uri')?.trim();
+          final hasUri = uri != null && uri.isNotEmpty;
+          if (!hasUri && protocol != 'disabled') return;
+          final accountId = el.getAttribute('accountId')?.trim();
+          final accountUrl = el.getAttribute('accountUrl')?.trim();
+          final priority = el.getAttribute('priority')?.trim();
+          pi.socialInteracts.add(
+            PodcastSocialInteract(
+              protocol: protocol,
+              uri: hasUri ? uri : null,
+              accountId: (accountId == null || accountId.isEmpty) ? null : accountId,
+              accountUrl: (accountUrl == null || accountUrl.isEmpty) ? null : accountUrl,
+              priority: (priority == null || priority.isEmpty) ? null : priority,
+            ),
+          );
+        },
+        ns: namespaceUrl,
+      )
+      ..forEachElementXml(
         'transcript',
         (value) {
           final url = value.getAttribute('url')?.trim();

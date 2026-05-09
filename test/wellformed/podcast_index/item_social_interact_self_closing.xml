@@ -1,0 +1,11 @@
+<!--
+Description: self-closing podcast:socialInteract with full attributes
+Expect:      items.first.podcast.socialInteracts.length==1, parsed identically to open form
+-->
+<rss xmlns:podcast="https://podcastindex.org/namespace/1.0">
+<channel>
+<item>
+<podcast:socialInteract protocol="activitypub" uri="https://example.org/post/1"/>
+</item>
+</channel>
+</rss>

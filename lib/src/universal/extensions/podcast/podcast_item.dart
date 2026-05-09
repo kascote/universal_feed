@@ -81,6 +81,14 @@ class PodcastItem {
   /// See https://github.com/Podcastindex-org/podcast-namespace/blob/main/docs/tags/soundbite.md
   List<PodcastSoundbite> soundbites = [];
 
+  /// Social-interaction entries from `<podcast:socialInteract>` (Podcast
+  /// Index namespace). Preserves source order. Empty when absent. Each
+  /// entry has a non-empty [PodcastSocialInteract.protocol]; entries
+  /// without it — or without `uri` when `protocol != "disabled"` — are
+  /// skipped at parse time.
+  /// See https://github.com/Podcastindex-org/podcast-namespace/blob/main/docs/tags/socialInteract.md
+  List<PodcastSocialInteract> socialInteracts = [];
+
   /// Creates a new empty [PodcastItem]
   PodcastItem();
 }

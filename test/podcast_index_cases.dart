@@ -517,5 +517,46 @@ Map<String, TestFx> podcastIndexTests() {
     'item_soundbite_empty_start_time.xml': (r) => (r.items.first.podcast?.soundbites ?? const []).isEmpty,
     'item_soundbite_no_duration.xml': (r) => (r.items.first.podcast?.soundbites ?? const []).isEmpty,
     'item_soundbite_empty_duration.xml': (r) => (r.items.first.podcast?.soundbites ?? const []).isEmpty,
+    // socialInteract
+    'item_social_interact_full.xml': (r) {
+      final s = r.items.first.podcast?.socialInteracts;
+      if (s == null || s.length != 1) return false;
+      final si = s.first;
+      return si.protocol == 'activitypub' &&
+          si.uri == 'https://podcastindex.social/web/@dave/108013847520053401' &&
+          si.accountId == '@dave' &&
+          si.accountUrl == 'https://podcastindex.social/web/@dave' &&
+          si.priority == '1';
+    },
+    'item_social_interact_minimal.xml': (r) {
+      final s = r.items.first.podcast?.socialInteracts;
+      if (s == null || s.length != 1) return false;
+      final si = s.first;
+      return si.protocol == 'activitypub' &&
+          si.uri != null &&
+          si.accountId == null &&
+          si.accountUrl == null &&
+          si.priority == null;
+    },
+    'item_social_interact_disabled.xml': (r) {
+      final s = r.items.first.podcast?.socialInteracts;
+      return s != null && s.length == 1 && s.first.protocol == 'disabled' && s.first.uri == null;
+    },
+    'item_social_interact_multiple.xml': (r) {
+      final s = r.items.first.podcast?.socialInteracts ?? const [];
+      return s.length == 2 &&
+          s[0].protocol == 'activitypub' &&
+          s[0].priority == '1' &&
+          s[1].protocol == 'twitter' &&
+          s[1].priority == '2';
+    },
+    'item_social_interact_no_protocol.xml': (r) => (r.items.first.podcast?.socialInteracts ?? const []).isEmpty,
+    'item_social_interact_empty_protocol.xml': (r) => (r.items.first.podcast?.socialInteracts ?? const []).isEmpty,
+    'item_social_interact_no_uri.xml': (r) => (r.items.first.podcast?.socialInteracts ?? const []).isEmpty,
+    'item_social_interact_empty_uri.xml': (r) => (r.items.first.podcast?.socialInteracts ?? const []).isEmpty,
+    'item_social_interact_self_closing.xml': (r) {
+      final s = r.items.first.podcast?.socialInteracts;
+      return s != null && s.length == 1 && s.first.protocol == 'activitypub';
+    },
   };
 }

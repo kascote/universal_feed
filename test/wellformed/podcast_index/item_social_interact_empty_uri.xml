@@ -1,0 +1,11 @@
+<!--
+Description: podcast:socialInteract with non-disabled protocol and empty uri
+Expect:      items.first.podcast.socialInteracts is empty (element skipped)
+-->
+<rss xmlns:podcast="https://podcastindex.org/namespace/1.0">
+<channel>
+<item>
+<podcast:socialInteract protocol="activitypub" uri="" />
+</item>
+</channel>
+</rss>

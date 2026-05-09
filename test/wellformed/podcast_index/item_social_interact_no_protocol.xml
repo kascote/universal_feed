@@ -1,0 +1,11 @@
+<!--
+Description: podcast:socialInteract missing protocol attribute
+Expect:      items.first.podcast.socialInteracts is empty (element skipped)
+-->
+<rss xmlns:podcast="https://podcastindex.org/namespace/1.0">
+<channel>
+<item>
+<podcast:socialInteract uri="https://example.org/post/1" />
+</item>
+</channel>
+</rss>

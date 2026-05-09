@@ -87,3 +87,4 @@ future follow-up specs.
 | persons       |         | podcast:person     |
 | locations     |         | podcast:location   |
 | soundbites    |         | podcast:soundbite  |
+| socialInteracts |       | podcast:socialInteract |

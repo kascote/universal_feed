@@ -1,0 +1,11 @@
+<!--
+Description: podcast:socialInteract opt-out form (protocol="disabled", no uri)
+Expect:      items.first.podcast.socialInteracts.length==1, protocol=="disabled", uri==null
+-->
+<rss xmlns:podcast="https://podcastindex.org/namespace/1.0">
+<channel>
+<item>
+<podcast:socialInteract protocol="disabled" />
+</item>
+</channel>
+</rss>

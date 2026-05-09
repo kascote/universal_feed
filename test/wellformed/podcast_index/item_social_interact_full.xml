@@ -1,0 +1,11 @@
+<!--
+Description: podcast:socialInteract with all attributes (matches spec example)
+Expect:      items.first.podcast.socialInteracts.length==1, all fields populated
+-->
+<rss xmlns:podcast="https://podcastindex.org/namespace/1.0">
+<channel>
+<item>
+<podcast:socialInteract priority="1" uri="https://podcastindex.social/web/@dave/108013847520053401" protocol="activitypub" accountId="@dave" accountUrl="https://podcastindex.social/web/@dave" />
+</item>
+</channel>
+</rss>

@@ -1,0 +1,12 @@
+<!--
+Description: two podcast:socialInteract entries with different protocols/priorities
+Expect:      items.first.podcast.socialInteracts.length==2, order preserved
+-->
+<rss xmlns:podcast="https://podcastindex.org/namespace/1.0">
+<channel>
+<item>
+<podcast:socialInteract priority="1" protocol="activitypub" uri="https://podcastindex.social/web/@dave/1" />
+<podcast:socialInteract priority="2" protocol="twitter" uri="https://twitter.com/dave/status/1" />
+</item>
+</channel>
+</rss>

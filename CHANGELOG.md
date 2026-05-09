@@ -1,5 +1,11 @@
 ## Unreleased
 
+- add `<podcast:socialInteract>` parsing (Podcast Index namespace,
+  item-level, multi-valued). Exposed as `item.podcast.socialInteracts`
+  (`List<PodcastSocialInteract>`), each with `protocol`, optional `uri`,
+  `accountId`, `accountUrl`, `priority` (raw strings). The opt-out
+  sentinel `protocol="disabled"` is preserved without a `uri`; other
+  entries missing `protocol` or `uri` are skipped.
 - add `<podcast:soundbite>` parsing (Podcast Index namespace, item-level,
   multi-valued). Exposed as `item.podcast.soundbites`
   (`List<PodcastSoundbite>`), each with `startTime`, `duration` (raw

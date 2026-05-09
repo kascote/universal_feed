@@ -32,6 +32,7 @@ export 'src/universal/extensions/podcast/podcast_item.dart';
 export 'src/universal/extensions/podcast/podcast_license.dart';
 export 'src/universal/extensions/podcast/podcast_location.dart';
 export 'src/universal/extensions/podcast/podcast_person.dart';
+export 'src/universal/extensions/podcast/podcast_social_interact.dart';
 export 'src/universal/extensions/podcast/podcast_soundbite.dart';
 export 'src/universal/extensions/podcast/podcast_trailer.dart';
 export 'src/universal/extensions/podcast/podcast_transcript.dart';
