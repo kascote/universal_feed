@@ -1,0 +1,14 @@
+<!--
+Description: podcast:publisher with a remoteItem omitting medium attribute
+Expect:      publisher != null, remoteItem.medium == null,
+             knownMedium == PodcastMedium.absent
+-->
+<rss xmlns:podcast="https://podcastindex.org/namespace/1.0">
+<channel>
+<podcast:publisher>
+  <podcast:remoteItem
+    feedGuid="pub-no-medium"
+    feedUrl="https://example.org/publisher.xml" />
+</podcast:publisher>
+</channel>
+</rss>

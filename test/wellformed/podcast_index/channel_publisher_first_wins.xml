@@ -1,0 +1,12 @@
+<!--
+Description: podcast:publisher containing two remoteItem children (both valid)
+Expect:      first valid wins (feedGuid=='first-guid')
+-->
+<rss xmlns:podcast="https://podcastindex.org/namespace/1.0">
+<channel>
+<podcast:publisher>
+  <podcast:remoteItem medium="publisher" feedGuid="first-guid" />
+  <podcast:remoteItem medium="publisher" feedGuid="second-guid" />
+</podcast:publisher>
+</channel>
+</rss>

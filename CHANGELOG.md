@@ -1,5 +1,16 @@
 ## Unreleased
 
+- add `<podcast:podroll>` parsing (Podcast Index namespace, channel-level,
+  single). Exposed as `feed.podcast.podroll` (`PodcastPodroll?`) wrapping
+  one or more `PodcastRemoteItem` children in source order. Last tag wins
+  on duplicate; wrapper is `null` when no valid `<podcast:remoteItem>`
+  child survived parsing.
+- add `<podcast:publisher>` parsing (Podcast Index namespace,
+  channel-level, single). Exposed as `feed.podcast.publisher`
+  (`PodcastPublisher?`) wrapping a single `PodcastRemoteItem`. First valid
+  child wins on multi-child wrappers; last tag wins on duplicate
+  `<podcast:publisher>`. The `medium="publisher"` attribute is captured
+  raw, not enforced — consumers can inspect `remoteItem.medium`.
 - add `<podcast:remoteItem>` parsing (Podcast Index namespace,
   channel-level, multi-valued). Exposed as `feed.podcast.remoteItems`
   (`List<PodcastRemoteItem>`) with required `feedGuid` plus optional

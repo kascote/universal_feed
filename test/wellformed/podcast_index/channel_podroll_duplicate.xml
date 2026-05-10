@@ -1,0 +1,14 @@
+<!--
+Description: two podcast:podroll tags at channel level (last tag wins)
+Expect:      items.length==1, items.first.feedGuid=='second-tag-guid'
+-->
+<rss xmlns:podcast="https://podcastindex.org/namespace/1.0">
+<channel>
+<podcast:podroll>
+  <podcast:remoteItem feedGuid="first-tag-guid" />
+</podcast:podroll>
+<podcast:podroll>
+  <podcast:remoteItem feedGuid="second-tag-guid" />
+</podcast:podroll>
+</channel>
+</rss>

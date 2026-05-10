@@ -1,0 +1,11 @@
+<!--
+Description: podcast:podroll with one remoteItem carrying only feedGuid
+Expect:      items.length==1, feedUrl/title null
+-->
+<rss xmlns:podcast="https://podcastindex.org/namespace/1.0">
+<channel>
+<podcast:podroll>
+  <podcast:remoteItem feedGuid="29cdca4a-32d8-56ba-b48b-09a011c5daa9" />
+</podcast:podroll>
+</channel>
+</rss>

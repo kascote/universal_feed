@@ -1,0 +1,11 @@
+<!--
+Description: podcast:publisher with a remoteItem carrying only feedGuid
+Expect:      publisher != null, feedUrl/medium null
+-->
+<rss xmlns:podcast="https://podcastindex.org/namespace/1.0">
+<channel>
+<podcast:publisher>
+  <podcast:remoteItem feedGuid="pub-guid-only" />
+</podcast:publisher>
+</channel>
+</rss>

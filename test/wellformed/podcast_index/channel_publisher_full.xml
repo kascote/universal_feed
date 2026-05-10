@@ -1,0 +1,14 @@
+<!--
+Description: podcast:publisher with a single remoteItem (medium=publisher, full attrs)
+Expect:      publisher != null, remoteItem.feedGuid set, knownMedium == publisher
+-->
+<rss xmlns:podcast="https://podcastindex.org/namespace/1.0">
+<channel>
+<podcast:publisher>
+  <podcast:remoteItem
+    medium="publisher"
+    feedGuid="003af0a0-6a45-55cf-b765-68e3d349551a"
+    feedUrl="https://agilesetmedia.com/assets/static/feeds/publisher.xml" />
+</podcast:publisher>
+</channel>
+</rss>

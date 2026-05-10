@@ -1,0 +1,13 @@
+<!--
+Description: podcast:podroll containing a non-remoteItem child mixed with one valid
+             remoteItem; the noise is ignored
+Expect:      items.length==1, items.first.feedGuid=='real-guid'
+-->
+<rss xmlns:podcast="https://podcastindex.org/namespace/1.0">
+<channel>
+<podcast:podroll>
+  <podcast:txt purpose="note">ignore me</podcast:txt>
+  <podcast:remoteItem feedGuid="real-guid" />
+</podcast:podroll>
+</channel>
+</rss>

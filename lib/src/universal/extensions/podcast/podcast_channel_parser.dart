@@ -152,6 +152,22 @@ class PodcastChannelParser implements ChannelExtensionParser {
         ns: namespaceUrl,
       )
       ..forEachElementXml(
+        'podroll',
+        (el) {
+          final p = podrollFromXml(el, ns: namespaceUrl);
+          if (p != null) pc.podroll = p;
+        },
+        ns: namespaceUrl,
+      )
+      ..forEachElementXml(
+        'publisher',
+        (el) {
+          final p = publisherFromXml(el, ns: namespaceUrl);
+          if (p != null) pc.publisher = p;
+        },
+        ns: namespaceUrl,
+      )
+      ..forEachElementXml(
         'trailer',
         (el) {
           final url = el.getAttribute('url')?.trim();

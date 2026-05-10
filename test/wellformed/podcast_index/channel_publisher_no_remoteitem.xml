@@ -1,0 +1,9 @@
+<!--
+Description: empty podcast:publisher wrapper (no children)
+Expect:      publisher == null
+-->
+<rss xmlns:podcast="https://podcastindex.org/namespace/1.0">
+<channel>
+<podcast:publisher></podcast:publisher>
+</channel>
+</rss>

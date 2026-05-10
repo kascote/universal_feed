@@ -1,0 +1,13 @@
+<!--
+Description: podcast:podroll with one invalid remoteItem (missing feedGuid)
+             and one valid; only the valid one survives
+Expect:      items.length==1, items.first.feedGuid=='guid-valid'
+-->
+<rss xmlns:podcast="https://podcastindex.org/namespace/1.0">
+<channel>
+<podcast:podroll>
+  <podcast:remoteItem feedUrl="https://example.org/no-guid.xml" />
+  <podcast:remoteItem feedGuid="guid-valid" />
+</podcast:podroll>
+</channel>
+</rss>

@@ -1,0 +1,11 @@
+<!--
+Description: podcast:publisher whose only child is missing feedGuid
+Expect:      publisher == null
+-->
+<rss xmlns:podcast="https://podcastindex.org/namespace/1.0">
+<channel>
+<podcast:publisher>
+  <podcast:remoteItem medium="publisher" feedUrl="https://example.org/p.xml" />
+</podcast:publisher>
+</channel>
+</rss>

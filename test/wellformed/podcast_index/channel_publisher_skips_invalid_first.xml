@@ -1,0 +1,12 @@
+<!--
+Description: podcast:publisher with first child missing feedGuid, second valid
+Expect:      publisher.remoteItem.feedGuid=='second-guid'
+-->
+<rss xmlns:podcast="https://podcastindex.org/namespace/1.0">
+<channel>
+<podcast:publisher>
+  <podcast:remoteItem medium="publisher" />
+  <podcast:remoteItem medium="publisher" feedGuid="second-guid" />
+</podcast:publisher>
+</channel>
+</rss>

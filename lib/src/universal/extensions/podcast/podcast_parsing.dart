@@ -1,6 +1,7 @@
 import 'package:xml/xml.dart';
 
 import '../../../../universal_feed.dart';
+import '../../../shared/extensions.dart';
 
 /// Shared parsers for `<podcast:*>` tags that appear at both channel and
 /// item level. Library-internal — not exported from the public barrel.
@@ -97,9 +98,7 @@ PodcastRemoteItem? remoteItemFromXml(XmlElement el) {
   final itemGuid = el.getAttribute('itemGuid')?.trim();
   final medium = el.getAttribute('medium')?.trim();
   final title = el.getAttribute('title')?.trim();
-  final (known, isList) = (medium == null || medium.isEmpty)
-      ? (PodcastMedium.absent, false)
-      : parseMedium(medium);
+  final (known, isList) = (medium == null || medium.isEmpty) ? (PodcastMedium.absent, false) : parseMedium(medium);
   return PodcastRemoteItem(
     feedGuid: feedGuid,
     feedUrl: (feedUrl == null || feedUrl.isEmpty) ? null : feedUrl,
@@ -136,6 +135,43 @@ PodcastImage? imageFromXml(XmlElement el) {
     purpose: (purpose == null || purpose.isEmpty) ? null : purpose,
     purposeTokens: tokens,
   );
+}
+
+/// Parses a `<podcast:podroll>` wrapper into a [PodcastPodroll].
+/// Iterates `<podcast:remoteItem>` children in [ns]; returns `null`
+/// when none survive (matches the spec's "one or more" requirement
+/// liberally — an empty podroll has no consumer value).
+PodcastPodroll? podrollFromXml(XmlElement el, {required String ns}) {
+  final items = <PodcastRemoteItem>[];
+  el.forEachElementXml(
+    'remoteItem',
+    (child) {
+      final ri = remoteItemFromXml(child);
+      if (ri != null) items.add(ri);
+    },
+    ns: ns,
+  );
+  if (items.isEmpty) return null;
+  return PodcastPodroll(items: items);
+}
+
+/// Parses a `<podcast:publisher>` wrapper into a [PodcastPublisher].
+/// Returns the **first** valid `<podcast:remoteItem>` child (per the
+/// spec's "exactly one" rule — liberal: first wins on duplicates).
+/// Returns `null` when no valid child was found.
+PodcastPublisher? publisherFromXml(XmlElement el, {required String ns}) {
+  PodcastRemoteItem? picked;
+  el.forEachElementXml(
+    'remoteItem',
+    (child) {
+      if (picked != null) return;
+      picked = remoteItemFromXml(child);
+    },
+    ns: ns,
+  );
+  final r = picked;
+  if (r == null) return null;
+  return PodcastPublisher(remoteItem: r);
 }
 
 /// Parses a `<podcast:chat>` element into a [PodcastChat].

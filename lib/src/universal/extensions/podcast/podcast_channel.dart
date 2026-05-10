@@ -215,6 +215,22 @@ class PodcastChannel {
   /// See https://github.com/Podcastindex-org/podcast-namespace/blob/main/docs/tags/image.md
   List<PodcastImage> images = [];
 
+  /// "Podroll" recommendations from `<podcast:podroll>` (Podcast Index
+  /// namespace). Channel-level, single-valued. Last tag wins on duplicate.
+  /// Null when absent or when no valid `<podcast:remoteItem>` child
+  /// survived parsing.
+  /// See https://github.com/Podcastindex-org/podcast-namespace/blob/main/docs/tags/podroll.md
+  PodcastPodroll? podroll;
+
+  /// Parent publisher feed pointer from `<podcast:publisher>` (Podcast
+  /// Index namespace). Channel-level, single-valued. Last tag wins on
+  /// duplicate. Per spec the inner remoteItem should carry
+  /// `medium="publisher"` — not enforced; consumers can inspect.
+  /// Null when absent or when no valid `<podcast:remoteItem>` child was
+  /// found.
+  /// See https://github.com/Podcastindex-org/podcast-namespace/blob/main/docs/tags/publisher.md
+  PodcastPublisher? publisher;
+
   /// Creates a new empty [PodcastChannel]
   PodcastChannel();
 }

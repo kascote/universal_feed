@@ -82,6 +82,8 @@ future follow-up specs.
 | chat          |         | podcast:chat       |
 | images        |         | podcast:image      |
 | remoteItems   |         | podcast:remoteItem |
+| podroll       |         | podcast:podroll    |
+| publisher     |         | podcast:publisher  |
 | ============= | ======= | =================  |
 | ITEM          |         |                    |
 | ------------- | ------- | -----------------  |

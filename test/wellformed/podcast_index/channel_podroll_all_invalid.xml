@@ -1,0 +1,12 @@
+<!--
+Description: podcast:podroll where every remoteItem child is missing feedGuid
+Expect:      podroll == null (no valid children)
+-->
+<rss xmlns:podcast="https://podcastindex.org/namespace/1.0">
+<channel>
+<podcast:podroll>
+  <podcast:remoteItem feedUrl="https://example.org/a.xml" />
+  <podcast:remoteItem feedGuid="" />
+</podcast:podroll>
+</channel>
+</rss>

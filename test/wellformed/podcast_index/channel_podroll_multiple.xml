@@ -1,0 +1,13 @@
+<!--
+Description: podcast:podroll with three remoteItem children
+Expect:      items.length==3, source order preserved (guid-1, guid-2, guid-3)
+-->
+<rss xmlns:podcast="https://podcastindex.org/namespace/1.0">
+<channel>
+<podcast:podroll>
+  <podcast:remoteItem feedGuid="guid-1" />
+  <podcast:remoteItem feedGuid="guid-2" />
+  <podcast:remoteItem feedGuid="guid-3" />
+</podcast:podroll>
+</channel>
+</rss>

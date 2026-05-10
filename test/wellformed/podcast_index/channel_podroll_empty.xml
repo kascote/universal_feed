@@ -1,0 +1,9 @@
+<!--
+Description: podcast:podroll with no children at all
+Expect:      podroll == null
+-->
+<rss xmlns:podcast="https://podcastindex.org/namespace/1.0">
+<channel>
+<podcast:podroll></podcast:podroll>
+</channel>
+</rss>

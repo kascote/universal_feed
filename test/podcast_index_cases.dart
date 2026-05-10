@@ -717,5 +717,77 @@ Map<String, TestFx> podcastIndexTests() {
           pc.remoteItems.length == 2 &&
           r.items.isEmpty;
     },
+    // podroll
+    'channel_podroll_single.xml': (r) {
+      final p = r.podcast?.podroll;
+      if (p == null || p.items.length != 1) return false;
+      final ri = p.items.first;
+      return ri.feedGuid == '917393e3-1b1e-5cef-ace4-edaa54e1f810' &&
+          ri.feedUrl == 'https://feeds.podcastindex.org/pc20.xml' &&
+          ri.title == 'Podcasting 2.0';
+    },
+    'channel_podroll_multiple.xml': (r) {
+      final items = r.podcast?.podroll?.items ?? const [];
+      return items.length == 3 &&
+          items[0].feedGuid == 'guid-1' &&
+          items[1].feedGuid == 'guid-2' &&
+          items[2].feedGuid == 'guid-3';
+    },
+    'channel_podroll_minimal.xml': (r) {
+      final items = r.podcast?.podroll?.items ?? const [];
+      return items.length == 1 &&
+          items.first.feedGuid.isNotEmpty &&
+          items.first.feedUrl == null &&
+          items.first.title == null;
+    },
+    'channel_podroll_skips_invalid.xml': (r) {
+      final items = r.podcast?.podroll?.items ?? const [];
+      return items.length == 1 && items.first.feedGuid == 'guid-valid';
+    },
+    'channel_podroll_all_invalid.xml': (r) => r.podcast?.podroll == null,
+    'channel_podroll_empty.xml': (r) => r.podcast?.podroll == null,
+    'channel_podroll_duplicate.xml': (r) {
+      final items = r.podcast?.podroll?.items ?? const [];
+      return items.length == 1 && items.first.feedGuid == 'second-tag-guid';
+    },
+    'channel_podroll_ignores_other.xml': (r) {
+      final items = r.podcast?.podroll?.items ?? const [];
+      return items.length == 1 && items.first.feedGuid == 'real-guid';
+    },
+    // publisher
+    'channel_publisher_full.xml': (r) {
+      final p = r.podcast?.publisher;
+      if (p == null) return false;
+      final ri = p.remoteItem;
+      return ri.feedGuid == '003af0a0-6a45-55cf-b765-68e3d349551a' &&
+          ri.feedUrl == 'https://agilesetmedia.com/assets/static/feeds/publisher.xml' &&
+          ri.medium == 'publisher' &&
+          ri.knownMedium == PodcastMedium.publisher;
+    },
+    'channel_publisher_minimal.xml': (r) {
+      final p = r.podcast?.publisher;
+      return p != null &&
+          p.remoteItem.feedGuid.isNotEmpty &&
+          p.remoteItem.feedUrl == null &&
+          p.remoteItem.medium == null;
+    },
+    'channel_publisher_no_medium.xml': (r) {
+      final p = r.podcast?.publisher;
+      return p != null && p.remoteItem.medium == null && p.remoteItem.knownMedium == PodcastMedium.absent;
+    },
+    'channel_publisher_first_wins.xml': (r) {
+      final p = r.podcast?.publisher;
+      return p != null && p.remoteItem.feedGuid == 'first-guid';
+    },
+    'channel_publisher_skips_invalid_first.xml': (r) {
+      final p = r.podcast?.publisher;
+      return p != null && p.remoteItem.feedGuid == 'second-guid';
+    },
+    'channel_publisher_no_remoteitem.xml': (r) => r.podcast?.publisher == null,
+    'channel_publisher_invalid_only.xml': (r) => r.podcast?.publisher == null,
+    'channel_publisher_duplicate.xml': (r) {
+      final p = r.podcast?.publisher;
+      return p != null && p.remoteItem.feedGuid == 'second-tag-guid';
+    },
   };
 }
