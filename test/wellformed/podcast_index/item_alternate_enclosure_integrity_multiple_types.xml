@@ -1,0 +1,16 @@
+<!--
+Description: two integrity children — one sri + one pgp-signature
+Expect:      integrity.length==2, source order preserved (sri then pgp)
+-->
+<rss xmlns:podcast="https://podcastindex.org/namespace/1.0">
+<channel>
+<item>
+<title>Episode 1</title>
+<podcast:alternateEnclosure type="audio/mpeg">
+  <podcast:source uri="https://example.com/file.mp3" />
+  <podcast:integrity type="sri" value="sha384-ABC" />
+  <podcast:integrity type="pgp-signature" value="iQEzBAABCAAdFiEE=" />
+</podcast:alternateEnclosure>
+</item>
+</channel>
+</rss>

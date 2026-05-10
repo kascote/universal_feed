@@ -174,6 +174,86 @@ PodcastPublisher? publisherFromXml(XmlElement el, {required String ns}) {
   return PodcastPublisher(remoteItem: r);
 }
 
+/// Parses a `<podcast:source>` child of `<podcast:alternateEnclosure>`.
+/// Returns `null` when the required `uri` attribute is missing or
+/// empty after trimming — caller skips such entries.
+PodcastEnclosureSource? enclosureSourceFromXml(XmlElement el) {
+  final uri = el.getAttribute('uri')?.trim();
+  if (uri == null || uri.isEmpty) return null;
+  final contentType = el.getAttribute('contentType')?.trim();
+  return PodcastEnclosureSource(
+    uri: uri,
+    contentType: (contentType == null || contentType.isEmpty) ? null : contentType,
+  );
+}
+
+/// Parses a `<podcast:integrity>` child of `<podcast:alternateEnclosure>`.
+/// Returns `null` when either required attribute (`type`, `value`) is
+/// missing or empty after trimming — caller skips such entries.
+PodcastIntegrity? integrityFromXml(XmlElement el) {
+  final type = el.getAttribute('type')?.trim();
+  if (type == null || type.isEmpty) return null;
+  final value = el.getAttribute('value')?.trim();
+  if (value == null || value.isEmpty) return null;
+  return PodcastIntegrity(type: type, value: value);
+}
+
+/// Parses a `<podcast:alternateEnclosure>` element into a
+/// [PodcastAlternateEnclosure]. Returns `null` when no valid
+/// `<podcast:source>` child was found (a media def with no transport
+/// is unusable). All valid `<podcast:integrity>` children are captured
+/// in source order.
+PodcastAlternateEnclosure? alternateEnclosureFromXml(XmlElement el, {required String ns}) {
+  final sources = <PodcastEnclosureSource>[];
+  el.forEachElementXml(
+    'source',
+    (child) {
+      final s = enclosureSourceFromXml(child);
+      if (s != null) sources.add(s);
+    },
+    ns: ns,
+  );
+  if (sources.isEmpty) return null;
+
+  final integrity = <PodcastIntegrity>[];
+  el.forEachElementXml(
+    'integrity',
+    (child) {
+      final i = integrityFromXml(child);
+      if (i != null) integrity.add(i);
+    },
+    ns: ns,
+  );
+
+  final type = el.getAttribute('type')?.trim();
+  final length = el.getAttribute('length')?.trim();
+  final bitrate = el.getAttribute('bitrate')?.trim();
+  final height = el.getAttribute('height')?.trim();
+  final lang = el.getAttribute('lang')?.trim();
+  final title = el.getAttribute('title')?.trim();
+  final rel = el.getAttribute('rel')?.trim();
+  final codecs = el.getAttribute('codecs')?.trim();
+  final isDefault = switch (el.getAttribute('default')?.trim().toLowerCase()) {
+    'true' => true,
+    'false' => false,
+    _ => null,
+  };
+
+  return PodcastAlternateEnclosure(
+    sources: sources,
+    integrity: integrity,
+    type: (type == null || type.isEmpty) ? null : type,
+    length: (length == null || length.isEmpty) ? null : length,
+    bitrate: (bitrate == null || bitrate.isEmpty) ? null : bitrate,
+    height: (height == null || height.isEmpty) ? null : height,
+    lang: (lang == null || lang.isEmpty) ? null : lang,
+    title: (title == null || title.isEmpty) ? null : title,
+    rel: (rel == null || rel.isEmpty) ? null : rel,
+    codecs: (codecs == null || codecs.isEmpty) ? null : codecs,
+    isDefault: isDefault,
+  );
+}
+
 /// Parses a `<podcast:chat>` element into a [PodcastChat].
 /// Returns `null` when either required attribute (`server`,
 /// `protocol`) is absent or empty — caller drops such entries.

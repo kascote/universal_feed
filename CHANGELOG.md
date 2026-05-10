@@ -1,5 +1,19 @@
 ## Unreleased
 
+- add `<podcast:alternateEnclosure>` parsing (Podcast Index namespace,
+  item-level, multi-valued), including child `<podcast:source>` (with
+  required `uri` and optional `contentType`) and `<podcast:integrity>`
+  (with required `type` + `value`). Exposed as
+  `item.podcast.alternateEnclosures` (`List<PodcastAlternateEnclosure>`).
+  Wrapper carries all spec attributes — `type`, `length`, `bitrate`,
+  `height`, `lang`, `title`, `rel`, `codecs`, `isDefault` — plus
+  `sources` (`List<PodcastEnclosureSource>`) and `integrity`
+  (`List<PodcastIntegrity>`, multiple captured for liberal parsing so
+  consumers supporting only `sri` or only `pgp-signature` find a usable
+  entry). Wrappers with no valid `<podcast:source>` child are skipped;
+  invalid `<podcast:source>` / `<podcast:integrity>` children are
+  dropped individually. Surface kept distinct from RSS `item.enclosures`
+  (no back-fill, no merge).
 - add `<podcast:podroll>` parsing (Podcast Index namespace, channel-level,
   single). Exposed as `feed.podcast.podroll` (`PodcastPodroll?`) wrapping
   one or more `PodcastRemoteItem` children in source order. Last tag wins

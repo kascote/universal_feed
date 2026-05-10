@@ -1,0 +1,15 @@
+<!--
+Description: one source has uri="", another has a valid uri
+Expect:      wrapper kept, sources.length==1, surviving source has the valid uri
+-->
+<rss xmlns:podcast="https://podcastindex.org/namespace/1.0">
+<channel>
+<item>
+<title>Episode 1</title>
+<podcast:alternateEnclosure type="audio/mpeg">
+  <podcast:source uri="" />
+  <podcast:source uri="https://example.com/file.mp3" />
+</podcast:alternateEnclosure>
+</item>
+</channel>
+</rss>

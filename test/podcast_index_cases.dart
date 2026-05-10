@@ -789,5 +789,120 @@ Map<String, TestFx> podcastIndexTests() {
       final p = r.podcast?.publisher;
       return p != null && p.remoteItem.feedGuid == 'second-tag-guid';
     },
+    'item_alternate_enclosure_full.xml': (r) {
+      final aes = r.items.first.podcast?.alternateEnclosures ?? const [];
+      if (aes.length != 1) return false;
+      final ae = aes.first;
+      return ae.type == 'audio/mpeg' &&
+          ae.length == '43200000' &&
+          ae.bitrate == '128000' &&
+          ae.height == '1080' &&
+          ae.lang == 'en-US' &&
+          ae.title == 'Standard' &&
+          ae.rel == 'default' &&
+          ae.codecs == 'mp4a.40.2' &&
+          (ae.isDefault ?? false) &&
+          ae.sources.length == 2 &&
+          ae.sources[0].uri == 'https://example.com/file-0.mp3' &&
+          ae.sources[1].uri == 'ipfs://Qm…' &&
+          ae.integrity.length == 1 &&
+          ae.integrity.first.type == 'sri' &&
+          ae.integrity.first.value == 'sha384-ABC';
+    },
+    'item_alternate_enclosure_minimal.xml': (r) {
+      final aes = r.items.first.podcast?.alternateEnclosures ?? const [];
+      if (aes.length != 1) return false;
+      final ae = aes.first;
+      return ae.type == 'audio/mpeg' &&
+          ae.sources.length == 1 &&
+          ae.length == null &&
+          ae.bitrate == null &&
+          ae.height == null &&
+          ae.lang == null &&
+          ae.title == null &&
+          ae.rel == null &&
+          ae.codecs == null &&
+          ae.isDefault == null &&
+          ae.integrity.isEmpty;
+    },
+    'item_alternate_enclosure_multiple.xml': (r) {
+      final aes = r.items.first.podcast?.alternateEnclosures ?? const [];
+      return aes.length == 3 && aes[0].bitrate == '128000' && aes[1].bitrate == '96000' && aes[2].bitrate == '16000';
+    },
+    'item_alternate_enclosure_no_source.xml': (r) => (r.items.first.podcast?.alternateEnclosures ?? const []).isEmpty,
+    'item_alternate_enclosure_empty_uri.xml': (r) {
+      final aes = r.items.first.podcast?.alternateEnclosures ?? const [];
+      return aes.length == 1 &&
+          aes.first.sources.length == 1 &&
+          aes.first.sources.first.uri == 'https://example.com/file.mp3';
+    },
+    'item_alternate_enclosure_all_sources_invalid.xml': (r) =>
+        (r.items.first.podcast?.alternateEnclosures ?? const []).isEmpty,
+    'item_alternate_enclosure_no_type.xml': (r) {
+      final aes = r.items.first.podcast?.alternateEnclosures ?? const [];
+      return aes.length == 1 && aes.first.type == null && aes.first.sources.length == 1;
+    },
+    'item_alternate_enclosure_default_true.xml': (r) {
+      final aes = r.items.first.podcast?.alternateEnclosures ?? const [];
+      return aes.length == 1 && (aes.first.isDefault ?? false);
+    },
+    'item_alternate_enclosure_default_false.xml': (r) {
+      final aes = r.items.first.podcast?.alternateEnclosures ?? const [];
+      return aes.length == 1 && aes.first.isDefault == false;
+    },
+    'item_alternate_enclosure_default_garbage.xml': (r) {
+      final aes = r.items.first.podcast?.alternateEnclosures ?? const [];
+      return aes.length == 1 && aes.first.isDefault == null;
+    },
+    'item_alternate_enclosure_integrity_sri.xml': (r) {
+      final aes = r.items.first.podcast?.alternateEnclosures ?? const [];
+      if (aes.length != 1) return false;
+      final ae = aes.first;
+      return ae.integrity.length == 1 && ae.integrity.first.type == 'sri' && ae.integrity.first.value.isNotEmpty;
+    },
+    'item_alternate_enclosure_integrity_pgp.xml': (r) {
+      final aes = r.items.first.podcast?.alternateEnclosures ?? const [];
+      if (aes.length != 1) return false;
+      final ae = aes.first;
+      return ae.integrity.length == 1 && ae.integrity.first.type == 'pgp-signature';
+    },
+    'item_alternate_enclosure_integrity_missing_type.xml': (r) {
+      final aes = r.items.first.podcast?.alternateEnclosures ?? const [];
+      if (aes.length != 1) return false;
+      final ae = aes.first;
+      return ae.integrity.isEmpty && ae.sources.isNotEmpty;
+    },
+    'item_alternate_enclosure_integrity_missing_value.xml': (r) {
+      final aes = r.items.first.podcast?.alternateEnclosures ?? const [];
+      return aes.length == 1 && aes.first.integrity.isEmpty;
+    },
+    'item_alternate_enclosure_integrity_multiple_types.xml': (r) {
+      final aes = r.items.first.podcast?.alternateEnclosures ?? const [];
+      if (aes.length != 1) return false;
+      final ae = aes.first;
+      return ae.integrity.length == 2 && ae.integrity[0].type == 'sri' && ae.integrity[1].type == 'pgp-signature';
+    },
+    'item_alternate_enclosure_integrity_partial_invalid.xml': (r) {
+      final aes = r.items.first.podcast?.alternateEnclosures ?? const [];
+      if (aes.length != 1) return false;
+      final ae = aes.first;
+      return ae.integrity.length == 1 && ae.integrity.first.type == 'sri';
+    },
+    'item_alternate_enclosure_source_content_type.xml': (r) {
+      final aes = r.items.first.podcast?.alternateEnclosures ?? const [];
+      if (aes.length != 1) return false;
+      final ae = aes.first;
+      if (ae.sources.length != 2) return false;
+      return ae.sources[0].contentType == null && ae.sources[1].contentType == 'application/x-bittorrent';
+    },
+    'item_alternate_enclosure_alongside_enclosure.xml': (r) {
+      final item = r.items.first;
+      final aes = item.podcast?.alternateEnclosures ?? const [];
+      return item.enclosures.isNotEmpty && aes.length == 1 && aes.first.sources.length == 2;
+    },
+    'item_alternate_enclosure_float_bitrate.xml': (r) {
+      final aes = r.items.first.podcast?.alternateEnclosures ?? const [];
+      return aes.length == 1 && aes.first.bitrate == '160707.74';
+    },
   };
 }

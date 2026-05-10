@@ -1,0 +1,16 @@
+<!--
+Description: standard <enclosure> coexists with <podcast:alternateEnclosure>
+Expect:      both surfaces populated independently (item.enclosures + alternateEnclosures)
+-->
+<rss xmlns:podcast="https://podcastindex.org/namespace/1.0">
+<channel>
+<item>
+<title>Episode 1</title>
+<enclosure url="https://example.com/file-0.mp3" length="43200000" type="audio/mpeg" />
+<podcast:alternateEnclosure type="audio/mpeg" length="43200000" bitrate="128000" default="true">
+  <podcast:source uri="https://example.com/file-0.mp3" />
+  <podcast:source uri="ipfs://Qm…" />
+</podcast:alternateEnclosure>
+</item>
+</channel>
+</rss>

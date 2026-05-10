@@ -95,3 +95,4 @@ future follow-up specs.
 | socialInteracts |       | podcast:socialInteract |
 | chat          |         | podcast:chat       |
 | images        |         | podcast:image      |
+| alternateEnclosures |   | podcast:alternateEnclosure |

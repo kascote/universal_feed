@@ -1,0 +1,15 @@
+<!--
+Description: integrity child with type="pgp-signature"
+Expect:      integrity.length==1, integrity.first.type == "pgp-signature"
+-->
+<rss xmlns:podcast="https://podcastindex.org/namespace/1.0">
+<channel>
+<item>
+<title>Episode 1</title>
+<podcast:alternateEnclosure type="audio/mpeg">
+  <podcast:source uri="https://example.com/file.mp3" />
+  <podcast:integrity type="pgp-signature" value="iQEzBAABCAAdFiEEbase64base64base64=" />
+</podcast:alternateEnclosure>
+</item>
+</channel>
+</rss>

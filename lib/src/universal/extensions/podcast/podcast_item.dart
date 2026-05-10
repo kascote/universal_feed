@@ -107,6 +107,16 @@ class PodcastItem {
   /// See https://github.com/Podcastindex-org/podcast-namespace/blob/main/docs/tags/image.md
   List<PodcastImage> images = [];
 
+  /// Alternate media variants from `<podcast:alternateEnclosure>`
+  /// (Podcast Index namespace). Preserves source order. Empty when
+  /// absent. Each entry has a non-empty
+  /// [PodcastAlternateEnclosure.sources]; wrappers without any valid
+  /// `<podcast:source>` child are skipped at parse time. Distinct from
+  /// the standard RSS [Item.enclosures] surface — kept separate (no
+  /// back-fill, no merge).
+  /// See https://github.com/Podcastindex-org/podcast-namespace/blob/main/docs/tags/alternate-enclosure.md
+  List<PodcastAlternateEnclosure> alternateEnclosures = [];
+
   /// Creates a new empty [PodcastItem]
   PodcastItem();
 }

@@ -1,0 +1,16 @@
+<!--
+Description: two integrity children — one valid sri + one missing value
+Expect:      integrity.length==1 (only the valid one), type == "sri"
+-->
+<rss xmlns:podcast="https://podcastindex.org/namespace/1.0">
+<channel>
+<item>
+<title>Episode 1</title>
+<podcast:alternateEnclosure type="audio/mpeg">
+  <podcast:source uri="https://example.com/file.mp3" />
+  <podcast:integrity type="sri" value="sha384-OK" />
+  <podcast:integrity type="pgp-signature" />
+</podcast:alternateEnclosure>
+</item>
+</channel>
+</rss>

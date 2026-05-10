@@ -1,0 +1,15 @@
+<!--
+Description: integrity child with type="sri"
+Expect:      integrity.length==1, integrity.first.type == "sri"
+-->
+<rss xmlns:podcast="https://podcastindex.org/namespace/1.0">
+<channel>
+<item>
+<title>Episode 1</title>
+<podcast:alternateEnclosure type="audio/mpeg">
+  <podcast:source uri="https://example.com/file.mp3" />
+  <podcast:integrity type="sri" value="sha384-ExVqijgYHm15PqQqdXfW95x+Rs6C+d6E/ICxyQOeFevnxNLR/wtJNrNYTjIysUBo" />
+</podcast:alternateEnclosure>
+</item>
+</channel>
+</rss>

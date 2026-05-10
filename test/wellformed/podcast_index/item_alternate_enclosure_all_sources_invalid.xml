@@ -1,0 +1,16 @@
+<!--
+Description: every <podcast:source> child is missing or has empty uri
+Expect:      wrapper skipped (alternateEnclosures.isEmpty)
+-->
+<rss xmlns:podcast="https://podcastindex.org/namespace/1.0">
+<channel>
+<item>
+<title>Episode 1</title>
+<podcast:alternateEnclosure type="audio/mpeg">
+  <podcast:source />
+  <podcast:source uri="" />
+  <podcast:source uri="   " />
+</podcast:alternateEnclosure>
+</item>
+</channel>
+</rss>

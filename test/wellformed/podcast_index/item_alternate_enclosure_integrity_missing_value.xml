@@ -1,0 +1,15 @@
+<!--
+Description: integrity child missing required `value` attribute
+Expect:      integrity entry skipped → integrity.isEmpty
+-->
+<rss xmlns:podcast="https://podcastindex.org/namespace/1.0">
+<channel>
+<item>
+<title>Episode 1</title>
+<podcast:alternateEnclosure type="audio/mpeg">
+  <podcast:source uri="https://example.com/file.mp3" />
+  <podcast:integrity type="sri" />
+</podcast:alternateEnclosure>
+</item>
+</channel>
+</rss>

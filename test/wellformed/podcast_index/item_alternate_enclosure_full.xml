@@ -1,0 +1,25 @@
+<!--
+Description: alternateEnclosure with all wrapper attrs + 2 sources (one w/ contentType) + 1 integrity
+Expect:      one wrapper, all attrs populated, 2 sources, 1 integrity (sri)
+-->
+<rss xmlns:podcast="https://podcastindex.org/namespace/1.0">
+<channel>
+<item>
+<title>Episode 1</title>
+<podcast:alternateEnclosure
+  type="audio/mpeg"
+  length="43200000"
+  bitrate="128000"
+  height="1080"
+  lang="en-US"
+  title="Standard"
+  rel="default"
+  codecs="mp4a.40.2"
+  default="true">
+  <podcast:source uri="https://example.com/file-0.mp3" />
+  <podcast:source uri="ipfs://Qm…" />
+  <podcast:integrity type="sri" value="sha384-ABC" />
+</podcast:alternateEnclosure>
+</item>
+</channel>
+</rss>

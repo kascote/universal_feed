@@ -1,0 +1,20 @@
+<!--
+Description: three alternateEnclosure wrappers per item, varying bitrate
+Expect:      list length==3, source order preserved (128000, 96000, 16000)
+-->
+<rss xmlns:podcast="https://podcastindex.org/namespace/1.0">
+<channel>
+<item>
+<title>Episode 1</title>
+<podcast:alternateEnclosure type="audio/mpeg" bitrate="128000">
+  <podcast:source uri="https://example.com/standard.mp3" />
+</podcast:alternateEnclosure>
+<podcast:alternateEnclosure type="audio/opus" bitrate="96000">
+  <podcast:source uri="https://example.com/high.opus" />
+</podcast:alternateEnclosure>
+<podcast:alternateEnclosure type="audio/opus" bitrate="16000">
+  <podcast:source uri="https://example.com/low.opus" />
+</podcast:alternateEnclosure>
+</item>
+</channel>
+</rss>

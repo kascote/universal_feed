@@ -142,6 +142,14 @@ class PodcastItemParser implements ItemExtensionParser {
         ns: namespaceUrl,
       )
       ..forEachElementXml(
+        'alternateEnclosure',
+        (el) {
+          final ae = alternateEnclosureFromXml(el, ns: namespaceUrl);
+          if (ae != null) pi.alternateEnclosures.add(ae);
+        },
+        ns: namespaceUrl,
+      )
+      ..forEachElementXml(
         'transcript',
         (value) {
           final url = value.getAttribute('url')?.trim();

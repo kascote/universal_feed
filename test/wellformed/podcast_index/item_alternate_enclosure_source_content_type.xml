@@ -1,0 +1,15 @@
+<!--
+Description: source with contentType="application/x-bittorrent" alongside a plain source
+Expect:      one source has contentType set, the other is null
+-->
+<rss xmlns:podcast="https://podcastindex.org/namespace/1.0">
+<channel>
+<item>
+<title>Episode 1</title>
+<podcast:alternateEnclosure type="audio/mpeg">
+  <podcast:source uri="https://example.com/file.mp3" />
+  <podcast:source uri="https://example.com/file.torrent" contentType="application/x-bittorrent" />
+</podcast:alternateEnclosure>
+</item>
+</channel>
+</rss>
