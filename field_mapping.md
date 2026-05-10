@@ -81,6 +81,7 @@ future follow-up specs.
 | locations     |         | podcast:location   |
 | chat          |         | podcast:chat       |
 | images        |         | podcast:image      |
+| remoteItems   |         | podcast:remoteItem |
 | ============= | ======= | =================  |
 | ITEM          |         |                    |
 | ------------- | ------- | -----------------  |

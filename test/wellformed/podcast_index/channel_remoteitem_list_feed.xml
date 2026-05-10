@@ -1,0 +1,14 @@
+<!--
+Description: a list feed — channel medium=podcastL with two remoteItem
+             pointers and no <item>s. Verifies the channel-level
+             remoteItem flow.
+Expect:      knownMedium=podcast, mediumIsList=true,
+             remoteItems.length==2, items.isEmpty
+-->
+<rss xmlns:podcast="https://podcastindex.org/namespace/1.0">
+<channel>
+<podcast:medium>podcastL</podcast:medium>
+<podcast:remoteItem feedGuid="guid-a" title="Show A" />
+<podcast:remoteItem feedGuid="guid-b" title="Show B" />
+</channel>
+</rss>

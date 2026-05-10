@@ -1,0 +1,13 @@
+<!--
+Description: podcast:remoteItem with an unrecognized medium value
+Expect:      raw "podverse" preserved, knownMedium=other,
+             mediumIsList=false (no L suffix)
+-->
+<rss xmlns:podcast="https://podcastindex.org/namespace/1.0">
+<channel>
+<podcast:remoteItem
+  feedGuid="917393e3-1b1e-5cef-ace4-edaa54e1f810"
+  medium="podverse"
+/>
+</channel>
+</rss>

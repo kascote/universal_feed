@@ -1,0 +1,12 @@
+<!--
+Description: podcast:remoteItem with medium="musicL" (L list-suffix variant)
+Expect:      knownMedium=music, mediumIsList=true, medium raw preserved
+-->
+<rss xmlns:podcast="https://podcastindex.org/namespace/1.0">
+<channel>
+<podcast:remoteItem
+  feedGuid="917393e3-1b1e-5cef-ace4-edaa54e1f810"
+  medium="musicL"
+/>
+</channel>
+</rss>

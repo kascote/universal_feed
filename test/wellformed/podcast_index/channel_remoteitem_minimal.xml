@@ -1,0 +1,10 @@
+<!--
+Description: podcast:remoteItem with only the required feedGuid
+Expect:      remoteItems.length==1, all optional fields null,
+             knownMedium=absent, mediumIsList=false
+-->
+<rss xmlns:podcast="https://podcastindex.org/namespace/1.0">
+<channel>
+<podcast:remoteItem feedGuid="917393e3-1b1e-5cef-ace4-edaa54e1f810" />
+</channel>
+</rss>

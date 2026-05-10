@@ -1,0 +1,16 @@
+<!--
+Description: podcast:remoteItem at channel level with all five attributes
+Expect:      remoteItems.length==1, every field populated,
+             knownMedium=music, mediumIsList=false
+-->
+<rss xmlns:podcast="https://podcastindex.org/namespace/1.0">
+<channel>
+<podcast:remoteItem
+  feedGuid="917393e3-1b1e-5cef-ace4-edaa54e1f810"
+  feedUrl="https://feeds.example.org/917393e3-1b1e-5cef-ace4-edaa54e1f810/rss.xml"
+  itemGuid="asdf089j0-ep240-20230510"
+  medium="music"
+  title="Here Comes the Sun"
+/>
+</channel>
+</rss>

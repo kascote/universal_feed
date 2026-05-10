@@ -668,5 +668,54 @@ Map<String, TestFx> podcastIndexTests() {
       final imgs = r.items.first.podcast?.images ?? const [];
       return imgs.isEmpty;
     },
+    'channel_remoteitem_full.xml': (r) {
+      final ris = r.podcast?.remoteItems;
+      if (ris == null || ris.length != 1) return false;
+      final ri = ris.first;
+      return ri.feedGuid == '917393e3-1b1e-5cef-ace4-edaa54e1f810' &&
+          ri.feedUrl == 'https://feeds.example.org/917393e3-1b1e-5cef-ace4-edaa54e1f810/rss.xml' &&
+          ri.itemGuid == 'asdf089j0-ep240-20230510' &&
+          ri.medium == 'music' &&
+          ri.knownMedium == PodcastMedium.music &&
+          !ri.mediumIsList &&
+          ri.title == 'Here Comes the Sun';
+    },
+    'channel_remoteitem_minimal.xml': (r) {
+      final ris = r.podcast?.remoteItems;
+      if (ris == null || ris.length != 1) return false;
+      final ri = ris.first;
+      return ri.feedGuid.isNotEmpty &&
+          ri.feedUrl == null &&
+          ri.itemGuid == null &&
+          ri.medium == null &&
+          ri.knownMedium == PodcastMedium.absent &&
+          !ri.mediumIsList &&
+          ri.title == null;
+    },
+    'channel_remoteitem_multiple.xml': (r) {
+      final ris = r.podcast?.remoteItems ?? const [];
+      return ris.length == 3 &&
+          ris[0].feedGuid == 'guid-1' &&
+          ris[1].feedGuid == 'guid-2' &&
+          ris[2].feedGuid == 'guid-3';
+    },
+    'channel_remoteitem_no_feedguid.xml': (r) => (r.podcast?.remoteItems ?? const []).isEmpty,
+    'channel_remoteitem_empty_feedguid.xml': (r) => (r.podcast?.remoteItems ?? const []).isEmpty,
+    'channel_remoteitem_medium_list.xml': (r) {
+      final ri = r.podcast?.remoteItems.firstOrNull;
+      return ri != null && ri.medium == 'musicL' && ri.knownMedium == PodcastMedium.music && ri.mediumIsList;
+    },
+    'channel_remoteitem_medium_unknown.xml': (r) {
+      final ri = r.podcast?.remoteItems.firstOrNull;
+      return ri != null && ri.medium == 'podverse' && ri.knownMedium == PodcastMedium.other && !ri.mediumIsList;
+    },
+    'channel_remoteitem_list_feed.xml': (r) {
+      final pc = r.podcast;
+      return pc != null &&
+          pc.knownMedium == PodcastMedium.podcast &&
+          pc.mediumIsList &&
+          pc.remoteItems.length == 2 &&
+          r.items.isEmpty;
+    },
   };
 }

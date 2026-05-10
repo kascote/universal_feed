@@ -1,5 +1,16 @@
 ## Unreleased
 
+- add `<podcast:remoteItem>` parsing (Podcast Index namespace,
+  channel-level, multi-valued). Exposed as `feed.podcast.remoteItems`
+  (`List<PodcastRemoteItem>`) with required `feedGuid` plus optional
+  `feedUrl`, `itemGuid`, `medium` (raw + `knownMedium` / `mediumIsList`
+  derived via the same logic as `<podcast:medium>`), and `title`.
+  Elements missing `feedGuid` are skipped. The same value class will
+  be reused by upcoming `<podcast:podroll>` / `<podcast:publisher>` /
+  `<podcast:valueTimeSplit>` containers. Refactor: medium parsing
+  lifted from `PodcastChannelParser._parseMedium` into a shared
+  `parseMedium` helper — single source of truth for the `L`-suffix
+  list-variant detection.
 - add `<podcast:image>` parsing (Podcast Index namespace, channel- and
   item-level, multi-valued). Exposed as `feed.podcast.images` and
   `item.podcast.images` (`List<PodcastImage>`), each with `href`,

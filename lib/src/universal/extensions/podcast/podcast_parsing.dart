@@ -64,6 +64,53 @@ PodcastLicense licenseFromXml(XmlElement el) {
   );
 }
 
+/// Parses a raw `<podcast:medium>` body (or the `medium` attribute on
+/// `<podcast:remoteItem>`) into a `(known enum, isList)` tuple.
+/// Returns `(PodcastMedium.other, false)` for unrecognized bases. The
+/// `L` list-suffix is detected case-sensitively per spec.
+(PodcastMedium, bool) parseMedium(String raw) {
+  final hasListSuffix = raw.endsWith('L');
+  final base = hasListSuffix ? raw.substring(0, raw.length - 1).toLowerCase() : raw.toLowerCase();
+  final known = switch (base) {
+    'podcast' => PodcastMedium.podcast,
+    'music' => PodcastMedium.music,
+    'video' => PodcastMedium.video,
+    'film' => PodcastMedium.film,
+    'audiobook' => PodcastMedium.audiobook,
+    'newsletter' => PodcastMedium.newsletter,
+    'blog' => PodcastMedium.blog,
+    'publisher' => PodcastMedium.publisher,
+    'course' => PodcastMedium.course,
+    'mixed' => PodcastMedium.mixed,
+    _ => PodcastMedium.other,
+  };
+  return (known, hasListSuffix);
+}
+
+/// Parses a `<podcast:remoteItem>` element into a [PodcastRemoteItem].
+/// Returns `null` when the required `feedGuid` attribute is absent or
+/// empty — caller skips such entries.
+PodcastRemoteItem? remoteItemFromXml(XmlElement el) {
+  final feedGuid = el.getAttribute('feedGuid')?.trim();
+  if (feedGuid == null || feedGuid.isEmpty) return null;
+  final feedUrl = el.getAttribute('feedUrl')?.trim();
+  final itemGuid = el.getAttribute('itemGuid')?.trim();
+  final medium = el.getAttribute('medium')?.trim();
+  final title = el.getAttribute('title')?.trim();
+  final (known, isList) = (medium == null || medium.isEmpty)
+      ? (PodcastMedium.absent, false)
+      : parseMedium(medium);
+  return PodcastRemoteItem(
+    feedGuid: feedGuid,
+    feedUrl: (feedUrl == null || feedUrl.isEmpty) ? null : feedUrl,
+    itemGuid: (itemGuid == null || itemGuid.isEmpty) ? null : itemGuid,
+    medium: (medium == null || medium.isEmpty) ? null : medium,
+    knownMedium: known,
+    mediumIsList: isList,
+    title: (title == null || title.isEmpty) ? null : title,
+  );
+}
+
 /// Parses a `<podcast:image>` element into a [PodcastImage].
 /// Returns `null` when the required `href` attribute is absent or empty
 /// — caller skips such entries.

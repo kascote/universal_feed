@@ -1,0 +1,12 @@
+<!--
+Description: three podcast:remoteItem entries at channel level
+Expect:      remoteItems.length==3, source order preserved
+             (guid-1, guid-2, guid-3)
+-->
+<rss xmlns:podcast="https://podcastindex.org/namespace/1.0">
+<channel>
+<podcast:remoteItem feedGuid="guid-1" />
+<podcast:remoteItem feedGuid="guid-2" itemGuid="ep-2" />
+<podcast:remoteItem feedGuid="guid-3" title="Third pointer" />
+</channel>
+</rss>

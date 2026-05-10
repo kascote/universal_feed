@@ -46,7 +46,7 @@ class PodcastChannelParser implements ChannelExtensionParser {
         (value) {
           final body = value.innerText.trim();
           if (body.isEmpty) return;
-          final (known, isList) = _parseMedium(body);
+          final (known, isList) = parseMedium(body);
           pc
             ..medium = body
             ..knownMedium = known
@@ -144,6 +144,14 @@ class PodcastChannelParser implements ChannelExtensionParser {
         ns: namespaceUrl,
       )
       ..forEachElementXml(
+        'remoteItem',
+        (el) {
+          final ri = remoteItemFromXml(el);
+          if (ri != null) pc.remoteItems.add(ri);
+        },
+        ns: namespaceUrl,
+      )
+      ..forEachElementXml(
         'trailer',
         (el) {
           final url = el.getAttribute('url')?.trim();
@@ -196,23 +204,4 @@ class PodcastChannelParser implements ChannelExtensionParser {
     'no' => false,
     _ => null,
   };
-
-  (PodcastMedium, bool) _parseMedium(String raw) {
-    final hasListSuffix = raw.endsWith('L');
-    final base = hasListSuffix ? raw.substring(0, raw.length - 1).toLowerCase() : raw.toLowerCase();
-    final known = switch (base) {
-      'podcast' => PodcastMedium.podcast,
-      'music' => PodcastMedium.music,
-      'video' => PodcastMedium.video,
-      'film' => PodcastMedium.film,
-      'audiobook' => PodcastMedium.audiobook,
-      'newsletter' => PodcastMedium.newsletter,
-      'blog' => PodcastMedium.blog,
-      'publisher' => PodcastMedium.publisher,
-      'course' => PodcastMedium.course,
-      'mixed' => PodcastMedium.mixed,
-      _ => PodcastMedium.other,
-    };
-    return (known, hasListSuffix);
-  }
 }

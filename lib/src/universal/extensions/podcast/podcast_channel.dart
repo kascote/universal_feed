@@ -193,6 +193,19 @@ class PodcastChannel {
   /// See https://github.com/Podcastindex-org/podcast-namespace/blob/main/docs/tags/chat.md
   PodcastChat? chat;
 
+  /// Top-level `<podcast:remoteItem>` children of `<channel>` from the
+  /// Podcast Index namespace. Preserves source order. Empty when absent.
+  /// Each entry has a non-empty [PodcastRemoteItem.feedGuid]; elements
+  /// without one are skipped at parse time.
+  ///
+  /// Populated primarily for *list feeds* (feeds whose
+  /// [knownMedium] carries the `L` list-suffix, e.g. `podcastL`,
+  /// `musicL`) — for those feeds, this list *is* the feed's content
+  /// and `feed.items` is typically empty. Not back-filled into
+  /// `feed.items`; the surfaces stay independent.
+  /// See https://github.com/Podcastindex-org/podcast-namespace/blob/main/docs/tags/remote-item.md
+  List<PodcastRemoteItem> remoteItems = [];
+
   /// Rich image variants from `<podcast:image>` (Podcast Index namespace).
   /// Preserves source order. Empty when absent. Each entry has a non-empty
   /// [PodcastImage.href]; elements without one are skipped at parse time.

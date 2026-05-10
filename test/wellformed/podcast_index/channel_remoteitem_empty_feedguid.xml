@@ -1,0 +1,9 @@
+<!--
+Description: podcast:remoteItem with feedGuid="   " (whitespace-only)
+Expect:      element skipped, remoteItems list empty
+-->
+<rss xmlns:podcast="https://podcastindex.org/namespace/1.0">
+<channel>
+<podcast:remoteItem feedGuid="   " title="empty guid" />
+</channel>
+</rss>
