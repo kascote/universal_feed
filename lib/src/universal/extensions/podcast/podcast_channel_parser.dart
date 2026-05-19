@@ -57,25 +57,15 @@ class PodcastChannelParser implements ChannelExtensionParser {
       ..forEachElementXml(
         'podping',
         (value) {
-          final attr = value.getAttribute('usesPodping')?.trim().toLowerCase();
-          pc.podpingUsesPodping = switch (attr) {
-            'true' || 'yes' => true,
-            'false' || 'no' => false,
-            _ => null,
-          };
+          pc.podpingUsesPodping = parseBool(value.getAttribute('usesPodping'));
         },
         ns: namespaceUrl,
       )
       ..forEachElementXml(
         'locked',
         (value) {
-          final body = value.innerText.trim().toLowerCase();
           pc
-            ..locked = switch (body) {
-              'yes' => true,
-              'no' => false,
-              _ => null,
-            }
+            ..locked = parseBool(value.innerText)
             ..lockedOwner = value.getAttribute('owner');
         },
         ns: namespaceUrl,
@@ -85,22 +75,23 @@ class PodcastChannelParser implements ChannelExtensionParser {
         (el) {
           final body = el.innerText.trim();
           if (body.isEmpty) return;
-          final rawId = el.getAttribute('id')?.trim();
-          final id = (rawId == null || rawId.isEmpty) ? null : rawId;
-          final blocked = _parseBlockedValue(body);
-          pc.blocks.add(PodcastBlock(id: id, value: body, blocked: blocked));
+          pc.blocks.add(
+            PodcastBlock(
+              id: trimToNull(el.getAttribute('id')),
+              value: body,
+              blocked: parseBool(body),
+            ),
+          );
         },
         ns: namespaceUrl,
       )
       ..forEachElementXml(
         'funding',
         (el) {
-          final url = el.getAttribute('url')?.trim();
-          final text = el.innerText.trim();
           pc.fundings.add(
             PodcastFunding(
-              url: (url == null || url.isEmpty) ? null : url,
-              text: text.isEmpty ? null : text,
+              url: trimToNull(el.getAttribute('url')),
+              text: trimToNull(el.innerText),
             ),
           );
         },
@@ -178,21 +169,17 @@ class PodcastChannelParser implements ChannelExtensionParser {
       ..forEachElementXml(
         'trailer',
         (el) {
-          final url = el.getAttribute('url')?.trim();
-          if (url == null || url.isEmpty) return;
-          final title = el.innerText.trim();
-          final pubdate = el.getAttribute('pubdate')?.trim();
-          final length = el.getAttribute('length')?.trim();
-          final type = el.getAttribute('type')?.trim();
-          final season = el.getAttribute('season')?.trim();
+          final url = trimToNull(el.getAttribute('url'));
+          if (url == null) return;
+          final pubdate = trimToNull(el.getAttribute('pubdate'));
           pc.trailers.add(
             PodcastTrailer(
               url: url,
-              title: title.isEmpty ? null : title,
-              pubdate: (pubdate == null || pubdate.isEmpty) ? null : Timestamp(pubdate),
-              length: (length == null || length.isEmpty) ? null : length,
-              type: (type == null || type.isEmpty) ? null : type,
-              season: (season == null || season.isEmpty) ? null : season,
+              title: trimToNull(el.innerText),
+              pubdate: pubdate == null ? null : Timestamp(pubdate),
+              length: trimToNull(el.getAttribute('length')),
+              type: trimToNull(el.getAttribute('type')),
+              season: trimToNull(el.getAttribute('season')),
             ),
           );
         },
@@ -202,18 +189,14 @@ class PodcastChannelParser implements ChannelExtensionParser {
         'updateFrequency',
         (el) {
           final description = el.innerText.trim();
-          final complete = switch (el.getAttribute('complete')?.toLowerCase()) {
-            'true' => true,
-            'false' => false,
-            _ => null,
-          };
-          final dtstart = el.getAttribute('dtstart');
-          final rrule = el.getAttribute('rrule');
+          final complete = parseBool(el.getAttribute('complete'));
+          final dtstart = trimToNull(el.getAttribute('dtstart'));
+          final rrule = trimToNull(el.getAttribute('rrule'));
           if (description.isEmpty && complete == null && dtstart == null && rrule == null) return;
           pc.updateFrequency = PodcastUpdateFrequency(
-            description: description.isEmpty ? null : description,
+            description: trimToNull(description),
             complete: complete,
-            dtstart: dtstart,
+            dtstart: dtstart == null ? null : Timestamp(dtstart),
             rrule: rrule,
           );
         },
@@ -222,10 +205,4 @@ class PodcastChannelParser implements ChannelExtensionParser {
 
     feed.podcast = pc;
   }
-
-  bool? _parseBlockedValue(String raw) => switch (raw.toLowerCase()) {
-    'yes' => true,
-    'no' => false,
-    _ => null,
-  };
 }

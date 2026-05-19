@@ -54,11 +54,9 @@ class PodcastItemParser implements ItemExtensionParser {
       ..forEachElementXml(
         'chapters',
         (value) {
-          final url = value.getAttribute('url')?.trim();
-          final type = value.getAttribute('type')?.trim();
           pi.chapters = PodcastChapters(
-            url: (url == null || url.isEmpty) ? null : url,
-            type: (type == null || type.isEmpty) ? null : type,
+            url: trimToNull(value.getAttribute('url')),
+            type: trimToNull(value.getAttribute('type')),
           );
         },
         ns: namespaceUrl,
@@ -103,16 +101,15 @@ class PodcastItemParser implements ItemExtensionParser {
       ..forEachElementXml(
         'soundbite',
         (el) {
-          final startTime = el.getAttribute('startTime')?.trim();
-          if (startTime == null || startTime.isEmpty) return;
-          final duration = el.getAttribute('duration')?.trim();
-          if (duration == null || duration.isEmpty) return;
-          final title = el.innerText.trim();
+          final startTime = trimToNull(el.getAttribute('startTime'));
+          if (startTime == null) return;
+          final duration = trimToNull(el.getAttribute('duration'));
+          if (duration == null) return;
           pi.soundbites.add(
             PodcastSoundbite(
               startTime: startTime,
               duration: duration,
-              title: title.isEmpty ? null : title,
+              title: trimToNull(el.innerText),
             ),
           );
         },
@@ -121,21 +118,17 @@ class PodcastItemParser implements ItemExtensionParser {
       ..forEachElementXml(
         'socialInteract',
         (el) {
-          final protocol = el.getAttribute('protocol')?.trim();
-          if (protocol == null || protocol.isEmpty) return;
-          final uri = el.getAttribute('uri')?.trim();
-          final hasUri = uri != null && uri.isNotEmpty;
-          if (!hasUri && protocol != 'disabled') return;
-          final accountId = el.getAttribute('accountId')?.trim();
-          final accountUrl = el.getAttribute('accountUrl')?.trim();
-          final priority = el.getAttribute('priority')?.trim();
+          final protocol = trimToNull(el.getAttribute('protocol'));
+          if (protocol == null) return;
+          final uri = trimToNull(el.getAttribute('uri'));
+          if (uri == null && protocol != 'disabled') return;
           pi.socialInteracts.add(
             PodcastSocialInteract(
               protocol: protocol,
-              uri: hasUri ? uri : null,
-              accountId: (accountId == null || accountId.isEmpty) ? null : accountId,
-              accountUrl: (accountUrl == null || accountUrl.isEmpty) ? null : accountUrl,
-              priority: (priority == null || priority.isEmpty) ? null : priority,
+              uri: uri,
+              accountId: trimToNull(el.getAttribute('accountId')),
+              accountUrl: trimToNull(el.getAttribute('accountUrl')),
+              priority: trimToNull(el.getAttribute('priority')),
             ),
           );
         },
@@ -168,17 +161,14 @@ class PodcastItemParser implements ItemExtensionParser {
       ..forEachElementXml(
         'transcript',
         (value) {
-          final url = value.getAttribute('url')?.trim();
-          final type = value.getAttribute('type')?.trim();
-          final language = value.getAttribute('language')?.trim();
-          final rel = value.getAttribute('rel')?.trim();
+          final type = trimToNull(value.getAttribute('type'));
           pi.transcripts.add(
             PodcastTranscript(
-              url: (url == null || url.isEmpty) ? null : url,
-              type: (type == null || type.isEmpty) ? null : type,
+              url: trimToNull(value.getAttribute('url')),
+              type: type,
               knownType: _parseTranscriptType(type),
-              language: (language == null || language.isEmpty) ? null : language,
-              rel: (rel == null || rel.isEmpty) ? null : rel,
+              language: trimToNull(value.getAttribute('language')),
+              rel: trimToNull(value.getAttribute('rel')),
             ),
           );
         },

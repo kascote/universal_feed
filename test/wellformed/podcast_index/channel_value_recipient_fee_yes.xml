@@ -1,0 +1,11 @@
+<!--
+Description: recipient fee='yes' (liberal: not in spec but accepted)
+Expect:      recipients[0].fee == true
+-->
+<rss xmlns:podcast="https://podcastindex.org/namespace/1.0">
+<channel>
+<podcast:value type="lightning" method="keysend">
+  <podcast:valueRecipient type="node" address="03abc" split="100" fee="yes" />
+</podcast:value>
+</channel>
+</rss>

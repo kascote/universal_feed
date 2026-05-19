@@ -1,0 +1,13 @@
+<!--
+Description: item alternateEnclosure default='yes' (liberal: not in spec but accepted)
+Expect:      ae.isDefault == true
+-->
+<rss xmlns:podcast="https://podcastindex.org/namespace/1.0">
+<channel>
+<item>
+<podcast:alternateEnclosure type="audio/mpeg" default="yes">
+  <podcast:source uri="https://example.com/ep1.mp3"/>
+</podcast:alternateEnclosure>
+</item>
+</channel>
+</rss>

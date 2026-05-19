@@ -165,6 +165,10 @@ Map<String, TestFx> podcastIndexTests() {
       final pc = r.podcast;
       return pc != null && pc.podpingUsesPodping == null;
     },
+    'channel_podping_on.xml': (r) {
+      final pc = r.podcast;
+      return pc != null && (pc.podpingUsesPodping ?? false);
+    },
     'channel_no_podping.xml': (r) {
       final pc = r.podcast;
       return pc != null && pc.podpingUsesPodping == null;
@@ -184,6 +188,10 @@ Map<String, TestFx> podcastIndexTests() {
     'channel_locked_empty.xml': (r) {
       final pc = r.podcast;
       return pc != null && pc.locked == null;
+    },
+    'channel_locked_true.xml': (r) {
+      final pc = r.podcast;
+      return pc != null && (pc.locked ?? false);
     },
     'channel_no_locked.xml': (r) {
       final pc = r.podcast;
@@ -228,6 +236,10 @@ Map<String, TestFx> podcastIndexTests() {
       final blocks = r.podcast?.blocks;
       return blocks != null && blocks.length == 1 && blocks[0].value == 'maybe' && blocks[0].blocked == null;
     },
+    'channel_block_one.xml': (r) {
+      final blocks = r.podcast?.blocks;
+      return blocks != null && blocks.length == 1 && blocks[0].value == '1' && (blocks[0].blocked ?? false);
+    },
     'channel_block_empty_body.xml': (r) => r.podcast?.blocks.isEmpty ?? false,
     'channel_block_whitespace_body.xml': (r) => r.podcast?.blocks.isEmpty ?? false,
     'channel_block_id_whitespace.xml': (r) {
@@ -243,7 +255,7 @@ Map<String, TestFx> podcastIndexTests() {
       return uf != null &&
           uf.description == 'Weekly on Thursdays' &&
           uf.complete == false &&
-          uf.dtstart == '2021-10-07T00:00:00.000Z' &&
+          uf.dtstart?.value == '2021-10-07T00:00:00.000Z' &&
           uf.rrule == 'FREQ=WEEKLY;BYDAY=TH';
     },
     'channel_update_frequency_minimal.xml': (r) {
@@ -253,6 +265,10 @@ Map<String, TestFx> podcastIndexTests() {
     'channel_update_frequency_complete.xml': (r) {
       final uf = r.podcast?.updateFrequency;
       return uf != null && (uf.complete ?? false) && uf.rrule == null && uf.dtstart == null;
+    },
+    'channel_update_frequency_complete_yes.xml': (r) {
+      final uf = r.podcast?.updateFrequency;
+      return uf != null && (uf.complete ?? false);
     },
     'channel_update_frequency_empty.xml': (r) {
       return r.podcast != null && r.podcast?.updateFrequency == null;
@@ -846,6 +862,10 @@ Map<String, TestFx> podcastIndexTests() {
       final aes = r.items.first.podcast?.alternateEnclosures ?? const [];
       return aes.length == 1 && (aes.first.isDefault ?? false);
     },
+    'item_alternate_enclosure_default_yes.xml': (r) {
+      final aes = r.items.first.podcast?.alternateEnclosures ?? const [];
+      return aes.length == 1 && (aes.first.isDefault ?? false);
+    },
     'item_alternate_enclosure_default_false.xml': (r) {
       final aes = r.items.first.podcast?.alternateEnclosures ?? const [];
       return aes.length == 1 && aes.first.isDefault == false;
@@ -944,6 +964,7 @@ Map<String, TestFx> podcastIndexTests() {
       return vs.length == 2 && vs[0].type == 'lightning' && vs[1].type == 'webmonetization';
     },
     'channel_value_recipient_fee_true.xml': (r) => r.podcast?.values.first.recipients.first.fee ?? false,
+    'channel_value_recipient_fee_yes.xml': (r) => r.podcast?.values.first.recipients.first.fee ?? false,
     'channel_value_recipient_fee_false.xml': (r) {
       final fee = r.podcast?.values.first.recipients.first.fee;
       return fee != null && !fee;

@@ -1,3 +1,5 @@
+import '../../../../universal_feed.dart';
+
 /// Parsed `<podcast:updateFrequency>` tag from the Podcast Index namespace.
 ///
 /// Spec: https://github.com/Podcastindex-org/podcast-namespace/blob/main/docs/1.0.md#update-frequency
@@ -10,9 +12,9 @@ class PodcastUpdateFrequency {
   /// Null when the `complete` attribute was absent or not a recognized boolean.
   final bool? complete;
 
-  /// ISO 8601 datetime string from the `dtstart` attribute.
-  /// Stored raw; callers parse as needed.
-  final String? dtstart;
+  /// ISO 8601 datetime from the `dtstart` attribute, wrapped in [Timestamp].
+  /// Null when the attribute was absent or empty.
+  final Timestamp? dtstart;
 
   /// iCalendar RRULE string from the `rrule` attribute.
   /// Stored raw; callers parse as needed.

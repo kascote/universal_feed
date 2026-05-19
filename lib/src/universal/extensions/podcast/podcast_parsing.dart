@@ -13,22 +13,46 @@ import '../../../shared/extensions.dart';
 /// * All attribute / body extraction trims whitespace and treats empty →
 ///   `null`.
 
+/// Trims [s] and returns `null` when null or blank-after-trim; otherwise
+/// returns the trimmed value. The trim happens inside so callers don't
+/// have to remember to do it.
+String? trimToNull(String? s) {
+  if (s == null) return null;
+  final t = s.trim();
+  return t.isEmpty ? null : t;
+}
+
+/// Liberal boolean parser for podcast-namespace attributes/bodies.
+///
+/// Accepts (case-insensitive, trimmed):
+/// * `true`, `yes`, `on`, `1` → `true`
+/// * `false`, `no`, `off`, `0` → `false`
+///
+/// Returns `null` for null/empty input or any other token. The spec for
+/// any given field nominally allows only one pair (e.g. `yes`/`no` for
+/// `<podcast:locked>`), but real-world feeds mix forms — this matches
+/// the library's liberal-parsing stance.
+bool? parseBool(String? raw) {
+  if (raw == null) return null;
+  return switch (raw.trim().toLowerCase()) {
+    'true' || 'yes' || 'on' || '1' => true,
+    'false' || 'no' || 'off' || '0' => false,
+    _ => null,
+  };
+}
+
 /// Parses a `<podcast:person>` element into a [PodcastPerson].
 /// Returns `null` when the body (the person's name) is absent or empty —
 /// caller skips such entries.
 PodcastPerson? personFromXml(XmlElement el) {
   final name = el.innerText.trim();
   if (name.isEmpty) return null;
-  final role = el.getAttribute('role')?.trim();
-  final group = el.getAttribute('group')?.trim();
-  final img = el.getAttribute('img')?.trim();
-  final href = el.getAttribute('href')?.trim();
   return PodcastPerson(
     name: name,
-    role: (role == null || role.isEmpty) ? null : role,
-    group: (group == null || group.isEmpty) ? null : group,
-    img: (img == null || img.isEmpty) ? null : img,
-    href: (href == null || href.isEmpty) ? null : href,
+    role: trimToNull(el.getAttribute('role')),
+    group: trimToNull(el.getAttribute('group')),
+    img: trimToNull(el.getAttribute('img')),
+    href: trimToNull(el.getAttribute('href')),
   );
 }
 
@@ -38,16 +62,12 @@ PodcastPerson? personFromXml(XmlElement el) {
 PodcastLocation? locationFromXml(XmlElement el) {
   final text = el.innerText.trim();
   if (text.isEmpty) return null;
-  final rel = el.getAttribute('rel')?.trim();
-  final geo = el.getAttribute('geo')?.trim();
-  final osm = el.getAttribute('osm')?.trim();
-  final country = el.getAttribute('country')?.trim();
   return PodcastLocation(
     text: text,
-    rel: (rel == null || rel.isEmpty) ? null : rel,
-    geo: (geo == null || geo.isEmpty) ? null : geo,
-    osm: (osm == null || osm.isEmpty) ? null : osm,
-    country: (country == null || country.isEmpty) ? null : country,
+    rel: trimToNull(el.getAttribute('rel')),
+    geo: trimToNull(el.getAttribute('geo')),
+    osm: trimToNull(el.getAttribute('osm')),
+    country: trimToNull(el.getAttribute('country')),
   );
 }
 
@@ -55,13 +75,10 @@ PodcastLocation? locationFromXml(XmlElement el) {
 /// Always returns a non-null instance; absent attributes / empty body
 /// surface as `null` fields on the result.
 PodcastLicense licenseFromXml(XmlElement el) {
-  final spdx = el.getAttribute('spdx')?.trim();
-  final url = el.getAttribute('url')?.trim();
-  final text = el.innerText.trim();
   return PodcastLicense(
-    spdx: (spdx == null || spdx.isEmpty) ? null : spdx,
-    url: (url == null || url.isEmpty) ? null : url,
-    text: text.isEmpty ? null : text,
+    spdx: trimToNull(el.getAttribute('spdx')),
+    url: trimToNull(el.getAttribute('url')),
+    text: trimToNull(el.innerText),
   );
 }
 
@@ -92,21 +109,18 @@ PodcastLicense licenseFromXml(XmlElement el) {
 /// Returns `null` when the required `feedGuid` attribute is absent or
 /// empty — caller skips such entries.
 PodcastRemoteItem? remoteItemFromXml(XmlElement el) {
-  final feedGuid = el.getAttribute('feedGuid')?.trim();
-  if (feedGuid == null || feedGuid.isEmpty) return null;
-  final feedUrl = el.getAttribute('feedUrl')?.trim();
-  final itemGuid = el.getAttribute('itemGuid')?.trim();
-  final medium = el.getAttribute('medium')?.trim();
-  final title = el.getAttribute('title')?.trim();
-  final (known, isList) = (medium == null || medium.isEmpty) ? (PodcastMedium.absent, false) : parseMedium(medium);
+  final feedGuid = trimToNull(el.getAttribute('feedGuid'));
+  if (feedGuid == null) return null;
+  final medium = trimToNull(el.getAttribute('medium'));
+  final (known, isList) = medium == null ? (PodcastMedium.absent, false) : parseMedium(medium);
   return PodcastRemoteItem(
     feedGuid: feedGuid,
-    feedUrl: (feedUrl == null || feedUrl.isEmpty) ? null : feedUrl,
-    itemGuid: (itemGuid == null || itemGuid.isEmpty) ? null : itemGuid,
-    medium: (medium == null || medium.isEmpty) ? null : medium,
+    feedUrl: trimToNull(el.getAttribute('feedUrl')),
+    itemGuid: trimToNull(el.getAttribute('itemGuid')),
+    medium: medium,
     knownMedium: known,
     mediumIsList: isList,
-    title: (title == null || title.isEmpty) ? null : title,
+    title: trimToNull(el.getAttribute('title')),
   );
 }
 
@@ -114,25 +128,20 @@ PodcastRemoteItem? remoteItemFromXml(XmlElement el) {
 /// Returns `null` when the required `href` attribute is absent or empty
 /// — caller skips such entries.
 PodcastImage? imageFromXml(XmlElement el) {
-  final href = el.getAttribute('href')?.trim();
-  if (href == null || href.isEmpty) return null;
-  final alt = el.getAttribute('alt')?.trim();
-  final aspectRatio = el.getAttribute('aspect-ratio')?.trim();
-  final width = el.getAttribute('width')?.trim();
-  final height = el.getAttribute('height')?.trim();
-  final type = el.getAttribute('type')?.trim();
-  final purpose = el.getAttribute('purpose')?.trim();
-  final tokens = (purpose == null || purpose.isEmpty)
+  final href = trimToNull(el.getAttribute('href'));
+  if (href == null) return null;
+  final purpose = trimToNull(el.getAttribute('purpose'));
+  final tokens = purpose == null
       ? const <String>[]
       : purpose.split(RegExp(r'\s+')).where((t) => t.isNotEmpty).map((t) => t.toLowerCase()).toList(growable: false);
   return PodcastImage(
     href: href,
-    alt: (alt == null || alt.isEmpty) ? null : alt,
-    aspectRatio: (aspectRatio == null || aspectRatio.isEmpty) ? null : aspectRatio,
-    width: (width == null || width.isEmpty) ? null : width,
-    height: (height == null || height.isEmpty) ? null : height,
-    type: (type == null || type.isEmpty) ? null : type,
-    purpose: (purpose == null || purpose.isEmpty) ? null : purpose,
+    alt: trimToNull(el.getAttribute('alt')),
+    aspectRatio: trimToNull(el.getAttribute('aspect-ratio')),
+    width: trimToNull(el.getAttribute('width')),
+    height: trimToNull(el.getAttribute('height')),
+    type: trimToNull(el.getAttribute('type')),
+    purpose: purpose,
     purposeTokens: tokens,
   );
 }
@@ -178,12 +187,11 @@ PodcastPublisher? publisherFromXml(XmlElement el, {required String ns}) {
 /// Returns `null` when the required `uri` attribute is missing or
 /// empty after trimming — caller skips such entries.
 PodcastEnclosureSource? enclosureSourceFromXml(XmlElement el) {
-  final uri = el.getAttribute('uri')?.trim();
-  if (uri == null || uri.isEmpty) return null;
-  final contentType = el.getAttribute('contentType')?.trim();
+  final uri = trimToNull(el.getAttribute('uri'));
+  if (uri == null) return null;
   return PodcastEnclosureSource(
     uri: uri,
-    contentType: (contentType == null || contentType.isEmpty) ? null : contentType,
+    contentType: trimToNull(el.getAttribute('contentType')),
   );
 }
 
@@ -191,10 +199,10 @@ PodcastEnclosureSource? enclosureSourceFromXml(XmlElement el) {
 /// Returns `null` when either required attribute (`type`, `value`) is
 /// missing or empty after trimming — caller skips such entries.
 PodcastIntegrity? integrityFromXml(XmlElement el) {
-  final type = el.getAttribute('type')?.trim();
-  if (type == null || type.isEmpty) return null;
-  final value = el.getAttribute('value')?.trim();
-  if (value == null || value.isEmpty) return null;
+  final type = trimToNull(el.getAttribute('type'));
+  if (type == null) return null;
+  final value = trimToNull(el.getAttribute('value'));
+  if (value == null) return null;
   return PodcastIntegrity(type: type, value: value);
 }
 
@@ -225,32 +233,18 @@ PodcastAlternateEnclosure? alternateEnclosureFromXml(XmlElement el, {required St
     ns: ns,
   );
 
-  final type = el.getAttribute('type')?.trim();
-  final length = el.getAttribute('length')?.trim();
-  final bitrate = el.getAttribute('bitrate')?.trim();
-  final height = el.getAttribute('height')?.trim();
-  final lang = el.getAttribute('lang')?.trim();
-  final title = el.getAttribute('title')?.trim();
-  final rel = el.getAttribute('rel')?.trim();
-  final codecs = el.getAttribute('codecs')?.trim();
-  final isDefault = switch (el.getAttribute('default')?.trim().toLowerCase()) {
-    'true' => true,
-    'false' => false,
-    _ => null,
-  };
-
   return PodcastAlternateEnclosure(
     sources: sources,
     integrity: integrity,
-    type: (type == null || type.isEmpty) ? null : type,
-    length: (length == null || length.isEmpty) ? null : length,
-    bitrate: (bitrate == null || bitrate.isEmpty) ? null : bitrate,
-    height: (height == null || height.isEmpty) ? null : height,
-    lang: (lang == null || lang.isEmpty) ? null : lang,
-    title: (title == null || title.isEmpty) ? null : title,
-    rel: (rel == null || rel.isEmpty) ? null : rel,
-    codecs: (codecs == null || codecs.isEmpty) ? null : codecs,
-    isDefault: isDefault,
+    type: trimToNull(el.getAttribute('type')),
+    length: trimToNull(el.getAttribute('length')),
+    bitrate: trimToNull(el.getAttribute('bitrate')),
+    height: trimToNull(el.getAttribute('height')),
+    lang: trimToNull(el.getAttribute('lang')),
+    title: trimToNull(el.getAttribute('title')),
+    rel: trimToNull(el.getAttribute('rel')),
+    codecs: trimToNull(el.getAttribute('codecs')),
+    isDefault: parseBool(el.getAttribute('default')),
   );
 }
 
@@ -258,28 +252,20 @@ PodcastAlternateEnclosure? alternateEnclosureFromXml(XmlElement el, {required St
 /// [PodcastValueRecipient]. Returns `null` when any required attribute
 /// (`type`, `address`, `split`) is missing or empty after trimming.
 PodcastValueRecipient? valueRecipientFromXml(XmlElement el) {
-  final type = el.getAttribute('type')?.trim();
-  if (type == null || type.isEmpty) return null;
-  final address = el.getAttribute('address')?.trim();
-  if (address == null || address.isEmpty) return null;
-  final split = el.getAttribute('split')?.trim();
-  if (split == null || split.isEmpty) return null;
-  final name = el.getAttribute('name')?.trim();
-  final customKey = el.getAttribute('customKey')?.trim();
-  final customValue = el.getAttribute('customValue')?.trim();
-  final fee = switch (el.getAttribute('fee')?.trim().toLowerCase()) {
-    'true' => true,
-    'false' => false,
-    _ => null,
-  };
+  final type = trimToNull(el.getAttribute('type'));
+  if (type == null) return null;
+  final address = trimToNull(el.getAttribute('address'));
+  if (address == null) return null;
+  final split = trimToNull(el.getAttribute('split'));
+  if (split == null) return null;
   return PodcastValueRecipient(
     type: type,
     address: address,
     split: split,
-    name: (name == null || name.isEmpty) ? null : name,
-    customKey: (customKey == null || customKey.isEmpty) ? null : customKey,
-    customValue: (customValue == null || customValue.isEmpty) ? null : customValue,
-    fee: fee,
+    name: trimToNull(el.getAttribute('name')),
+    customKey: trimToNull(el.getAttribute('customKey')),
+    customValue: trimToNull(el.getAttribute('customValue')),
+    fee: parseBool(el.getAttribute('fee')),
   );
 }
 
@@ -289,12 +275,10 @@ PodcastValueRecipient? valueRecipientFromXml(XmlElement el) {
 /// Captures both `<podcast:valueRecipient>` children and the first
 /// valid `<podcast:remoteItem>` child — consumer decides precedence.
 PodcastValueTimeSplit? valueTimeSplitFromXml(XmlElement el, {required String ns}) {
-  final startTime = el.getAttribute('startTime')?.trim();
-  if (startTime == null || startTime.isEmpty) return null;
-  final duration = el.getAttribute('duration')?.trim();
-  if (duration == null || duration.isEmpty) return null;
-  final remoteStartTime = el.getAttribute('remoteStartTime')?.trim();
-  final remotePercentage = el.getAttribute('remotePercentage')?.trim();
+  final startTime = trimToNull(el.getAttribute('startTime'));
+  if (startTime == null) return null;
+  final duration = trimToNull(el.getAttribute('duration'));
+  if (duration == null) return null;
 
   final recipients = <PodcastValueRecipient>[];
   el.forEachElementXml(
@@ -319,8 +303,8 @@ PodcastValueTimeSplit? valueTimeSplitFromXml(XmlElement el, {required String ns}
   return PodcastValueTimeSplit(
     startTime: startTime,
     duration: duration,
-    remoteStartTime: (remoteStartTime == null || remoteStartTime.isEmpty) ? null : remoteStartTime,
-    remotePercentage: (remotePercentage == null || remotePercentage.isEmpty) ? null : remotePercentage,
+    remoteStartTime: trimToNull(el.getAttribute('remoteStartTime')),
+    remotePercentage: trimToNull(el.getAttribute('remotePercentage')),
     recipients: recipients,
     remoteItem: remoteItem,
   );
@@ -331,11 +315,10 @@ PodcastValueTimeSplit? valueTimeSplitFromXml(XmlElement el, {required String ns}
 /// missing or empty — without them the block is unactionable. Empty
 /// `recipients` / `timeSplits` are allowed; consumers can filter.
 PodcastValue? valueFromXml(XmlElement el, {required String ns}) {
-  final type = el.getAttribute('type')?.trim();
-  if (type == null || type.isEmpty) return null;
-  final method = el.getAttribute('method')?.trim();
-  if (method == null || method.isEmpty) return null;
-  final suggested = el.getAttribute('suggested')?.trim();
+  final type = trimToNull(el.getAttribute('type'));
+  if (type == null) return null;
+  final method = trimToNull(el.getAttribute('method'));
+  if (method == null) return null;
 
   final recipients = <PodcastValueRecipient>[];
   el.forEachElementXml(
@@ -360,7 +343,7 @@ PodcastValue? valueFromXml(XmlElement el, {required String ns}) {
   return PodcastValue(
     type: type,
     method: method,
-    suggested: (suggested == null || suggested.isEmpty) ? null : suggested,
+    suggested: trimToNull(el.getAttribute('suggested')),
     recipients: recipients,
     timeSplits: timeSplits,
   );
@@ -370,12 +353,11 @@ PodcastValue? valueFromXml(XmlElement el, {required String ns}) {
 /// Returns `null` when the required `href` attribute is missing or
 /// empty after trimming.
 PodcastContentLink? contentLinkFromXml(XmlElement el) {
-  final href = el.getAttribute('href')?.trim();
-  if (href == null || href.isEmpty) return null;
-  final text = el.innerText.trim();
+  final href = trimToNull(el.getAttribute('href'));
+  if (href == null) return null;
   return PodcastContentLink(
     href: href,
-    text: text.isEmpty ? null : text,
+    text: trimToNull(el.innerText),
   );
 }
 
@@ -401,13 +383,13 @@ PodcastLiveStatus parseLiveStatus(String? raw) {
 /// `null` `Timestamp` rather than dropping the whole element.
 PodcastLive liveFromXml(XmlElement el) {
   final rawStatus = el.getAttribute('status')?.trim() ?? '';
-  final start = el.getAttribute('start')?.trim();
-  final end = el.getAttribute('end')?.trim();
+  final start = trimToNull(el.getAttribute('start'));
+  final end = trimToNull(el.getAttribute('end'));
   return PodcastLive(
     status: rawStatus,
     knownStatus: parseLiveStatus(rawStatus),
-    start: (start == null || start.isEmpty) ? null : Timestamp(start),
-    end: (end == null || end.isEmpty) ? null : Timestamp(end),
+    start: start == null ? null : Timestamp(start),
+    end: end == null ? null : Timestamp(end),
   );
 }
 
@@ -415,16 +397,14 @@ PodcastLive liveFromXml(XmlElement el) {
 /// Returns `null` when either required attribute (`server`,
 /// `protocol`) is absent or empty — caller drops such entries.
 PodcastChat? chatFromXml(XmlElement el) {
-  final server = el.getAttribute('server')?.trim();
-  if (server == null || server.isEmpty) return null;
-  final protocol = el.getAttribute('protocol')?.trim();
-  if (protocol == null || protocol.isEmpty) return null;
-  final accountId = el.getAttribute('accountId')?.trim();
-  final space = el.getAttribute('space')?.trim();
+  final server = trimToNull(el.getAttribute('server'));
+  if (server == null) return null;
+  final protocol = trimToNull(el.getAttribute('protocol'));
+  if (protocol == null) return null;
   return PodcastChat(
     server: server,
     protocol: protocol,
-    accountId: (accountId == null || accountId.isEmpty) ? null : accountId,
-    space: (space == null || space.isEmpty) ? null : space,
+    accountId: trimToNull(el.getAttribute('accountId')),
+    space: trimToNull(el.getAttribute('space')),
   );
 }

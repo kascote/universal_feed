@@ -1,0 +1,9 @@
+<!--
+Description: podcast:locked with body 'true' (liberal: not in spec but accepted)
+Expect:      feed.podcast.locked == true
+-->
+<rss xmlns:podcast="https://podcastindex.org/namespace/1.0">
+<channel>
+<podcast:locked>true</podcast:locked>
+</channel>
+</rss>

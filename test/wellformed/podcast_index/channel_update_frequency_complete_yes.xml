@@ -1,0 +1,9 @@
+<!--
+Description: podcast:updateFrequency complete='yes' (liberal: not in spec but accepted)
+Expect:      uf.complete == true
+-->
+<rss xmlns:podcast="https://podcastindex.org/namespace/1.0">
+<channel>
+<podcast:updateFrequency complete="yes">No more episodes</podcast:updateFrequency>
+</channel>
+</rss>

@@ -1,0 +1,9 @@
+<!--
+Description: podcast:podping usesPodping='on' (liberal: not in spec but accepted)
+Expect:      feed.podcast.podpingUsesPodping == true
+-->
+<rss xmlns:podcast="https://podcastindex.org/namespace/1.0">
+<channel>
+<podcast:podping usesPodping="on"/>
+</channel>
+</rss>

@@ -1,0 +1,9 @@
+<!--
+Description: podcast:block with body '1' (liberal: not in spec but accepted)
+Expect:      blocks[0].value=="1", blocked==true
+-->
+<rss xmlns:podcast="https://podcastindex.org/namespace/1.0">
+<channel>
+<podcast:block>1</podcast:block>
+</channel>
+</rss>
