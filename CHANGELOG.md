@@ -1,5 +1,21 @@
 ## Unreleased
 
+- add `<podcast:value>` parsing (Podcast Index namespace, channel- and
+  item-level, multi-valued per the per-tag spec) including child
+  `<podcast:valueRecipient>` and `<podcast:valueTimeSplit>`. Exposed as
+  `feed.podcast.values` and `item.podcast.values`
+  (`List<PodcastValue>`). Blocks missing required `type` / `method` are
+  skipped; recipients missing `type` / `address` / `split` are dropped
+  individually; `valueTimeSplit` entries missing `startTime` /
+  `duration` are skipped. `fee` is parsed as `bool?` (true/false/null);
+  all numeric attrs (`suggested`, `split`, `startTime`, `duration`,
+  `remoteStartTime`, `remotePercentage`) round-trip as raw strings.
+  `valueTimeSplit` captures both `<podcast:valueRecipient>` children
+  and the first valid `<podcast:remoteItem>` (spec says exclusive —
+  precedence is the consumer's call). Multiple `<podcast:value>` blocks
+  per parent are preserved in source order to support multi-scheme
+  feeds. The `PodcastRemoteItem` primitive is reused; no extensions
+  needed.
 - add `<podcast:alternateEnclosure>` parsing (Podcast Index namespace,
   item-level, multi-valued), including child `<podcast:source>` (with
   required `uri` and optional `contentType`) and `<podcast:integrity>`

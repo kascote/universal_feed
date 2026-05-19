@@ -1,0 +1,18 @@
+<!--
+Description: timeSplit w/ both recipients AND remoteItem (spec says exclusive — we capture both)
+Expect:      timeSplit.recipients non-empty AND remoteItem non-null
+-->
+<rss xmlns:podcast="https://podcastindex.org/namespace/1.0">
+<channel>
+<item>
+<title>Episode 1</title>
+<podcast:value type="lightning" method="keysend">
+  <podcast:valueRecipient type="node" address="03host" split="100" />
+  <podcast:valueTimeSplit startTime="60" duration="237">
+    <podcast:valueRecipient type="node" address="03override" split="100" />
+    <podcast:remoteItem feedGuid="a94f5cc9-1111-2222-3333-444444444444" />
+  </podcast:valueTimeSplit>
+</podcast:value>
+</item>
+</channel>
+</rss>

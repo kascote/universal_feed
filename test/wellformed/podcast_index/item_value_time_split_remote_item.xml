@@ -1,0 +1,18 @@
+<!--
+Description: timeSplit w/ remoteItem (no recipients), remoteStartTime + remotePercentage
+Expect:      timeSplit.remoteItem non-null, feedGuid present, remoteStartTime=0,
+             remotePercentage=95, recipients empty
+-->
+<rss xmlns:podcast="https://podcastindex.org/namespace/1.0">
+<channel>
+<item>
+<title>Episode 1</title>
+<podcast:value type="lightning" method="keysend">
+  <podcast:valueRecipient type="node" address="03host" split="100" />
+  <podcast:valueTimeSplit startTime="60" duration="237" remoteStartTime="0" remotePercentage="95">
+    <podcast:remoteItem feedGuid="a94f5cc9-aaaa-bbbb-cccc-1234567890ab" itemGuid="https://example.com/ep1" />
+  </podcast:valueTimeSplit>
+</podcast:value>
+</item>
+</channel>
+</rss>

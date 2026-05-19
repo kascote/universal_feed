@@ -1,0 +1,17 @@
+<!--
+Description: timeSplit's only remoteItem child missing `feedGuid` — split kept, remoteItem null
+Expect:      timeSplit.remoteItem == null, recipients empty
+-->
+<rss xmlns:podcast="https://podcastindex.org/namespace/1.0">
+<channel>
+<item>
+<title>Episode 1</title>
+<podcast:value type="lightning" method="keysend">
+  <podcast:valueRecipient type="node" address="03host" split="100" />
+  <podcast:valueTimeSplit startTime="60" duration="30">
+    <podcast:remoteItem feedUrl="https://example.com/feed.xml" />
+  </podcast:valueTimeSplit>
+</podcast:value>
+</item>
+</channel>
+</rss>

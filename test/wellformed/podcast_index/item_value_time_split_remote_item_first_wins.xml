@@ -1,0 +1,18 @@
+<!--
+Description: timeSplit w/ 2 remoteItems — first valid wins
+Expect:      timeSplit.remoteItem.feedGuid == "first-guid"
+-->
+<rss xmlns:podcast="https://podcastindex.org/namespace/1.0">
+<channel>
+<item>
+<title>Episode 1</title>
+<podcast:value type="lightning" method="keysend">
+  <podcast:valueRecipient type="node" address="03host" split="100" />
+  <podcast:valueTimeSplit startTime="60" duration="30">
+    <podcast:remoteItem feedGuid="first-guid" />
+    <podcast:remoteItem feedGuid="second-guid" />
+  </podcast:valueTimeSplit>
+</podcast:value>
+</item>
+</channel>
+</rss>

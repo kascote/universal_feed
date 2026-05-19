@@ -1,0 +1,18 @@
+<!--
+Description: timeSplit w/ 2 recipients, no remoteItem
+Expect:      first timeSplit: startTime=60, duration=237, recipients.length==2, remoteItem null
+-->
+<rss xmlns:podcast="https://podcastindex.org/namespace/1.0">
+<channel>
+<item>
+<title>Episode 1</title>
+<podcast:value type="lightning" method="keysend">
+  <podcast:valueRecipient type="node" address="03host" split="100" />
+  <podcast:valueTimeSplit startTime="60" duration="237">
+    <podcast:valueRecipient type="node" address="03guest1" split="50" />
+    <podcast:valueRecipient type="node" address="03guest2" split="50" />
+  </podcast:valueTimeSplit>
+</podcast:value>
+</item>
+</channel>
+</rss>

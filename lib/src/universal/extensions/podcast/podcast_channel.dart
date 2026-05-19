@@ -231,6 +231,16 @@ class PodcastChannel {
   /// See https://github.com/Podcastindex-org/podcast-namespace/blob/main/docs/tags/publisher.md
   PodcastPublisher? publisher;
 
+  /// Value-for-value payment configs from `<podcast:value>` (Podcast
+  /// Index namespace) at channel level. Per-tag spec lists cardinality
+  /// as `Multiple`. Preserves source order. Empty when absent or when
+  /// every block was missing required `type` / `method` attrs. Per
+  /// spec, item-level [PodcastItem.values] overrides this for that
+  /// episode — the two fields stay independent; resolution is the
+  /// consumer's call.
+  /// See https://github.com/Podcastindex-org/podcast-namespace/blob/main/docs/tags/value.md
+  List<PodcastValue> values = [];
+
   /// Creates a new empty [PodcastChannel]
   PodcastChannel();
 }

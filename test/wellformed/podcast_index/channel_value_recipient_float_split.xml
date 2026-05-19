@@ -1,0 +1,11 @@
+<!--
+Description: recipient split as decimal — round-trips raw
+Expect:      first recipient.split == "50.5"
+-->
+<rss xmlns:podcast="https://podcastindex.org/namespace/1.0">
+<channel>
+<podcast:value type="lightning" method="keysend">
+  <podcast:valueRecipient type="node" address="03abc" split="50.5" />
+</podcast:value>
+</channel>
+</rss>

@@ -1,0 +1,23 @@
+<!--
+Description: 3 timeSplits — source order preserved
+Expect:      splits.length==3; startTimes 60, 500, 900 in order
+-->
+<rss xmlns:podcast="https://podcastindex.org/namespace/1.0">
+<channel>
+<item>
+<title>Episode 1</title>
+<podcast:value type="lightning" method="keysend">
+  <podcast:valueRecipient type="node" address="03host" split="100" />
+  <podcast:valueTimeSplit startTime="60" duration="120">
+    <podcast:valueRecipient type="node" address="03a" split="100" />
+  </podcast:valueTimeSplit>
+  <podcast:valueTimeSplit startTime="500" duration="60">
+    <podcast:valueRecipient type="node" address="03b" split="100" />
+  </podcast:valueTimeSplit>
+  <podcast:valueTimeSplit startTime="900" duration="30">
+    <podcast:valueRecipient type="node" address="03c" split="100" />
+  </podcast:valueTimeSplit>
+</podcast:value>
+</item>
+</channel>
+</rss>

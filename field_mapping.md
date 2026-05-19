@@ -84,6 +84,7 @@ future follow-up specs.
 | remoteItems   |         | podcast:remoteItem |
 | podroll       |         | podcast:podroll    |
 | publisher     |         | podcast:publisher  |
+| values        |         | podcast:value      |
 | ============= | ======= | =================  |
 | ITEM          |         |                    |
 | ------------- | ------- | -----------------  |
@@ -96,3 +97,4 @@ future follow-up specs.
 | chat          |         | podcast:chat       |
 | images        |         | podcast:image      |
 | alternateEnclosures |   | podcast:alternateEnclosure |
+| values        |         | podcast:value      |

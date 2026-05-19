@@ -117,6 +117,15 @@ class PodcastItem {
   /// See https://github.com/Podcastindex-org/podcast-namespace/blob/main/docs/tags/alternate-enclosure.md
   List<PodcastAlternateEnclosure> alternateEnclosures = [];
 
+  /// Value-for-value payment configs from `<podcast:value>` (Podcast
+  /// Index namespace) at item level. Per-tag spec lists cardinality as
+  /// `Multiple`. Preserves source order. Empty when absent or when
+  /// every block was missing required `type` / `method` attrs. Per
+  /// spec, overrides [PodcastChannel.values] for this episode —
+  /// override resolution is the consumer's call.
+  /// See https://github.com/Podcastindex-org/podcast-namespace/blob/main/docs/tags/value.md
+  List<PodcastValue> values = [];
+
   /// Creates a new empty [PodcastItem]
   PodcastItem();
 }

@@ -1,0 +1,36 @@
+<!--
+Description: channel-level value w/ type+method+suggested, 3 recipients
+             (one w/ fee=true, one w/ customKey/customValue), and a
+             channel-scoped valueTimeSplit (semantically odd per spec but
+             grammatically allowed — D7: parse where present)
+Expect:      values.length==1; type==lightning, method==keysend,
+             suggested==0.00000005000; 3 recipients in source order;
+             timeSplits.length==1
+-->
+<rss xmlns:podcast="https://podcastindex.org/namespace/1.0">
+<channel>
+<podcast:value type="lightning" method="keysend" suggested="0.00000005000">
+  <podcast:valueRecipient
+    name="Host"
+    type="node"
+    address="02d5c1bf8b940dc9cadca86d1b0a3c37fbe39cee4c7e839e33bef9174531d27f52"
+    split="50"
+    customKey="696969"
+    customValue="user-id-123" />
+  <podcast:valueRecipient
+    name="Co-host"
+    type="node"
+    address="03ae9f91a0cb8ff43840e3c322c4c61f019d8c1c3cea15a25cfc425ac605e61a4a"
+    split="40" />
+  <podcast:valueRecipient
+    name="Podcast Index fee"
+    type="node"
+    address="03ae9fdeadbeef"
+    split="10"
+    fee="true" />
+  <podcast:valueTimeSplit startTime="60" duration="30">
+    <podcast:valueRecipient type="node" address="03override" split="100" />
+  </podcast:valueTimeSplit>
+</podcast:value>
+</channel>
+</rss>

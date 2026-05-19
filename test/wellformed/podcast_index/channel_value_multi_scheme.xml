@@ -1,0 +1,14 @@
+<!--
+Description: two value blocks w/ different schemes — both captured in source order
+Expect:      values.length==2; [0].type==lightning, [1].type==webmonetization
+-->
+<rss xmlns:podcast="https://podcastindex.org/namespace/1.0">
+<channel>
+<podcast:value type="lightning" method="keysend">
+  <podcast:valueRecipient type="node" address="03abc" split="100" />
+</podcast:value>
+<podcast:value type="webmonetization" method="default">
+  <podcast:valueRecipient type="paymentpointer" address="$ilp.uphold.com/abc" split="100" />
+</podcast:value>
+</channel>
+</rss>

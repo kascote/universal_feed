@@ -254,6 +254,118 @@ PodcastAlternateEnclosure? alternateEnclosureFromXml(XmlElement el, {required St
   );
 }
 
+/// Parses a `<podcast:valueRecipient>` element into a
+/// [PodcastValueRecipient]. Returns `null` when any required attribute
+/// (`type`, `address`, `split`) is missing or empty after trimming.
+PodcastValueRecipient? valueRecipientFromXml(XmlElement el) {
+  final type = el.getAttribute('type')?.trim();
+  if (type == null || type.isEmpty) return null;
+  final address = el.getAttribute('address')?.trim();
+  if (address == null || address.isEmpty) return null;
+  final split = el.getAttribute('split')?.trim();
+  if (split == null || split.isEmpty) return null;
+  final name = el.getAttribute('name')?.trim();
+  final customKey = el.getAttribute('customKey')?.trim();
+  final customValue = el.getAttribute('customValue')?.trim();
+  final fee = switch (el.getAttribute('fee')?.trim().toLowerCase()) {
+    'true' => true,
+    'false' => false,
+    _ => null,
+  };
+  return PodcastValueRecipient(
+    type: type,
+    address: address,
+    split: split,
+    name: (name == null || name.isEmpty) ? null : name,
+    customKey: (customKey == null || customKey.isEmpty) ? null : customKey,
+    customValue: (customValue == null || customValue.isEmpty) ? null : customValue,
+    fee: fee,
+  );
+}
+
+/// Parses a `<podcast:valueTimeSplit>` element into a
+/// [PodcastValueTimeSplit]. Returns `null` when either required
+/// attribute (`startTime`, `duration`) is missing or empty.
+/// Captures both `<podcast:valueRecipient>` children and the first
+/// valid `<podcast:remoteItem>` child — consumer decides precedence.
+PodcastValueTimeSplit? valueTimeSplitFromXml(XmlElement el, {required String ns}) {
+  final startTime = el.getAttribute('startTime')?.trim();
+  if (startTime == null || startTime.isEmpty) return null;
+  final duration = el.getAttribute('duration')?.trim();
+  if (duration == null || duration.isEmpty) return null;
+  final remoteStartTime = el.getAttribute('remoteStartTime')?.trim();
+  final remotePercentage = el.getAttribute('remotePercentage')?.trim();
+
+  final recipients = <PodcastValueRecipient>[];
+  el.forEachElementXml(
+    'valueRecipient',
+    (child) {
+      final r = valueRecipientFromXml(child);
+      if (r != null) recipients.add(r);
+    },
+    ns: ns,
+  );
+
+  PodcastRemoteItem? remoteItem;
+  el.forEachElementXml(
+    'remoteItem',
+    (child) {
+      if (remoteItem != null) return;
+      remoteItem = remoteItemFromXml(child);
+    },
+    ns: ns,
+  );
+
+  return PodcastValueTimeSplit(
+    startTime: startTime,
+    duration: duration,
+    remoteStartTime: (remoteStartTime == null || remoteStartTime.isEmpty) ? null : remoteStartTime,
+    remotePercentage: (remotePercentage == null || remotePercentage.isEmpty) ? null : remotePercentage,
+    recipients: recipients,
+    remoteItem: remoteItem,
+  );
+}
+
+/// Parses a `<podcast:value>` element into a [PodcastValue]. Returns
+/// `null` when either required attribute (`type`, `method`) is
+/// missing or empty — without them the block is unactionable. Empty
+/// `recipients` / `timeSplits` are allowed; consumers can filter.
+PodcastValue? valueFromXml(XmlElement el, {required String ns}) {
+  final type = el.getAttribute('type')?.trim();
+  if (type == null || type.isEmpty) return null;
+  final method = el.getAttribute('method')?.trim();
+  if (method == null || method.isEmpty) return null;
+  final suggested = el.getAttribute('suggested')?.trim();
+
+  final recipients = <PodcastValueRecipient>[];
+  el.forEachElementXml(
+    'valueRecipient',
+    (child) {
+      final r = valueRecipientFromXml(child);
+      if (r != null) recipients.add(r);
+    },
+    ns: ns,
+  );
+
+  final timeSplits = <PodcastValueTimeSplit>[];
+  el.forEachElementXml(
+    'valueTimeSplit',
+    (child) {
+      final ts = valueTimeSplitFromXml(child, ns: ns);
+      if (ts != null) timeSplits.add(ts);
+    },
+    ns: ns,
+  );
+
+  return PodcastValue(
+    type: type,
+    method: method,
+    suggested: (suggested == null || suggested.isEmpty) ? null : suggested,
+    recipients: recipients,
+    timeSplits: timeSplits,
+  );
+}
+
 /// Parses a `<podcast:chat>` element into a [PodcastChat].
 /// Returns `null` when either required attribute (`server`,
 /// `protocol`) is absent or empty — caller drops such entries.

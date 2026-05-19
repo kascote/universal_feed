@@ -1,0 +1,11 @@
+<!--
+Description: channel-level value w/ just type+method+single recipient
+Expect:      values.length==1; suggested null; 1 recipient; timeSplits empty
+-->
+<rss xmlns:podcast="https://podcastindex.org/namespace/1.0">
+<channel>
+<podcast:value type="lightning" method="keysend">
+  <podcast:valueRecipient type="node" address="03abc" split="100" />
+</podcast:value>
+</channel>
+</rss>

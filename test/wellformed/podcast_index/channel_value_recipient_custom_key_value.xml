@@ -1,0 +1,11 @@
+<!--
+Description: recipient customKey + customValue preserved
+Expect:      first recipient.customKey == "696969", customValue == "user-id-123"
+-->
+<rss xmlns:podcast="https://podcastindex.org/namespace/1.0">
+<channel>
+<podcast:value type="lightning" method="keysend">
+  <podcast:valueRecipient type="node" address="03abc" split="100" customKey="696969" customValue="user-id-123" />
+</podcast:value>
+</channel>
+</rss>

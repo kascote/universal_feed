@@ -168,6 +168,14 @@ class PodcastChannelParser implements ChannelExtensionParser {
         ns: namespaceUrl,
       )
       ..forEachElementXml(
+        'value',
+        (el) {
+          final v = valueFromXml(el, ns: namespaceUrl);
+          if (v != null) pc.values.add(v);
+        },
+        ns: namespaceUrl,
+      )
+      ..forEachElementXml(
         'trailer',
         (el) {
           final url = el.getAttribute('url')?.trim();

@@ -1,0 +1,19 @@
+<!--
+Description: item-level value w/ all attrs, 2 recipients, 1 timeSplit (recipient-list variant)
+Expect:      item.values.length==1; type==lightning, 2 recipients, 1 timeSplit
+             with non-empty recipients
+-->
+<rss xmlns:podcast="https://podcastindex.org/namespace/1.0">
+<channel>
+<item>
+<title>Episode 1</title>
+<podcast:value type="lightning" method="keysend" suggested="0.00000005000">
+  <podcast:valueRecipient name="Host" type="node" address="03host" split="80" />
+  <podcast:valueRecipient name="Co-host" type="node" address="03co" split="20" />
+  <podcast:valueTimeSplit startTime="60" duration="237">
+    <podcast:valueRecipient name="Guest" type="node" address="03guest" split="100" />
+  </podcast:valueTimeSplit>
+</podcast:value>
+</item>
+</channel>
+</rss>

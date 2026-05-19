@@ -1,0 +1,17 @@
+<!--
+Description: channel-level value + item-level value w/ different recipients
+Expect:      both surfaces populated independently; addresses differ
+-->
+<rss xmlns:podcast="https://podcastindex.org/namespace/1.0">
+<channel>
+<podcast:value type="lightning" method="keysend">
+  <podcast:valueRecipient type="node" address="03channel" split="100" />
+</podcast:value>
+<item>
+<title>Episode 1</title>
+<podcast:value type="lightning" method="keysend">
+  <podcast:valueRecipient type="node" address="03item" split="100" />
+</podcast:value>
+</item>
+</channel>
+</rss>

@@ -1,0 +1,17 @@
+<!--
+Description: item-level — two value blocks w/ different schemes
+Expect:      item.values.length==2; differing types preserved
+-->
+<rss xmlns:podcast="https://podcastindex.org/namespace/1.0">
+<channel>
+<item>
+<title>Episode 1</title>
+<podcast:value type="lightning" method="keysend">
+  <podcast:valueRecipient type="node" address="03abc" split="100" />
+</podcast:value>
+<podcast:value type="webmonetization" method="default">
+  <podcast:valueRecipient type="paymentpointer" address="$ilp.example.com/abc" split="100" />
+</podcast:value>
+</item>
+</channel>
+</rss>

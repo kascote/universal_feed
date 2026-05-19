@@ -904,5 +904,130 @@ Map<String, TestFx> podcastIndexTests() {
       final aes = r.items.first.podcast?.alternateEnclosures ?? const [];
       return aes.length == 1 && aes.first.bitrate == '160707.74';
     },
+
+    // channel-level value
+    'channel_value_full.xml': (r) {
+      final vs = r.podcast?.values ?? const [];
+      if (vs.length != 1) return false;
+      final v = vs.first;
+      if (v.type != 'lightning' || v.method != 'keysend') return false;
+      if (v.suggested != '0.00000005000') return false;
+      if (v.recipients.length != 3) return false;
+      final fees = v.recipients.where((x) => x.fee ?? false).toList();
+      if (fees.length != 1 || v.recipients.first.split != '50') return false;
+      return v.timeSplits.length == 1 &&
+          v.timeSplits.first.startTime == '60' &&
+          v.timeSplits.first.recipients.length == 1;
+    },
+    'channel_value_minimal.xml': (r) {
+      final vs = r.podcast?.values ?? const [];
+      if (vs.length != 1) return false;
+      final v = vs.first;
+      return v.type.isNotEmpty &&
+          v.method.isNotEmpty &&
+          v.suggested == null &&
+          v.recipients.length == 1 &&
+          v.timeSplits.isEmpty;
+    },
+    'channel_value_no_type.xml': (r) => (r.podcast?.values ?? const []).isEmpty,
+    'channel_value_no_method.xml': (r) => (r.podcast?.values ?? const []).isEmpty,
+    'channel_value_no_recipients.xml': (r) {
+      final vs = r.podcast?.values ?? const [];
+      return vs.length == 1 && vs.first.recipients.isEmpty && vs.first.timeSplits.isEmpty;
+    },
+    'channel_value_skips_invalid_recipient.xml': (r) {
+      final vs = r.podcast?.values ?? const [];
+      return vs.length == 1 && vs.first.recipients.length == 1 && vs.first.recipients.first.address == '03good';
+    },
+    'channel_value_multi_scheme.xml': (r) {
+      final vs = r.podcast?.values ?? const [];
+      return vs.length == 2 && vs[0].type == 'lightning' && vs[1].type == 'webmonetization';
+    },
+    'channel_value_recipient_fee_true.xml': (r) => r.podcast?.values.first.recipients.first.fee ?? false,
+    'channel_value_recipient_fee_false.xml': (r) {
+      final fee = r.podcast?.values.first.recipients.first.fee;
+      return fee != null && !fee;
+    },
+    'channel_value_recipient_fee_garbage.xml': (r) => r.podcast?.values.first.recipients.first.fee == null,
+    'channel_value_recipient_float_split.xml': (r) => r.podcast?.values.first.recipients.first.split == '50.5',
+    'channel_value_recipient_custom_key_value.xml': (r) {
+      final rec = r.podcast?.values.first.recipients.first;
+      return rec?.customKey == '696969' && rec?.customValue == 'user-id-123';
+    },
+
+    // item-level value
+    'item_value_full.xml': (r) {
+      final vs = r.items.first.podcast?.values ?? const [];
+      if (vs.length != 1) return false;
+      final v = vs.first;
+      return v.type == 'lightning' &&
+          v.recipients.length == 2 &&
+          v.timeSplits.length == 1 &&
+          v.timeSplits.first.recipients.isNotEmpty;
+    },
+    'item_value_minimal.xml': (r) {
+      final vs = r.items.first.podcast?.values ?? const [];
+      return vs.length == 1 && vs.first.recipients.length == 1 && vs.first.timeSplits.isEmpty;
+    },
+    'item_value_overrides_channel.xml': (r) {
+      final ch = r.podcast?.values ?? const [];
+      final it = r.items.first.podcast?.values ?? const [];
+      return ch.length == 1 && it.length == 1 && ch.first.recipients.first.address != it.first.recipients.first.address;
+    },
+    'item_value_no_type.xml': (r) => (r.items.first.podcast?.values ?? const []).isEmpty,
+    'item_value_multi_scheme.xml': (r) {
+      final vs = r.items.first.podcast?.values ?? const [];
+      return vs.length == 2 && vs[0].type != vs[1].type;
+    },
+
+    // valueTimeSplit
+    'item_value_time_split_recipients.xml': (r) {
+      final ts = r.items.first.podcast?.values.first.timeSplits.first;
+      return ts != null &&
+          ts.startTime == '60' &&
+          ts.duration == '237' &&
+          ts.recipients.length == 2 &&
+          ts.remoteItem == null;
+    },
+    'item_value_time_split_remote_item.xml': (r) {
+      final ts = r.items.first.podcast?.values.first.timeSplits.first;
+      return ts != null &&
+          ts.remoteItem != null &&
+          ts.remoteItem!.feedGuid.isNotEmpty &&
+          ts.remotePercentage == '95' &&
+          ts.remoteStartTime == '0' &&
+          ts.recipients.isEmpty;
+    },
+    'item_value_time_split_both.xml': (r) {
+      final ts = r.items.first.podcast?.values.first.timeSplits.first;
+      return ts != null && ts.recipients.isNotEmpty && ts.remoteItem != null;
+    },
+    'item_value_time_split_multiple.xml': (r) {
+      final splits = r.items.first.podcast?.values.first.timeSplits ?? const [];
+      return splits.length == 3 &&
+          splits[0].startTime == '60' &&
+          splits[1].startTime == '500' &&
+          splits[2].startTime == '900';
+    },
+    'item_value_time_split_missing_starttime.xml': (r) {
+      final splits = r.items.first.podcast?.values.first.timeSplits ?? const [];
+      return splits.length == 1 && splits.first.startTime == '500';
+    },
+    'item_value_time_split_missing_duration.xml': (r) {
+      final splits = r.items.first.podcast?.values.first.timeSplits ?? const [];
+      return splits.length == 1 && splits.first.duration == '60';
+    },
+    'item_value_time_split_empty_body.xml': (r) {
+      final ts = r.items.first.podcast?.values.first.timeSplits.first;
+      return ts != null && ts.recipients.isEmpty && ts.remoteItem == null;
+    },
+    'item_value_time_split_invalid_remote.xml': (r) {
+      final ts = r.items.first.podcast?.values.first.timeSplits.first;
+      return ts != null && ts.remoteItem == null;
+    },
+    'item_value_time_split_remote_item_first_wins.xml': (r) {
+      final ts = r.items.first.podcast?.values.first.timeSplits.first;
+      return ts?.remoteItem?.feedGuid == 'first-guid';
+    },
   };
 }

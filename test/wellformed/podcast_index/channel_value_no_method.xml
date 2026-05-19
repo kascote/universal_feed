@@ -1,0 +1,11 @@
+<!--
+Description: channel-level value missing required `method`
+Expect:      values empty (block skipped)
+-->
+<rss xmlns:podcast="https://podcastindex.org/namespace/1.0">
+<channel>
+<podcast:value type="lightning">
+  <podcast:valueRecipient type="node" address="03abc" split="100" />
+</podcast:value>
+</channel>
+</rss>

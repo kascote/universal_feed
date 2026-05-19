@@ -1,0 +1,12 @@
+<!--
+Description: 2 recipients, one missing `address`; only valid one survives
+Expect:      values.length==1; recipients.length==1
+-->
+<rss xmlns:podcast="https://podcastindex.org/namespace/1.0">
+<channel>
+<podcast:value type="lightning" method="keysend">
+  <podcast:valueRecipient type="node" split="50" />
+  <podcast:valueRecipient type="node" address="03good" split="50" />
+</podcast:value>
+</channel>
+</rss>

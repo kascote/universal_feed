@@ -1,0 +1,20 @@
+<!--
+Description: 2 timeSplits, first missing `duration` — that one skipped
+Expect:      splits.length==1, duration==60
+-->
+<rss xmlns:podcast="https://podcastindex.org/namespace/1.0">
+<channel>
+<item>
+<title>Episode 1</title>
+<podcast:value type="lightning" method="keysend">
+  <podcast:valueRecipient type="node" address="03host" split="100" />
+  <podcast:valueTimeSplit startTime="60">
+    <podcast:valueRecipient type="node" address="03a" split="100" />
+  </podcast:valueTimeSplit>
+  <podcast:valueTimeSplit startTime="500" duration="60">
+    <podcast:valueRecipient type="node" address="03b" split="100" />
+  </podcast:valueTimeSplit>
+</podcast:value>
+</item>
+</channel>
+</rss>
