@@ -1,0 +1,13 @@
+<!--
+Description: Three <podcast:contentLink> entries on a regular <item>
+Expect:      length == 3, source order preserved (youtube, twitter, html)
+-->
+<rss xmlns:podcast="https://podcastindex.org/namespace/1.0">
+<channel>
+<item>
+<podcast:contentLink href="https://example.com/youtube">YouTube!</podcast:contentLink>
+<podcast:contentLink href="https://example.com/twitter">Twitter!</podcast:contentLink>
+<podcast:contentLink href="https://example.com/html">Listen!</podcast:contentLink>
+</item>
+</channel>
+</rss>

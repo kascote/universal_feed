@@ -14,6 +14,7 @@ import '../extensions/podcast/itunes_channel_parser.dart';
 import '../extensions/podcast/itunes_item_parser.dart';
 import '../extensions/podcast/podcast_channel_parser.dart';
 import '../extensions/podcast/podcast_item_parser.dart';
+import '../extensions/podcast/podcast_parsing.dart';
 import '../extensions/syndication/syndication_parser.dart';
 
 /// Parse an RSS feed
@@ -47,6 +48,34 @@ void rssXmlParser(
 
     uf.items.add(item);
     itemIndex++;
+  }
+
+  // Live items — channel-level <podcast:liveItem> siblings of <item>.
+  // Reuses the same Item parsing pipeline; only the live-specific
+  // status/start/end attrs need separate extraction.
+  final podcastNs = uf.meta.extensions.hasPodcastIndex ? uf.meta.extensions.nsUrl(nsPodcastNs) : null;
+  if (podcastNs != null) {
+    var liveIndex = 0;
+    channel.forEachElementXml(
+      'liveItem',
+      (liveItemEl) {
+        final itemId = 'live_$liveIndex';
+        final item = Item.rssFromXml(uf, liveItemEl, itemId);
+        _parseItemExtensions(uf, item, liveItemEl, parsers.item);
+
+        // PodcastItemParser creates item.podcast only when at least one
+        // podcast: child was present. `live` itself is podcast data, so
+        // ensure the container exists.
+        item.podcast ??= PodcastItem();
+        item.podcast!.live = liveFromXml(liveItemEl);
+
+        onItemParse?.call(item, XmlRawElement(item.itemId, liveItemEl));
+
+        uf.liveItems.add(item);
+        liveIndex++;
+      },
+      ns: podcastNs,
+    );
   }
 }
 

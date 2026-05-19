@@ -1,0 +1,12 @@
+<!--
+Description: href present, body is whitespace only
+Expect:      length == 1, text == null after trim
+-->
+<rss xmlns:podcast="https://podcastindex.org/namespace/1.0">
+<channel>
+<item>
+<podcast:contentLink href="https://example.com/ws">
+  </podcast:contentLink>
+</item>
+</channel>
+</rss>

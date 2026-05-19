@@ -1,0 +1,12 @@
+<!--
+Description: status="starting" (not in spec's closed set)
+Expect:      knownStatus == other, status == "starting"
+-->
+<rss xmlns:podcast="https://podcastindex.org/namespace/1.0">
+<channel>
+<podcast:liveItem status="starting" start="2021-09-26T07:30:00.000-0600">
+<title>Unknown status</title>
+<guid>unknown-1</guid>
+</podcast:liveItem>
+</channel>
+</rss>

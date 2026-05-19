@@ -1,0 +1,12 @@
+<!--
+Description: status="ended" liveItem
+Expect:      knownStatus == ended
+-->
+<rss xmlns:podcast="https://podcastindex.org/namespace/1.0">
+<channel>
+<podcast:liveItem status="ended" start="2021-09-26T07:30:00.000-0600" end="2021-09-26T09:30:00.000-0600">
+<title>Stream is over</title>
+<guid>ended-1</guid>
+</podcast:liveItem>
+</channel>
+</rss>

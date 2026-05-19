@@ -1,0 +1,18 @@
+<!--
+Description: <liveItem>-shaped element under a different prefix alias for
+             the Podcast Index URL; xmlns:podcast itself is NOT declared.
+             The library gates the liveItem loop on the `xmlns:podcast`
+             prefix being present (see Namespaces.hasPodcastIndex), so
+             feeds that bind the Podcast Index URL under a different
+             alias don't get picked up.
+Expect:      liveItems.isEmpty (extension-gated by prefix presence)
+-->
+<rss xmlns:pi="https://podcastindex.org/namespace/1.0">
+<channel>
+<title>No podcast prefix</title>
+<pi:liveItem status="live" start="2021-09-26T07:30:00.000-0600">
+<title>Should be ignored</title>
+<guid>no-ns-1</guid>
+</pi:liveItem>
+</channel>
+</rss>

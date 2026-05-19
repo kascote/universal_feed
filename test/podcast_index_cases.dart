@@ -1029,5 +1029,100 @@ Map<String, TestFx> podcastIndexTests() {
       final ts = r.items.first.podcast?.values.first.timeSplits.first;
       return ts?.remoteItem?.feedGuid == 'first-guid';
     },
+
+    // contentLink on regular items
+    'item_content_link_single.xml': (r) {
+      final cls = r.items.first.podcast?.contentLinks ?? const [];
+      return cls.length == 1 &&
+          cls.first.href == 'https://example.com/youtube' &&
+          cls.first.text == 'Watch on YouTube!';
+    },
+    'item_content_link_multi.xml': (r) {
+      final cls = r.items.first.podcast?.contentLinks ?? const [];
+      return cls.length == 3 &&
+          cls[0].href.contains('youtube') &&
+          cls[1].href.contains('twitter') &&
+          cls[2].href.contains('html');
+    },
+    'item_content_link_no_href.xml': (r) {
+      final cls = r.items.first.podcast?.contentLinks ?? const [];
+      return cls.length == 1 && cls.first.href.isNotEmpty;
+    },
+    'item_content_link_empty_body.xml': (r) {
+      final cls = r.items.first.podcast?.contentLinks ?? const [];
+      return cls.length == 1 && cls.first.text == null;
+    },
+    'item_content_link_whitespace_body.xml': (r) {
+      final cls = r.items.first.podcast?.contentLinks ?? const [];
+      return cls.length == 1 && cls.first.text == null;
+    },
+
+    // liveItem shape
+    'live_item_full.xml': (r) {
+      if (r.liveItems.length != 1) return false;
+      final li = r.liveItems.first;
+      final live = li.podcast?.live;
+      if (live == null) return false;
+      return live.knownStatus == PodcastLiveStatus.live &&
+          live.start != null &&
+          live.end != null &&
+          li.title == 'Podcasting 2.0 Live Show' &&
+          li.enclosures.length == 1 &&
+          (li.podcast?.contentLinks.length ?? 0) == 3 &&
+          (li.podcast?.persons.length ?? 0) >= 1 &&
+          (li.podcast?.alternateEnclosures.length ?? 0) == 1;
+    },
+    'live_item_minimal.xml': (r) {
+      final li = r.liveItems.first;
+      return li.podcast?.live?.knownStatus == PodcastLiveStatus.live &&
+          li.guid == 'e32b4890-983b-4ce5-8b46-f2d6bc1d8819' &&
+          (li.podcast?.contentLinks.length ?? 0) == 1;
+    },
+    'live_item_status_pending.xml': (r) =>
+        r.liveItems.first.podcast?.live?.knownStatus == PodcastLiveStatus.pending,
+    'live_item_status_live.xml': (r) =>
+        r.liveItems.first.podcast?.live?.knownStatus == PodcastLiveStatus.live,
+    'live_item_status_ended.xml': (r) =>
+        r.liveItems.first.podcast?.live?.knownStatus == PodcastLiveStatus.ended,
+    'live_item_status_unknown.xml': (r) {
+      final live = r.liveItems.first.podcast?.live;
+      return live?.knownStatus == PodcastLiveStatus.other && live?.status == 'starting';
+    },
+    'live_item_status_case_insensitive.xml': (r) {
+      final live = r.liveItems.first.podcast?.live;
+      return live?.knownStatus == PodcastLiveStatus.live && live?.status == 'LIVE';
+    },
+    'live_item_no_status.xml': (r) {
+      final live = r.liveItems.first.podcast?.live;
+      return live != null && live.knownStatus == PodcastLiveStatus.absent && live.status.isEmpty;
+    },
+    'live_item_no_start.xml': (r) {
+      final live = r.liveItems.first.podcast?.live;
+      return live != null && live.start == null;
+    },
+    'live_item_no_end.xml': (r) {
+      final live = r.liveItems.first.podcast?.live;
+      return live != null && live.start != null && live.end == null;
+    },
+    'live_item_multiple.xml': (r) {
+      if (r.liveItems.length != 2) return false;
+      return r.liveItems[0].itemId == 'live_0' && r.liveItems[1].itemId == 'live_1';
+    },
+    'live_item_with_items.xml': (r) {
+      return r.items.length == 2 &&
+          r.liveItems.length == 2 &&
+          r.items.first.itemId == 'item_0' &&
+          r.liveItems.first.itemId == 'live_0';
+    },
+    'live_item_with_chat.xml': (r) => r.liveItems.first.podcast?.chat != null,
+    'live_item_with_value.xml': (r) => (r.liveItems.first.podcast?.values ?? const []).length == 1,
+    'live_item_with_location.xml': (r) => (r.liveItems.first.podcast?.locations ?? const []).length == 1,
+    'live_item_with_person.xml': (r) => (r.liveItems.first.podcast?.persons ?? const []).length == 1,
+    'live_item_with_alternate_enclosure.xml': (r) =>
+        (r.liveItems.first.podcast?.alternateEnclosures ?? const []).length == 1,
+    'live_item_with_dcterms.xml': (r) => r.liveItems.first.dcterms != null,
+    'live_item_content_link_required_multi.xml': (r) =>
+        (r.liveItems.first.podcast?.contentLinks ?? const []).length == 3,
+    'live_item_namespace_not_declared.xml': (r) => r.liveItems.isEmpty,
   };
 }

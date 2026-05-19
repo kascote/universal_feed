@@ -366,6 +366,51 @@ PodcastValue? valueFromXml(XmlElement el, {required String ns}) {
   );
 }
 
+/// Parses a `<podcast:contentLink>` element into a [PodcastContentLink].
+/// Returns `null` when the required `href` attribute is missing or
+/// empty after trimming.
+PodcastContentLink? contentLinkFromXml(XmlElement el) {
+  final href = el.getAttribute('href')?.trim();
+  if (href == null || href.isEmpty) return null;
+  final text = el.innerText.trim();
+  return PodcastContentLink(
+    href: href,
+    text: text.isEmpty ? null : text,
+  );
+}
+
+/// Maps a raw `<podcast:liveItem status="…">` token to its
+/// [PodcastLiveStatus] enum value. Case-insensitive. Returns
+/// [PodcastLiveStatus.absent] for null/empty input; returns
+/// [PodcastLiveStatus.other] for any non-empty token not in the spec's
+/// closed set (`pending`, `live`, `ended`).
+PodcastLiveStatus parseLiveStatus(String? raw) {
+  if (raw == null || raw.isEmpty) return PodcastLiveStatus.absent;
+  return switch (raw.toLowerCase()) {
+    'pending' => PodcastLiveStatus.pending,
+    'live' => PodcastLiveStatus.live,
+    'ended' => PodcastLiveStatus.ended,
+    _ => PodcastLiveStatus.other,
+  };
+}
+
+/// Extracts the `status` / `start` / `end` attributes from a
+/// `<podcast:liveItem>` element into a [PodcastLive]. Always returns
+/// non-null — the caller already knows the element was a liveItem;
+/// missing required attrs degrade to [PodcastLiveStatus.absent] /
+/// `null` `Timestamp` rather than dropping the whole element.
+PodcastLive liveFromXml(XmlElement el) {
+  final rawStatus = el.getAttribute('status')?.trim() ?? '';
+  final start = el.getAttribute('start')?.trim();
+  final end = el.getAttribute('end')?.trim();
+  return PodcastLive(
+    status: rawStatus,
+    knownStatus: parseLiveStatus(rawStatus),
+    start: (start == null || start.isEmpty) ? null : Timestamp(start),
+    end: (end == null || end.isEmpty) ? null : Timestamp(end),
+  );
+}
+
 /// Parses a `<podcast:chat>` element into a [PodcastChat].
 /// Returns `null` when either required attribute (`server`,
 /// `protocol`) is absent or empty — caller drops such entries.

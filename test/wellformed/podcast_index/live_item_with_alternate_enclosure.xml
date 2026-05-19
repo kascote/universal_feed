@@ -1,0 +1,15 @@
+<!--
+Description: liveItem with <podcast:alternateEnclosure> child
+Expect:      item.podcast.alternateEnclosures.length == 1
+-->
+<rss xmlns:podcast="https://podcastindex.org/namespace/1.0">
+<channel>
+<podcast:liveItem status="live" start="2021-09-26T07:30:00.000-0600">
+<title>With alt enclosure</title>
+<guid>ae-live-1</guid>
+<podcast:alternateEnclosure type="audio/mpeg" length="312" default="true">
+<podcast:source uri="https://example.com/livestream.mp3" />
+</podcast:alternateEnclosure>
+</podcast:liveItem>
+</channel>
+</rss>

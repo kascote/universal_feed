@@ -92,6 +92,20 @@ class UniversalFeed {
   /// rss ref: /// https://cyber.harvard.edu/rss/rss.html#hrelementsOfLtitemgt
   final List<Item> items = [];
 
+  /// Live-stream items from `<podcast:liveItem>` (Podcast Index
+  /// namespace). Channel-level sibling of [items]. Preserves source
+  /// order. Empty when the feed declares no liveItems or the Podcast
+  /// Index namespace is undeclared.
+  ///
+  /// Each entry is a regular [Item] — same parsing pipeline, same
+  /// extension surface (media, dcterms, geo, podcast, …) — with its
+  /// `item.podcast.live` field populated as the discriminator. Item
+  /// IDs use the `live_N` prefix to keep them distinct from regular
+  /// `item_N` IDs.
+  ///
+  /// See https://github.com/Podcastindex-org/podcast-namespace/blob/main/docs/tags/live-item.md
+  final List<Item> liveItems = [];
+
   /// A URL that points to the documentation for the format used in the RSS file.
   ///
   /// rss ref: https://cyber.harvard.edu/rss/rss.html#optionalChannelElements

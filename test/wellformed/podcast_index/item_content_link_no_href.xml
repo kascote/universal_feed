@@ -1,0 +1,12 @@
+<!--
+Description: <podcast:contentLink> missing href is skipped; valid sibling survives
+Expect:      length == 1, surviving entry has non-empty href
+-->
+<rss xmlns:podcast="https://podcastindex.org/namespace/1.0">
+<channel>
+<item>
+<podcast:contentLink>Just text, no href</podcast:contentLink>
+<podcast:contentLink href="https://example.com/keep">Keep me</podcast:contentLink>
+</item>
+</channel>
+</rss>

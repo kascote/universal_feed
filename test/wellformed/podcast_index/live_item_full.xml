@@ -1,0 +1,23 @@
+<!--
+Description: Full upstream <podcast:liveItem> example
+Expect:      one entry in liveItems, status=live, full body parsed
+-->
+<rss xmlns:podcast="https://podcastindex.org/namespace/1.0">
+<channel>
+<podcast:liveItem status="live" start="2021-09-26T07:30:00.000-0600" end="2021-09-26T09:30:00.000-0600">
+<title>Podcasting 2.0 Live Show</title>
+<description>A look into the future of podcasting.</description>
+<link>https://example.com/podcast/live</link>
+<guid isPermaLink="true">https://example.com/live</guid>
+<author>John Doe (john@example.com)</author>
+<podcast:person href="https://example.com/adam">Adam Curry</podcast:person>
+<podcast:alternateEnclosure type="audio/mpeg" length="312" default="true">
+<podcast:source uri="https://example.com/pc20/livestream" />
+</podcast:alternateEnclosure>
+<enclosure url="https://example.com/pc20/livestream?format=.mp3" type="audio/mpeg" length="312" />
+<podcast:contentLink href="https://www.youtube.com/pc20/livestream">YouTube!</podcast:contentLink>
+<podcast:contentLink href="https://www.twitch.tv/pc20/livestream">Twitch!</podcast:contentLink>
+<podcast:contentLink href="https://example.com/html/livestream">Listen Live!</podcast:contentLink>
+</podcast:liveItem>
+</channel>
+</rss>

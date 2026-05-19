@@ -1,5 +1,21 @@
 ## Unreleased
 
+- add `<podcast:liveItem>` and `<podcast:contentLink>` parsing (Podcast
+  Index namespace). Live items surface on `feed.liveItems`
+  (`List<Item>`) — same Item parsing pipeline as regular items, with
+  a `PodcastLive` discriminator on `item.podcast.live` carrying the
+  `status` / `start` / `end` attributes (`status` is exposed both raw
+  and as a `PodcastLiveStatus` enum — `pending` / `live` / `ended` /
+  `other` / `absent` — mirroring the `PodcastMedium` pattern).
+  ContentLinks surface on `item.podcast.contentLinks`
+  (`List<PodcastContentLink>`) for both regular items and live items
+  (per spec, valid under either parent). `<podcast:liveItem>` entries
+  missing `status` / `start` are kept (the body is still useful);
+  `<podcast:contentLink>` entries missing `href` are skipped, empty
+  bodies are kept with `text == null`. Live items use the `live_N`
+  itemId prefix to stay distinct from regular `item_N` IDs. The
+  channel-level loop is gated on the `xmlns:podcast` declaration, and
+  `onItemParse` fires for live items too.
 - add `<podcast:value>` parsing (Podcast Index namespace, channel- and
   item-level, multi-valued per the per-tag spec) including child
   `<podcast:valueRecipient>` and `<podcast:valueTimeSplit>`. Exposed as

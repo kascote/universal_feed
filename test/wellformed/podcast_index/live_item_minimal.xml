@@ -1,0 +1,14 @@
+<!--
+Description: Bare-bones <podcast:liveItem>
+Expect:      one entry, status=live, single contentLink
+-->
+<rss xmlns:podcast="https://podcastindex.org/namespace/1.0">
+<channel>
+<podcast:liveItem status="live" start="2021-09-26T07:30:00.000-0600" end="2021-09-26T09:30:00.000-0600">
+<title>Minimal Live</title>
+<guid>e32b4890-983b-4ce5-8b46-f2d6bc1d8819</guid>
+<enclosure url="https://example.com/live.mp3" type="audio/mpeg" length="312" />
+<podcast:contentLink href="https://example.com/watch">Watch</podcast:contentLink>
+</podcast:liveItem>
+</channel>
+</rss>

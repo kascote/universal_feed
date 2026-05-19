@@ -1,0 +1,12 @@
+<!--
+Description: status="live" liveItem
+Expect:      knownStatus == live
+-->
+<rss xmlns:podcast="https://podcastindex.org/namespace/1.0">
+<channel>
+<podcast:liveItem status="live" start="2021-09-26T07:30:00.000-0600">
+<title>Live now</title>
+<guid>live-1</guid>
+</podcast:liveItem>
+</channel>
+</rss>

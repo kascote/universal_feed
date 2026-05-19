@@ -85,6 +85,7 @@ future follow-up specs.
 | podroll       |         | podcast:podroll    |
 | publisher     |         | podcast:publisher  |
 | values        |         | podcast:value      |
+| liveItems     |         | podcast:liveItem   |
 | ============= | ======= | =================  |
 | ITEM          |         |                    |
 | ------------- | ------- | -----------------  |
@@ -98,3 +99,5 @@ future follow-up specs.
 | images        |         | podcast:image      |
 | alternateEnclosures |   | podcast:alternateEnclosure |
 | values        |         | podcast:value      |
+| contentLinks  |         | podcast:contentLink |
+| live          |         | podcast:liveItem (status/start/end attrs) |

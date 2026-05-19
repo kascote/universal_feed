@@ -1,0 +1,13 @@
+<!--
+Description: liveItem with <podcast:person> child
+Expect:      item.podcast.persons.length == 1
+-->
+<rss xmlns:podcast="https://podcastindex.org/namespace/1.0">
+<channel>
+<podcast:liveItem status="live" start="2021-09-26T07:30:00.000-0600">
+<title>With person</title>
+<guid>person-live-1</guid>
+<podcast:person role="Host" href="https://example.org/alice">Alice Example</podcast:person>
+</podcast:liveItem>
+</channel>
+</rss>

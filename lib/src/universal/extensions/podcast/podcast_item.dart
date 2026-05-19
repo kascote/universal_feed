@@ -126,6 +126,23 @@ class PodcastItem {
   /// See https://github.com/Podcastindex-org/podcast-namespace/blob/main/docs/tags/value.md
   List<PodcastValue> values = [];
 
+  /// Content-link fallbacks from `<podcast:contentLink>` (Podcast Index
+  /// namespace). Preserves source order. Empty when absent. Each entry
+  /// has a non-empty [PodcastContentLink.href]; elements missing `href`
+  /// are skipped at parse time. Per spec, valid under both regular
+  /// `<item>` and `<podcast:liveItem>` parents — populated for both.
+  /// See https://github.com/Podcastindex-org/podcast-namespace/blob/main/docs/tags/content-link.md
+  List<PodcastContentLink> contentLinks = [];
+
+  /// Live-stream metadata from `<podcast:liveItem>` (Podcast Index
+  /// namespace). Non-null only when the parent `Item` came from a
+  /// `<podcast:liveItem>` element (i.e. it lives in
+  /// [UniversalFeed.liveItems], not [UniversalFeed.items]). The
+  /// discriminator that tells consumers "this Item represents a live
+  /// stream, not an episode."
+  /// See https://github.com/Podcastindex-org/podcast-namespace/blob/main/docs/tags/live-item.md
+  PodcastLive? live;
+
   /// Creates a new empty [PodcastItem]
   PodcastItem();
 }

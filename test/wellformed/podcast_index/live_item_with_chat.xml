@@ -1,0 +1,13 @@
+<!--
+Description: liveItem with <podcast:chat> child
+Expect:      item.podcast.chat populated
+-->
+<rss xmlns:podcast="https://podcastindex.org/namespace/1.0">
+<channel>
+<podcast:liveItem status="live" start="2021-09-26T07:30:00.000-0600">
+<title>With chat</title>
+<guid>chat-live-1</guid>
+<podcast:chat server="matrix.example.org" protocol="matrix" accountId="@host:example.org" space="#live" />
+</podcast:liveItem>
+</channel>
+</rss>

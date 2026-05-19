@@ -1,0 +1,11 @@
+<!--
+Description: One <podcast:contentLink> on a regular <item> with href + body
+Expect:      item.podcast.contentLinks.length == 1, href + text populated
+-->
+<rss xmlns:podcast="https://podcastindex.org/namespace/1.0">
+<channel>
+<item>
+<podcast:contentLink href="https://example.com/youtube">Watch on YouTube!</podcast:contentLink>
+</item>
+</channel>
+</rss>

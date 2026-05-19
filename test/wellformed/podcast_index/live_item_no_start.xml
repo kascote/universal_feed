@@ -1,0 +1,12 @@
+<!--
+Description: <podcast:liveItem> with no start attribute
+Expect:      live.start == null, item still in liveItems
+-->
+<rss xmlns:podcast="https://podcastindex.org/namespace/1.0">
+<channel>
+<podcast:liveItem status="live">
+<title>No start</title>
+<guid>no-start-1</guid>
+</podcast:liveItem>
+</channel>
+</rss>

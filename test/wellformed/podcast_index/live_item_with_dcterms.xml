@@ -1,0 +1,13 @@
+<!--
+Description: liveItem with <dc:creator> child + dcterms ns declared
+Expect:      item.dcterms populated (extension reuse via PodcastItemParser pipeline)
+-->
+<rss xmlns:podcast="https://podcastindex.org/namespace/1.0" xmlns:dcterms="http://purl.org/dc/terms/">
+<channel>
+<podcast:liveItem status="live" start="2021-09-26T07:30:00.000-0600">
+<title>With dcterms</title>
+<guid>dc-live-1</guid>
+<dcterms:creator>Alice Example</dcterms:creator>
+</podcast:liveItem>
+</channel>
+</rss>

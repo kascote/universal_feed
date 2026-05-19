@@ -1,0 +1,13 @@
+<!--
+Description: liveItem with <podcast:location> child
+Expect:      item.podcast.locations.length == 1
+-->
+<rss xmlns:podcast="https://podcastindex.org/namespace/1.0">
+<channel>
+<podcast:liveItem status="live" start="2021-09-26T07:30:00.000-0600">
+<title>With location</title>
+<guid>location-live-1</guid>
+<podcast:location rel="subject" country="US">Austin</podcast:location>
+</podcast:liveItem>
+</channel>
+</rss>
