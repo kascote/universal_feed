@@ -104,25 +104,7 @@ class ReportFormatter {
     if (feed.podcast != null) {
       buffer.writeln();
       _writeSection(buffer, 'PODCAST/ITUNES EXTENSION');
-      final pod = feed.podcast!;
-      _writeField(buffer, 'Summary', pod.summary);
-      _writeField(buffer, 'Explicit', pod.explicit?.toString());
-      _writeField(buffer, 'Type', pod.type);
-      _writeField(buffer, 'Complete', pod.complete?.toString());
-      _writeField(buffer, 'New Feed URL', pod.newFeedUrl);
-      if (pod.categories.isNotEmpty) {
-        for (final cat in pod.categories) {
-          final scheme = cat.scheme != null ? ' [${cat.scheme}]' : '';
-          _writeField(buffer, 'Category', '${cat.label}$scheme');
-          for (final child in cat.children) {
-            final childScheme = child.scheme != null ? ' [${child.scheme}]' : '';
-            _writeField(buffer, '  └─ Subcategory', '${child.label}$childScheme');
-          }
-        }
-      }
-      if (pod.image != null) {
-        _writeField(buffer, 'Podcast Image', pod.image!.url);
-      }
+      _writePodcastChannel(buffer, feed.podcast!);
     }
 
     // Items
@@ -131,6 +113,16 @@ class ReportFormatter {
     for (var i = 0; i < feed.items.length; i++) {
       buffer.writeln();
       _writeItem(buffer, feed.items[i], i);
+    }
+
+    // Live items (podcast:liveItem)
+    if (feed.liveItems.isNotEmpty) {
+      buffer.writeln();
+      _writeSection(buffer, 'LIVE ITEMS (${feed.liveItems.length})');
+      for (var i = 0; i < feed.liveItems.length; i++) {
+        buffer.writeln();
+        _writeItem(buffer, feed.liveItems[i], i);
+      }
     }
 
     // Issues
@@ -376,17 +368,7 @@ class ReportFormatter {
 
     // Podcast extension - show all details
     if (item.podcast != null) {
-      final pod = item.podcast!;
-      buffer.writeln('  ├─ Podcast:');
-      _writeField(buffer, 'Title', pod.title, indent: '  │  ├─ ');
-      _writeField(buffer, 'Duration', pod.duration, indent: '  │  ├─ ');
-      _writeField(buffer, 'Episode', pod.episode, indent: '  │  ├─ ');
-      _writeField(buffer, 'Season', pod.season, indent: '  │  ├─ ');
-      _writeField(buffer, 'Episode Type', pod.episodeType, indent: '  │  ├─ ');
-      _writeField(buffer, 'Explicit', pod.explicit, indent: '  │  ├─ ');
-      _writeField(buffer, 'Block', pod.block, indent: '  │  ├─ ');
-      _writeField(buffer, 'Summary', pod.summary, indent: '  │  ├─ ');
-      if (pod.image != null) _writeField(buffer, 'Image', pod.image!.url, indent: '  │  └─ ');
+      _writePodcastItem(buffer, item.podcast!);
     }
 
     // GeoRSS - show all fields (only if has actual content)
@@ -436,6 +418,369 @@ class ReportFormatter {
         }
       }
     }
+  }
+
+  void _writePodcastChannel(StringBuffer buffer, PodcastChannel pod) {
+    // iTunes vocabulary
+    _writeField(buffer, 'Summary', pod.summary);
+    _writeField(buffer, 'Explicit', pod.explicit?.toString());
+    _writeField(buffer, 'Type', pod.type);
+    _writeField(buffer, 'Complete', pod.complete?.toString());
+    _writeField(buffer, 'Block', pod.block);
+    _writeField(buffer, 'New Feed URL', pod.newFeedUrl);
+    if (pod.image != null) {
+      _writeField(buffer, 'iTunes Image', pod.image!.url);
+    }
+    if (pod.categories.isNotEmpty) {
+      for (final cat in pod.categories) {
+        final scheme = cat.scheme != null ? ' [${cat.scheme}]' : '';
+        _writeField(buffer, 'Category', '${cat.label}$scheme');
+        for (final child in cat.children) {
+          final childScheme = child.scheme != null ? ' [${child.scheme}]' : '';
+          _writeField(buffer, '  └─ Subcategory', '${child.label}$childScheme');
+        }
+      }
+    }
+
+    // Podcast Index vocabulary - scalars
+    _writeField(buffer, 'GUID', pod.guid);
+    if (pod.medium != null) {
+      final listSuffix = pod.mediumIsList ? ' [list]' : '';
+      _writeField(buffer, 'Medium', '${pod.medium} (${pod.knownMedium.name})$listSuffix');
+    }
+    _writeField(buffer, 'Podping uses', pod.podpingUsesPodping?.toString());
+    if (pod.locked != null) {
+      final owner = pod.lockedOwner != null ? ' <${pod.lockedOwner}>' : '';
+      _writeField(buffer, 'Locked', '${pod.locked}$owner');
+    }
+    if (pod.updateFrequency != null) {
+      final u = pod.updateFrequency!;
+      final parts = <String>[
+        if (u.description != null) u.description!,
+        if (u.rrule != null) 'rrule=${u.rrule}',
+        if (u.dtstart != null) 'dtstart=${u.dtstart!.value}',
+        if (u.complete != null) 'complete=${u.complete}',
+      ];
+      _writeField(buffer, 'Update Frequency', parts.join(' | '));
+    }
+    if (pod.license != null) _writeField(buffer, 'License', _formatLicense(pod.license!));
+    if (pod.chat != null) _writeField(buffer, 'Chat', _formatChat(pod.chat!));
+    if (pod.publisher != null) {
+      _writeField(buffer, 'Publisher', _formatRemoteItem(pod.publisher!.remoteItem));
+    }
+
+    // Podcast Index vocabulary - lists
+    if (pod.podroll != null) {
+      buffer.writeln('Podroll (${pod.podroll!.items.length}):');
+      for (var i = 0; i < pod.podroll!.items.length; i++) {
+        _writeField(buffer, '[$i]', _formatRemoteItem(pod.podroll!.items[i]), indent: '  ');
+      }
+    }
+    if (pod.trailers.isNotEmpty) {
+      buffer.writeln('Trailers (${pod.trailers.length}):');
+      for (var i = 0; i < pod.trailers.length; i++) {
+        _writeField(buffer, '[$i]', _formatTrailer(pod.trailers[i]), indent: '  ');
+      }
+    }
+    if (pod.fundings.isNotEmpty) {
+      buffer.writeln('Funding (${pod.fundings.length}):');
+      for (var i = 0; i < pod.fundings.length; i++) {
+        final f = pod.fundings[i];
+        final text = f.text ?? '(no text)';
+        _writeField(buffer, '[$i]', '$text → ${f.url ?? "(no url)"}', indent: '  ');
+      }
+    }
+    if (pod.persons.isNotEmpty) {
+      buffer.writeln('Persons (${pod.persons.length}):');
+      for (var i = 0; i < pod.persons.length; i++) {
+        _writeField(buffer, '[$i]', _formatPerson(pod.persons[i]), indent: '  ');
+      }
+    }
+    if (pod.locations.isNotEmpty) {
+      buffer.writeln('Locations (${pod.locations.length}):');
+      for (var i = 0; i < pod.locations.length; i++) {
+        _writeField(buffer, '[$i]', _formatLocation(pod.locations[i]), indent: '  ');
+      }
+    }
+    if (pod.blocks.isNotEmpty) {
+      buffer.writeln('Blocks (${pod.blocks.length}):');
+      for (var i = 0; i < pod.blocks.length; i++) {
+        final b = pod.blocks[i];
+        final target = b.id ?? '*global*';
+        _writeField(buffer, '[$i]', '$target: ${b.value} (blocked=${b.blocked})', indent: '  ');
+      }
+    }
+    if (pod.images.isNotEmpty) {
+      buffer.writeln('Images (${pod.images.length}):');
+      for (var i = 0; i < pod.images.length; i++) {
+        _writeField(buffer, '[$i]', _formatPodcastImage(pod.images[i]), indent: '  ');
+      }
+    }
+    if (pod.txts.isNotEmpty) {
+      buffer.writeln('TXT entries (${pod.txts.length}):');
+      for (var i = 0; i < pod.txts.length; i++) {
+        final t = pod.txts[i];
+        final purpose = t.purpose != null ? ' [${t.purpose}]' : '';
+        _writeField(buffer, '[$i]', '${t.value}$purpose', indent: '  ');
+      }
+    }
+    if (pod.values.isNotEmpty) {
+      buffer.writeln('Values (${pod.values.length}):');
+      for (var i = 0; i < pod.values.length; i++) {
+        _writePodcastValueEntry(buffer, pod.values[i], i, indent: '  ');
+      }
+    }
+    if (pod.remoteItems.isNotEmpty) {
+      buffer.writeln('Remote Items (${pod.remoteItems.length}):');
+      for (var i = 0; i < pod.remoteItems.length; i++) {
+        _writeField(buffer, '[$i]', _formatRemoteItem(pod.remoteItems[i]), indent: '  ');
+      }
+    }
+  }
+
+  void _writePodcastItem(StringBuffer buffer, PodcastItem pod) {
+    buffer.writeln('  ├─ Podcast:');
+    const i1 = '  │  ├─ ';
+    const i2 = '  │  │  ├─ ';
+
+    _writeField(buffer, 'Title', pod.title, indent: i1);
+    _writeField(buffer, 'Duration', pod.duration, indent: i1);
+    if (pod.episode != null) {
+      final display = pod.episodeDisplay != null ? ' (display: "${pod.episodeDisplay}")' : '';
+      _writeField(buffer, 'Episode', '${pod.episode}$display', indent: i1);
+    }
+    if (pod.season != null) {
+      final name = pod.seasonName != null ? ' (name: "${pod.seasonName}")' : '';
+      _writeField(buffer, 'Season', '${pod.season}$name', indent: i1);
+    }
+    _writeField(buffer, 'Episode Type', pod.episodeType, indent: i1);
+    _writeField(buffer, 'Explicit', pod.explicit, indent: i1);
+    _writeField(buffer, 'Block', pod.block, indent: i1);
+    _writeField(buffer, 'Summary', pod.summary, indent: i1);
+    if (pod.image != null) _writeField(buffer, 'Image', pod.image!.url, indent: i1);
+
+    if (pod.live != null) {
+      final l = pod.live!;
+      final parts = <String>[
+        'status=${l.knownStatus.name}',
+        if (l.start != null) 'start=${l.start!.value}',
+        if (l.end != null) 'end=${l.end!.value}',
+      ];
+      _writeField(buffer, 'Live', parts.join(' | '), indent: i1);
+    }
+
+    if (pod.chapters != null) {
+      final c = pod.chapters!;
+      _writeField(buffer, 'Chapters', '${c.url ?? "(no url)"} [${c.type ?? "?"}]', indent: i1);
+    }
+    if (pod.license != null) {
+      _writeField(buffer, 'License', _formatLicense(pod.license!), indent: i1);
+    }
+    if (pod.chat != null) {
+      _writeField(buffer, 'Chat', _formatChat(pod.chat!), indent: i1);
+    }
+
+    if (pod.transcripts.isNotEmpty) {
+      buffer.writeln('$i1 Transcripts (${pod.transcripts.length}):');
+      for (var i = 0; i < pod.transcripts.length; i++) {
+        final t = pod.transcripts[i];
+        final parts = <String>[
+          t.url ?? '(no url)',
+          if (t.type != null) '[${t.type}/${t.knownType.name}]',
+          if (t.language != null) 'lang=${t.language}',
+          if (t.rel != null) 'rel=${t.rel}',
+        ];
+        _writeField(buffer, '[$i]', parts.join(' '), indent: i2);
+      }
+    }
+    if (pod.persons.isNotEmpty) {
+      buffer.writeln('$i1 Persons (${pod.persons.length}):');
+      for (var i = 0; i < pod.persons.length; i++) {
+        _writeField(buffer, '[$i]', _formatPerson(pod.persons[i]), indent: i2);
+      }
+    }
+    if (pod.locations.isNotEmpty) {
+      buffer.writeln('$i1 Locations (${pod.locations.length}):');
+      for (var i = 0; i < pod.locations.length; i++) {
+        _writeField(buffer, '[$i]', _formatLocation(pod.locations[i]), indent: i2);
+      }
+    }
+    if (pod.soundbites.isNotEmpty) {
+      buffer.writeln('$i1 Soundbites (${pod.soundbites.length}):');
+      for (var i = 0; i < pod.soundbites.length; i++) {
+        final s = pod.soundbites[i];
+        final title = s.title != null ? ' "${s.title}"' : '';
+        _writeField(buffer, '[$i]', 'start=${s.startTime} dur=${s.duration}$title', indent: i2);
+      }
+    }
+    if (pod.socialInteracts.isNotEmpty) {
+      buffer.writeln('$i1 Social Interacts (${pod.socialInteracts.length}):');
+      for (var i = 0; i < pod.socialInteracts.length; i++) {
+        final s = pod.socialInteracts[i];
+        final parts = <String>[
+          s.protocol,
+          if (s.uri != null) s.uri!,
+          if (s.accountId != null) 'account=${s.accountId}',
+          if (s.priority != null) 'priority=${s.priority}',
+        ];
+        _writeField(buffer, '[$i]', parts.join(' | '), indent: i2);
+      }
+    }
+    if (pod.images.isNotEmpty) {
+      buffer.writeln('$i1 Images (${pod.images.length}):');
+      for (var i = 0; i < pod.images.length; i++) {
+        _writeField(buffer, '[$i]', _formatPodcastImage(pod.images[i]), indent: i2);
+      }
+    }
+    if (pod.alternateEnclosures.isNotEmpty) {
+      buffer.writeln('$i1 Alternate Enclosures (${pod.alternateEnclosures.length}):');
+      for (var i = 0; i < pod.alternateEnclosures.length; i++) {
+        _writeAlternateEnclosure(buffer, pod.alternateEnclosures[i], i);
+      }
+    }
+    if (pod.values.isNotEmpty) {
+      buffer.writeln('$i1 Values (${pod.values.length}):');
+      for (var i = 0; i < pod.values.length; i++) {
+        _writePodcastValueEntry(buffer, pod.values[i], i, indent: i2);
+      }
+    }
+    if (pod.contentLinks.isNotEmpty) {
+      buffer.writeln('$i1 Content Links (${pod.contentLinks.length}):');
+      for (var i = 0; i < pod.contentLinks.length; i++) {
+        final c = pod.contentLinks[i];
+        final text = c.text != null ? ' — ${c.text}' : '';
+        _writeField(buffer, '[$i]', '${c.href}$text', indent: i2);
+      }
+    }
+    if (pod.txts.isNotEmpty) {
+      buffer.writeln('$i1 TXT entries (${pod.txts.length}):');
+      for (var i = 0; i < pod.txts.length; i++) {
+        final t = pod.txts[i];
+        final purpose = t.purpose != null ? ' [${t.purpose}]' : '';
+        _writeField(buffer, '[$i]', '${t.value}$purpose', indent: i2);
+      }
+    }
+  }
+
+  void _writeAlternateEnclosure(StringBuffer buffer, PodcastAlternateEnclosure alt, int index) {
+    const i3 = '  │  │  ├─ ';
+    const i4 = '  │  │  │  ├─ ';
+    final hdrParts = <String>[
+      if (alt.type != null) alt.type!,
+      if (alt.title != null) '"${alt.title}"',
+      if (alt.bitrate != null) 'bitrate=${alt.bitrate}',
+      if (alt.height != null) 'h=${alt.height}',
+      if (alt.lang != null) 'lang=${alt.lang}',
+      if (alt.rel != null) 'rel=${alt.rel}',
+      if (alt.codecs != null) 'codecs=${alt.codecs}',
+      if (alt.length != null) '${alt.length}B',
+      if (alt.isDefault ?? false) 'default',
+    ];
+    _writeField(buffer, '[$index]', hdrParts.join(' | '), indent: i3);
+    for (var s = 0; s < alt.sources.length; s++) {
+      final src = alt.sources[s];
+      final ct = src.contentType != null ? ' [${src.contentType}]' : '';
+      _writeField(buffer, 'src[$s]', '${src.uri}$ct', indent: i4);
+    }
+    for (var k = 0; k < alt.integrity.length; k++) {
+      final ig = alt.integrity[k];
+      _writeField(buffer, 'integrity[$k]', '${ig.type}: ${_truncate(ig.value, 60)}', indent: i4);
+    }
+  }
+
+  void _writePodcastValueEntry(StringBuffer buffer, PodcastValue v, int index, {required String indent}) {
+    final hdrParts = <String>[
+      '${v.type}/${v.method}',
+      if (v.suggested != null) 'suggested=${v.suggested}',
+      'recipients=${v.recipients.length}',
+      if (v.timeSplits.isNotEmpty) 'timeSplits=${v.timeSplits.length}',
+    ];
+    _writeField(buffer, '[$index]', hdrParts.join(' | '), indent: indent);
+    for (var r = 0; r < v.recipients.length; r++) {
+      final rec = v.recipients[r];
+      final name = rec.name != null ? '"${rec.name}" ' : '';
+      final fee = (rec.fee ?? false) ? ' [fee]' : '';
+      _writeField(buffer, '  r[$r]', '$name${rec.type}:${rec.address} split=${rec.split}$fee', indent: indent);
+    }
+    for (var t = 0; t < v.timeSplits.length; t++) {
+      final ts = v.timeSplits[t];
+      final remote = ts.remoteItem != null ? ' → remote(${ts.remoteItem!.feedGuid})' : '';
+      _writeField(buffer, '  ts[$t]', 'start=${ts.startTime} dur=${ts.duration}$remote', indent: indent);
+    }
+  }
+
+  String _formatLicense(PodcastLicense l) {
+    final parts = <String>[
+      if (l.spdx != null) l.spdx!,
+      if (l.text != null) '"${l.text}"',
+      if (l.url != null) l.url!,
+    ];
+    return parts.join(' | ');
+  }
+
+  String _formatChat(PodcastChat c) {
+    final parts = <String>[
+      '${c.protocol}://${c.server}',
+      if (c.space != null) 'space=${c.space}',
+      if (c.accountId != null) 'account=${c.accountId}',
+    ];
+    return parts.join(' | ');
+  }
+
+  String _formatTrailer(PodcastTrailer t) {
+    final parts = <String>[
+      if (t.title != null) '"${t.title}"',
+      t.url,
+      if (t.type != null) '[${t.type}]',
+      if (t.length != null) '${t.length}B',
+      if (t.season != null) 'season=${t.season}',
+      if (t.pubdate != null) 'pubdate=${t.pubdate!.value}',
+    ];
+    return parts.join(' | ');
+  }
+
+  String _formatPerson(PodcastPerson p) {
+    final parts = <String>[
+      p.name,
+      '${p.effectiveRole}/${p.effectiveGroup}',
+      if (p.href != null) p.href!,
+      if (p.img != null) 'img=${p.img}',
+    ];
+    return parts.join(' | ');
+  }
+
+  String _formatLocation(PodcastLocation l) {
+    final parts = <String>[
+      l.text,
+      if (l.rel != null) 'rel=${l.rel}',
+      if (l.geo != null) 'geo=${l.geo}',
+      if (l.osm != null) 'osm=${l.osm}',
+      if (l.country != null) 'country=${l.country}',
+    ];
+    return parts.join(' | ');
+  }
+
+  String _formatPodcastImage(PodcastImage img) {
+    final parts = <String>[
+      img.href,
+      if (img.alt != null) 'alt="${img.alt}"',
+      if (img.purpose != null) 'purpose=${img.purpose}',
+      if (img.aspectRatio != null) 'AR=${img.aspectRatio}',
+      if (img.width != null || img.height != null) '${img.width ?? "?"}x${img.height ?? "?"}',
+      if (img.type != null) img.type!,
+    ];
+    return parts.join(' | ');
+  }
+
+  String _formatRemoteItem(PodcastRemoteItem r) {
+    final parts = <String>[
+      if (r.title != null) '"${r.title}"',
+      'feedGuid=${r.feedGuid}',
+      if (r.itemGuid != null) 'itemGuid=${r.itemGuid}',
+      if (r.feedUrl != null) 'feedUrl=${r.feedUrl}',
+      if (r.medium != null) 'medium=${r.medium}',
+    ];
+    return parts.join(' | ');
   }
 
   void _writeSection(StringBuffer buffer, String title) {
