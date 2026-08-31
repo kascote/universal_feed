@@ -1099,12 +1099,9 @@ Map<String, TestFx> podcastIndexTests() {
           li.guid == 'e32b4890-983b-4ce5-8b46-f2d6bc1d8819' &&
           (li.podcast?.contentLinks.length ?? 0) == 1;
     },
-    'live_item_status_pending.xml': (r) =>
-        r.liveItems.first.podcast?.live?.knownStatus == PodcastLiveStatus.pending,
-    'live_item_status_live.xml': (r) =>
-        r.liveItems.first.podcast?.live?.knownStatus == PodcastLiveStatus.live,
-    'live_item_status_ended.xml': (r) =>
-        r.liveItems.first.podcast?.live?.knownStatus == PodcastLiveStatus.ended,
+    'live_item_status_pending.xml': (r) => r.liveItems.first.podcast?.live?.knownStatus == PodcastLiveStatus.pending,
+    'live_item_status_live.xml': (r) => r.liveItems.first.podcast?.live?.knownStatus == PodcastLiveStatus.live,
+    'live_item_status_ended.xml': (r) => r.liveItems.first.podcast?.live?.knownStatus == PodcastLiveStatus.ended,
     'live_item_status_unknown.xml': (r) {
       final live = r.liveItems.first.podcast?.live;
       return live?.knownStatus == PodcastLiveStatus.other && live?.status == 'starting';
