@@ -1,4 +1,4 @@
-## Unreleased
+## 0.8.0
 
 - add support for PodcastIndex namespace (https://podcastindex.org)
 - support multiple `itunes:category` elements on podcast channels and expose
